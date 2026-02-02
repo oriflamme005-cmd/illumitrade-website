@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/thankyou",
+      "destination": "/thankyou.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/best-tradingview-indicators-2026",
+      "destination": "/blog/best-tradingview-indicators-2026.html"
+    }
+  ]
+}
