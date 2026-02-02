@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — IllumiTrade®</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #080b12;
+  --bg-card: #0e1320;
+  --bg-hover: #141c2e;
+  --accent: #4ecca3;
+  --accent-dim: rgba(78, 204, 163, 0.15);
+  --gold: #f0c75e;
+  --red: #e74c6f;
+  --text-primary: #e8edf5;
+  --text-secondary: #8892a4;
+  --text-muted: #5a6478;
+  --border: rgba(78, 204, 163, 0.12);
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px; background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  padding: 24px 0; display: flex; flex-direction: column;
+  position: fixed; left: 0; top: 0; bottom: 0;
+}
+.logo {
+  font-size: 18px; font-weight: 700;
+  color: var(--accent); padding: 0 20px; margin-bottom: 32px;
+  letter-spacing: -0.5px;
+}
+.logo span { color: var(--text-secondary); }
+.nav-item {
+  padding: 10px 20px; color: var(--text-secondary);
+  text-decoration: none; display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; transition: all 0.2s; cursor: pointer;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover, .nav-item.active {
+  color: var(--accent); background: var(--accent-dim);
+  border-left-color: var(--accent);
+}
+.nav-icon { font-size: 16px; }
+
+/* Main */
+.main {
+  flex: 1; margin-left: 240px; padding: 32px;
+}
+
+/* Header */
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 32px;
+}
+.header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.6px; }
+.header-actions { display: flex; gap: 12px; }
+.btn {
+  padding: 9px 18px; border-radius: 6px; border: none;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; font-family: var(--font-body);
+}
+.btn-primary { background: var(--accent); color: #080b12; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(78,204,163,0.3); }
+.btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--bg-hover); }
+
+/* Stats Cards */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 8px; }
+.stat-value { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+.stat-change {
+  font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 4px;
+}
+.stat-change.up { color: var(--accent); }
+.stat-change.down { color: var(--red); }
+
+/* Tabs */
+.tabs {
+  display: flex; gap: 8px; margin-bottom: 24px;
+  border-bottom: 1px solid var(--border); padding-bottom: 0;
+}
+.tab {
+  padding: 10px 18px; background: none; border: none;
+  color: var(--text-secondary); font-size: 13.5px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; position: relative;
+  font-family: var(--font-body); border-bottom: 2px solid transparent;
+}
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Table */
+.table-container {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+table {
+  width: 100%; border-collapse: collapse;
+}
+thead { background: rgba(78, 204, 163, 0.05); }
+th {
+  text-align: left; padding: 14px 16px; font-size: 12px;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.6px; font-weight: 600;
+}
+td {
+  padding: 14px 16px; font-size: 13px; color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+}
+tr:hover { background: var(--bg-hover); }
+
+/* Badges */
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.badge-success { background: rgba(78,204,163,0.2); color: var(--accent); }
+.badge-pending { background: rgba(240,199,94,0.2); color: var(--gold); }
+.badge-failed { background: rgba(231,76,111,0.2); color: var(--red); }
+.badge-trial { background: rgba(138,146,164,0.2); color: var(--text-secondary); }
+
+/* Actions */
+.actions {
+  display: flex; gap: 8px;
+}
+.icon-btn {
+  padding: 6px 10px; background: var(--bg-deep); border: 1px solid var(--border);
+  border-radius: 5px; cursor: pointer; transition: all 0.2s;
+  font-size: 14px; color: var(--text-secondary);
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Modal */
+.modal {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal.open { display: flex; }
+.modal-content {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px; max-width: 480px; width: 100%;
+}
+.modal h3 { font-size: 20px; margin-bottom: 20px; }
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-size: 12.5px; color: var(--text-secondary);
+  margin-bottom: 6px; font-weight: 500;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 10px 14px; background: var(--bg-deep);
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-primary); font-size: 13px; font-family: var(--font-body);
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--accent);
+}
+.modal-actions {
+  display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center; padding: 60px 24px; color: var(--text-muted);
+}
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state p { font-size: 14px; }
+
+/* Loading */
+.loading {
+  display: flex; justify-content: center; padding: 40px;
+}
+.spinner {
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%; width: 32px; height: 32px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Code Block */
+.code-block {
+  background: var(--bg-deep); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px; font-family: var(--font-mono);
+  font-size: 12px; color: var(--accent); overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar { width: 200px; }
+  .main { margin-left: 200px; padding: 20px; }
+  .stats-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="logo">Illumi<span>Trade®</span></div>
+  <div class="nav-item active" onclick="showTab('overview')">
+    <span class="nav-icon">📊</span> Overview
+  </div>
+  <div class="nav-item" onclick="showTab('payments')">
+    <span class="nav-icon">💳</span> Payments
+  </div>
+  <div class="nav-item" onclick="showTab('users')">
+    <span class="nav-icon">👥</span> Users
+  </div>
+  <div class="nav-item" onclick="showTab('submissions')">
+    <span class="nav-icon">📝</span> Form Submissions
+  </div>
+  <div class="nav-item" onclick="showTab('settings')">
+    <span class="nav-icon">⚙️</span> Settings
+  </div>
+  <div style="margin-top:auto; padding:20px; border-top:1px solid var(--border);">
+    <button class="btn btn-secondary" style="width:100%;" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+  
+  <!-- Overview Tab -->
+  <div id="overview-tab" class="tab-content">
+    <div class="header">
+      <h1>Dashboard Overview</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+        <button class="btn btn-primary" onclick="openModal('giveAccess')">+ Give Access</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">$12,450</div>
+        <div class="stat-change up">↑ +18% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Users</div>
+        <div class="stat-value">87</div>
+        <div class="stat-change up">↑ +5 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending Approvals</div>
+        <div class="stat-value">4</div>
+        <div class="stat-change">Requires action</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Free Trials</div>
+        <div class="stat-value">12</div>
+        <div class="stat-change">Active now</div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <h3 style="margin-bottom:16px; font-size:18px;">Recent Activity</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Event</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentActivity">
+          <tr>
+            <td>2 min ago</td>
+            <td>Stripe Payment</td>
+            <td>john.doe@gmail.com</td>
+            <td>$360</td>
+            <td><span class="badge badge-success">Completed</span></td>
+          </tr>
+          <tr>
+            <td>15 min ago</td>
+            <td>Form Submission</td>
+            <td>trader123</td>
+            <td>—</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>1 hour ago</td>
+            <td>PayPal Payment</td>
+            <td>crypto.trader@yahoo.com</td>
+            <td>$80</td>
+            <td><span class="badge badge-success">Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Payments Tab -->
+  <div id="payments-tab" class="tab-content" style="display:none;">
+    <div class="header">
+      <h1>Payment History</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="exportPayments()">📥 Export CSV</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="filterPayments('all')">All</button>
+      <button class="tab" onclick="filterPayments('stripe')">Stripe</button>
+      <button class="tab" onclick="filterPayments('paypal')">PayPal</button>
+      <button class="tab" onclick="filterPayments('usdt')">USDT</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Method</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="paymentsTable">
+          <!-- Data loaded from Stripe/PayPal webhooks + Formspree -->
+          <tr><td colspan="7" style="text-align:center; padding:40px; color:var(--text-muted);">Connect Stripe & PayPal webhooks to see payments</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Users Tab -->
+  <div id="users-tab" class="tab-content" style="display:none;">
+    <div class="header">
+      <h1>User Management</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="openModal('giveAccess')">+ Add User</button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>TradingView Username</th>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Status</th>
+            <th>Expires</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <!-- Dummy data for demo -->
+          <tr>
+            <td><code style="color:var(--accent);">trader_pro_123</code></td>
+            <td>john.doe@gmail.com</td>
+            <td>6 Months</td>
+            <td><span class="badge badge-success">Active</span></td>
+            <td>Aug 2, 2026</td>
+            <td class="actions">
+              <button class="icon-btn" title="Revoke Access" onclick="revokeAccess('trader_pro_123')">🚫</button>
+              <button class="icon-btn" title="Extend" onclick="extendAccess('trader_pro_123')">⏱️</button>
+            </td>
+          </tr>
+          <tr>
+            <td><code style="color:var(--accent);">crypto_king</code></td>
+            <td>crypto.trader@yahoo.com</td>
+            <td>1 Month</td>
+            <td><span class="badge badge-success">Active</span></td>
+            <td>Mar 2, 2026</td>
+            <td class="actions">
+              <button class="icon-btn" title="Revoke Access" onclick="revokeAccess('crypto_king')">🚫</button>
+              <button class="icon-btn" title="Extend" onclick="extendAccess('crypto_king')">⏱️</button>
+            </td>
+          </tr>
+          <tr>
+            <td><code style="color:var(--accent);">btc_whale</code></td>
+            <td>whale@proton.me</td>
+            <td>Free Trial</td>
+            <td><span class="badge badge-trial">Trial</span></td>
+            <td>Feb 9, 2026</td>
+            <td class="actions">
+              <button class="icon-btn" title="Revoke Access" onclick="revokeAccess('btc_whale')">🚫</button>
+              <button class="icon-btn" title="Extend" onclick="extendAccess('btc_whale')">⏱️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Form Submissions Tab -->
+  <div id="submissions-tab" class="tab-content" style="display:none;">
+    <div class="header">
+      <h1>Form Submissions</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="refreshSubmissions()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Email</th>
+            <th>TradingView Username</th>
+            <th>Plan Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="submissionsTable">
+          <tr>
+            <td>Feb 2, 2026 10:45 AM</td>
+            <td>newuser@gmail.com</td>
+            <td><code style="color:var(--accent);">new_trader_99</code></td>
+            <td>Paid - USDT</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td class="actions">
+              <button class="icon-btn" title="Approve & Give Access" onclick="approveSubmission('new_trader_99')">✅</button>
+              <button class="icon-btn" title="Reject" onclick="rejectSubmission('new_trader_99')">❌</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Feb 2, 2026 9:30 AM</td>
+            <td>trial.user@outlook.com</td>
+            <td><code style="color:var(--accent);">trial_test</code></td>
+            <td>Free Trial</td>
+            <td><span class="badge badge-pending">Pending</span></td>
+            <td class="actions">
+              <button class="icon-btn" title="Approve & Give Access" onclick="approveSubmission('trial_test')">✅</button>
+              <button class="icon-btn" title="Reject" onclick="rejectSubmission('trial_test')">❌</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Settings Tab -->
+  <div id="settings-tab" class="tab-content" style="display:none;">
+    <div class="header">
+      <h1>Integration Settings</h1>
+    </div>
+
+    <div style="max-width:700px;">
+      <h3 style="font-size:18px; margin-bottom:16px;">Webhooks</h3>
+      <p style="color:var(--text-secondary); margin-bottom:24px; font-size:14px;">Configure webhooks to automatically sync payments from Stripe and PayPal</p>
+
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px; margin-bottom:20px;">
+        <h4 style="font-size:15px; margin-bottom:12px;">Stripe Webhook</h4>
+        <div class="code-block" style="margin-bottom:12px;">https://yourdomain.com/api/webhooks/stripe</div>
+        <p style="font-size:12.5px; color:var(--text-muted);">Add this endpoint in your Stripe Dashboard → Developers → Webhooks</p>
+      </div>
+
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px; margin-bottom:20px;">
+        <h4 style="font-size:15px; margin-bottom:12px;">PayPal Webhook</h4>
+        <div class="code-block" style="margin-bottom:12px;">https://yourdomain.com/api/webhooks/paypal</div>
+        <p style="font-size:12.5px; color:var(--text-muted);">Add this endpoint in your PayPal Developer Dashboard → Webhooks</p>
+      </div>
+
+      <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px;">
+        <h4 style="font-size:15px; margin-bottom:12px;">Formspree Integration</h4>
+        <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Form submissions are already connected via: <code style="color:var(--accent);">mojlkkpl</code></p>
+        <button class="btn btn-secondary">View in Formspree</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal: Give Access -->
+<div class="modal" id="giveAccessModal">
+  <div class="modal-content">
+    <h3>Give Access</h3>
+    <div class="form-group">
+      <label>TradingView Username</label>
+      <input type="text" id="tvUsername" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="userEmail" placeholder="user@example.com">
+    </div>
+    <div class="form-group">
+      <label>Plan</label>
+      <select id="userPlan">
+        <option value="trial">Free Trial (7 days)</option>
+        <option value="1month">1 Month</option>
+        <option value="3months">3 Months</option>
+        <option value="6months">6 Months</option>
+        <option value="1year">1 Year</option>
+        <option value="lifetime">Lifetime</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="giveAccess()">Grant Access</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(tab + '-tab').style.display = 'block';
+  document.querySelector(`.nav-item[onclick="showTab('${tab}')"]`).classList.add('active');
+}
+
+// Modal
+function openModal(type) {
+  document.getElementById('giveAccessModal').classList.add('open');
+}
+function closeModal() {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+}
+
+// Actions
+function giveAccess() {
+  const username = document.getElementById('tvUsername').value;
+  const email = document.getElementById('userEmail').value;
+  const plan = document.getElementById('userPlan').value;
+  
+  if (!username || !email) {
+    alert('Please fill all fields');
+    return;
+  }
+  
+  // TODO: Call your backend API to add user to TradingView
+  alert(`Access granted to ${username} (${plan})`);
+  closeModal();
+  
+  // In real implementation, this would:
+  // 1. Call TradingView API to invite user
+  // 2. Send email confirmation
+  // 3. Update your database
+}
+
+function revokeAccess(username) {
+  if (confirm(`Revoke access for ${username}?`)) {
+    alert(`Access revoked for ${username}`);
+    // TODO: Call TradingView API to remove user
+  }
+}
+
+function extendAccess(username) {
+  const days = prompt(`Extend access for ${username} by how many days?`, '30');
+  if (days) {
+    alert(`Extended ${username} by ${days} days`);
+    // TODO: Update expiry date in database
+  }
+}
+
+function approveSubmission(username) {
+  openModal('giveAccess');
+  document.getElementById('tvUsername').value = username;
+}
+
+function rejectSubmission(username) {
+  if (confirm(`Reject submission for ${username}?`)) {
+    alert(`Submission rejected`);
+    // TODO: Remove from pending list
+  }
+}
+
+function refreshData() {
+  alert('Refreshing data from Stripe, PayPal, and Formspree...');
+  // TODO: Call APIs to fetch latest data
+}
+
+function refreshSubmissions() {
+  alert('Fetching latest form submissions from Formspree...');
+  // TODO: Call Formspree API
+}
+
+function exportPayments() {
+  alert('Exporting payments to CSV...');
+  // TODO: Generate CSV export
+}
+
+function filterPayments(type) {
+  document.querySelectorAll('#payments-tab .tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  // TODO: Filter table by payment method
+}
+
+function logout() {
+  if (confirm('Logout?')) {
+    window.location.href = '/';
+  }
+}
+
+// Close modal on outside click
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+});
+</script>
+
+</body>
+</html>

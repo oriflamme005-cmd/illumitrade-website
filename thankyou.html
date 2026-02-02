@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — IllumiTrade®</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #080b12;
+  --bg-card: #0e1320;
+  --accent: #4ecca3;
+  --accent-dim: rgba(78, 204, 163, 0.15);
+  --accent-glow: rgba(78, 204, 163, 0.35);
+  --gold: #f0c75e;
+  --text-primary: #e8edf5;
+  --text-secondary: #8892a4;
+  --text-muted: #5a6478;
+  --border: rgba(78, 204, 163, 0.12);
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient glow */
+body::before {
+  content: '';
+  position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse at center, rgba(78, 204, 163, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 18px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(8, 11, 18, 0.85);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 17px; font-weight: 700;
+  color: var(--accent); text-decoration: none; letter-spacing: -0.5px;
+}
+.nav-logo span { color: var(--text-secondary); font-weight: 600; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 13px; font-weight: 500; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* Card */
+.card {
+  position: relative; z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  max-width: 620px; width: 100%;
+  padding: 52px 44px 44px;
+  animation: fadeUp 0.6s ease both;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+/* Lock icon circle */
+.icon-wrap {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--accent-dim);
+  border: 2px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 28px;
+  animation: pop 0.4s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes pop { from { transform:scale(0); opacity:0; } to { transform:scale(1); opacity:1; } }
+
+/* Heading */
+h1 {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 700;
+  text-align: center; letter-spacing: -0.6px;
+  margin-bottom: 10px; color: var(--text-primary);
+}
+.subtitle {
+  text-align: center;
+  font-size: 14px; color: var(--text-secondary);
+  line-height: 1.7; margin-bottom: 36px;
+}
+
+/* Divider */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 28px 0;
+}
+
+/* Resource blocks */
+.resource {
+  background: rgba(78, 204, 163, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: border-color 0.2s;
+}
+.resource:hover { border-color: var(--accent); }
+.resource-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.resource-title {
+  font-size: 13.5px; font-weight: 600; color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.resource-link {
+  font-size: 12.5px; color: var(--accent); text-decoration: none;
+  font-weight: 500; transition: opacity 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.resource-link:hover { opacity: 0.75; }
+
+/* Contact block */
+.contact-block {
+  margin-top: 28px; padding: 20px 22px;
+  background: var(--bg-deep); border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.contact-block p {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+}
+.contact-block a { color: var(--accent); text-decoration: none; }
+.contact-block a:hover { text-decoration: underline; }
+
+/* Sign off */
+.signoff {
+  margin-top: 28px; text-align: center;
+}
+.signoff p { font-size: 13px; color: var(--text-secondary); line-height: 1.8; }
+.signoff .team { color: var(--accent); font-weight: 600; }
+
+/* Footer */
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 20px 40px;
+  border-top: 1px solid var(--border);
+  background: rgba(8, 11, 18, 0.85);
+  backdrop-filter: blur(18px);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700;
+  color: var(--accent); text-decoration: none;
+}
+.footer-logo span { color: var(--text-muted); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a {
+  font-size: 12.5px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 11.5px; color: var(--text-muted); width: 100%; text-align: center; }
+
+/* Responsive */
+@media (max-width: 560px) {
+  .card { padding: 36px 24px 32px; }
+  h1 { font-size: 22px; }
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  footer { padding: 16px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Illumi<span>Trade®</span></a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="mailto:illumitrade.contact@gmail.com">Contact Us</a>
+    <a href="https://x.com/illumi_trade" target="_blank">X</a>
+  </div>
+</nav>
+
+<!-- CARD -->
+<div class="card">
+  <div class="icon-wrap">🔓</div>
+  <h1>THANK YOU</h1>
+  <p class="subtitle">Your access to the ILT® indicators will be activated within the next few hours! 🎉</p>
+
+  <div class="divider"></div>
+
+  <p style="font-size:13.5px; color:var(--text-secondary); margin-bottom:16px; font-weight:500;">To help you get started, here are the key resources you'll need:</p>
+
+  <div class="resource">
+    <span class="resource-icon">📖</span>
+    <div>
+      <div class="resource-title">Full 2026 Visual Guide</div>
+      <a href="https://tinyurl.com/ILTGuide2026" target="_blank" class="resource-link">Access the ILT Guide 2026 →</a>
+    </div>
+  </div>
+
+  <div class="resource">
+    <span class="resource-icon">✈️</span>
+    <div>
+      <div class="resource-title">Private Telegram Channel</div>
+      <a href="https://t.me/+F0JSzA8w7rIzOTFk" target="_blank" class="resource-link">Join Telegram →</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="contact-block">
+    <p>Thank you for your interest in ILT® — we're confident you'll find the experience both insightful and rewarding.<br><br>
+    If you have any questions or need support at any point, feel free to reach out:<br><br>
+    📧 <a href="mailto:illumitrade.contact@gmail.com">illumitrade.contact@gmail.com</a></p>
+  </div>
+
+  <div class="signoff">
+    <p>Looking forward to having you on board!<br><br>
+    Warm regards,<br>
+    <span class="team">The ILT Team 💎</span></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">Illumi<span>Trade®</span></a>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="mailto:illumitrade.contact@gmail.com">Contact Us</a>
+    <a href="https://x.com/illumi_trade" target="_blank">X</a>
+  </div>
+  <span class="footer-copy">© 2026 IllumiTrade® — All rights reserved.</span>
+</footer>
+
+</body>
+</html>
