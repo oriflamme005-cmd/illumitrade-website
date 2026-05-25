@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — IllumiTrade®</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000000; --card:#0a0a0c; --ink:#ffffff; --muted:#b4b8c0; --muted-deep:#6e7178;
+    --aqua:#2ee6d6; --fuchsia:#ff2d9b; --line:rgba(255,255,255,0.10); --line-soft:rgba(255,255,255,0.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(46,230,214,0.07),transparent 60%),radial-gradient(ellipse 50% 40% at 80% 100%,rgba(255,45,155,0.06),transparent 55%);pointer-events:none;z-index:0;}
+
+  /* NAV */
+  nav{position:relative;z-index:2;border-bottom:1px solid var(--line-soft);backdrop-filter:blur(20px);}
+  .nav-inner{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink);text-decoration:none;}
+  .logo .mk{color:var(--aqua);}
+  .nav-links{display:flex;gap:26px;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;transition:color .25s;}
+  .nav-links a:hover{color:var(--ink);}
+  @media(max-width:640px){.nav-links{display:none;}}
+
+  /* MAIN */
+  main{position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;padding:64px 24px;}
+  .wrap{max-width:640px;width:100%;text-align:center;}
+  .badge{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:2px;padding:8px 16px;margin-bottom:30px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--aqua);text-transform:uppercase;}
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--aqua);box-shadow:0 0 10px var(--aqua);}
+  h1{font-family:'Montserrat',sans-serif;font-size:clamp(40px,8vw,68px);font-weight:600;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:20px;}
+  h1 .grad{background:linear-gradient(120deg,var(--aqua),var(--fuchsia));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .lead{color:var(--muted);font-size:17px;font-weight:300;line-height:1.65;margin-bottom:14px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .lead strong{color:var(--ink);font-weight:500;}
+  .sub{color:var(--muted-deep);font-size:14px;font-weight:300;margin-bottom:42px;}
+
+  /* RESOURCES */
+  .res-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted-deep);margin-bottom:18px;}
+  .res{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px;text-align:left;}
+  @media(max-width:560px){.res{grid-template-columns:1fr;}}
+  .res a{display:flex;align-items:center;gap:16px;padding:22px 24px;background:var(--card);border:1px solid var(--line-soft);border-radius:8px;text-decoration:none;transition:all .3s;}
+  .res a:hover{border-color:var(--aqua);transform:translateY(-2px);}
+  .res .ic{flex-shrink:0;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .res .tx{flex:1;}
+  .res .tx b{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-bottom:2px;}
+  .res .tx span{color:var(--muted-deep);font-size:12px;font-weight:300;}
+  .res .ar{color:var(--aqua);font-size:16px;}
+
+  .team{border-top:1px solid var(--line-soft);padding-top:32px;margin-top:8px;}
+  .team p{color:var(--muted);font-size:15px;font-weight:300;line-height:1.7;}
+  .team .sig{color:var(--ink);font-weight:500;margin-top:10px;}
+
+  /* FOOTER */
+  footer{position:relative;z-index:1;border-top:1px solid var(--line-soft);padding:32px 24px;text-align:center;}
+  .foot-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;}
+  .foot-links a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .3s;}
+  .foot-links a:hover{color:var(--aqua);}
+  .copy{color:var(--muted-deep);font-size:12px;font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="https://www.illumitrade.com/" class="logo">Illumi<span class="mk">Trade</span><span style="color:var(--aqua);vertical-align:super;font-size:9px">&reg;</span></a>
+    <div class="nav-links">
+      <a href="https://www.illumitrade.com/">Home</a>
+      <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span> Payment Confirmed</div>
+    <h1>Thank <span class="grad">you.</span></h1>
+    <p class="lead">Your access to the <strong>ILT® indicators</strong> is being activated and will be live within the next few hours.</p>
+    <p class="sub">You'll receive a confirmation once everything is ready.</p>
+
+    <div class="res-label">Get started while you wait</div>
+    <div class="res">
+      <a href="https://tinyurl.com/ILTGuide2026" target="_blank" rel="noopener">
+        <div class="ic">📘</div>
+        <div class="tx"><b>The ILT Guide 2026</b><span>Setup, strategy & best practices</span></div>
+        <div class="ar">&rarr;</div>
+      </a>
+      <a href="https://t.me/+F0JSzA8w7rIzOTFk" target="_blank" rel="noopener">
+        <div class="ic">💬</div>
+        <div class="tx"><b>Join the Telegram</b><span>Community & live updates</span></div>
+        <div class="ar">&rarr;</div>
+      </a>
+      <a href="https://x.com/illumi_trade" target="_blank" rel="noopener">
+        <div class="ic">𝕏</div>
+        <div class="tx"><b>Follow on X</b><span>@illumi_trade</span></div>
+        <div class="ar">&rarr;</div>
+      </a>
+      <a href="mailto:illumitrade.contact@gmail.com">
+        <div class="ic">✉</div>
+        <div class="tx"><b>Need help?</b><span>illumitrade.contact@gmail.com</span></div>
+        <div class="ar">&rarr;</div>
+      </a>
+    </div>
+
+    <div class="team">
+      <p>Thank you for joining ILT®. We're confident you'll find the experience both insightful and rewarding — and we look forward to having you on board.</p>
+      <p class="sig">— The ILT Team</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="foot-links">
+    <a href="https://www.illumitrade.com/">Home</a>
+    <a href="https://www.iltoracle.com/">ILT Oracle</a>
+    <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
+  </div>
+  <div class="copy">© 2026 IllumiTrade® — All rights reserved.</div>
+</footer>
+
+</body>
+</html>
