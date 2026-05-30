@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bullish vs Bearish Divergence: A Trader's Field Guide | IllumiTrade®</title>
+<meta name="description" content="Bullish, bearish and hidden divergence explained — how to spot each on any chart, and how to filter false signals with confluence.">
+<meta name="keywords" content="divergence indicator explained, bullish divergence, bearish divergence, hidden divergence, rsi divergence, momentum divergence trading">
+<link rel="canonical" href="https://www.illumitrade.com/blog/bullish-vs-bearish-divergence">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Bullish vs Bearish Divergence: A Trader's Field Guide","description":"Bullish, bearish and hidden divergence explained — how to spot each on any chart, and how to filter false signals with confluence.","author":{"@type":"Organization","name":"IllumiTrade"},"publisher":{"@type":"Organization","name":"IllumiTrade","url":"https://www.illumitrade.com/"},"datePublished":"2026-05-29","mainEntityOfPage":"https://www.illumitrade.com/blog/bullish-vs-bearish-divergence"}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg-deep: #080b12; --bg-card: #0e1320; --accent: #4ecca3;
+  --text-primary: #e8edf5; --text-secondary: #8892a4; --text-muted: #5a6478;
+  --border: rgba(78, 204, 163, 0.12); --font-display: 'Unbounded', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-body); line-height: 1.7; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 40px;
+  background: rgba(8, 11, 18, 0.85); backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: var(--font-display); font-size: 17px; font-weight: 700;
+  color: var(--accent); text-decoration: none; }
+.nav-logo span { color: var(--text-secondary); }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+article { max-width: 780px; margin: 120px auto 60px; padding: 0 24px; }
+h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 38px); font-weight: 700;
+  line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
+.meta { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
+h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  margin: 48px 0 20px; color: var(--text-primary); }
+h3 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; color: var(--text-primary); }
+p { margin-bottom: 20px; color: var(--text-secondary); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.cta-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 32px; margin: 40px 0; text-align: center; }
+.cta-box h3 { margin-top: 0; color: var(--accent); }
+.btn { display: inline-block; padding: 12px 32px; background: var(--accent); color: #080b12;
+  border-radius: 8px; font-weight: 600; text-decoration: none; transition: transform 0.2s; }
+.btn:hover { transform: translateY(-2px); text-decoration: none; }
+ul, ol { margin: 20px 0 20px 24px; color: var(--text-secondary); }
+li { margin-bottom: 12px; }
+strong { color: var(--text-primary); }
+@media (max-width: 640px) { .nav-links { display: none; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Best TradingView Indicators 2026: How to Predict Market Moves",
+  "author": { "@type": "Organization", "name": "IllumiTrade" },
+  "publisher": { "@type": "Organization", "name": "IllumiTrade", "logo": { "@type": "ImageObject", "url": "https://www.illumitrade.com/logo.png" } },
+  "datePublished": "2026-02-02",
+  "dateModified": "2026-02-02",
+  "description": "Discover the most accurate TradingView indicators for crypto, forex, and stocks in 2026. Learn how diamond alerts and divergence detection predict major moves.",
+  "mainEntityOfPage": "https://www.illumitrade.com/blog/best-tradingview-indicators-2026"
+}
+</script>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">Illumi<span>Trade®</span></a>
+  <div class="nav-links">
+    <a href="/#proof">Results</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/blog">Blog</a>
+    <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
+  </div>
+</nav>
+
+<article>
+<h1>Bullish vs Bearish Divergence: A Trader's Field Guide</h1>
+<div class="meta">Published May 29, 2026 · 7 min read</div>
+
+<p>Price is what everyone sees. Momentum is what moves it. When the two stop agreeing, you get a <strong>divergence</strong> — one of the earliest warnings a chart can give you that a move is running out of fuel. Learn to read it well and you stop buying tops and selling bottoms.</p>
+<p>This guide covers the three types of divergence you'll actually use, how to spot each on a chart, and how to filter out the false signals that trap beginners.</p>
+
+<h2>What divergence actually is</h2>
+<p>Divergence happens when price makes a new high or low, but the momentum oscillator behind it doesn't confirm. Price pushes to a fresh high; momentum makes a <em>lower</em> high. The move is still happening on the surface, but the force driving it is fading. That gap between price and momentum is the signal.</p>
+<p>Why it matters: momentum tends to turn <em>before</em> price. By the time price reverses, the divergence was often visible several candles earlier — which makes it a leading clue rather than a lagging confirmation, the same reason <a href="/blog/how-to-spot-a-compression-zone">compression zones</a> are valuable.</p>
+
+<h2>1. Regular bearish divergence (reversal down)</h2>
+<p><strong>Price makes a higher high. Momentum makes a lower high.</strong></p>
+<p>The asset grinds to new highs, but each push has less force behind it. Buyers are getting exhausted. This is the classic warning before a top: the rally looks strong on the price chart, but under the hood momentum is rolling over. It's a cue to tighten stops, take partial profit, or watch for a short setup — not to blindly short, which we'll come back to.</p>
+
+<h2>2. Regular bullish divergence (reversal up)</h2>
+<p><strong>Price makes a lower low. Momentum makes a higher low.</strong></p>
+<p>Price is still falling, printing fresh lows — but the selling pressure weakens with each leg down. Sellers are running out of ammunition. This often precedes a bottom and a reversal up. It's the mirror image of bearish divergence, and it's how patient buyers catch the turn instead of the falling knife.</p>
+
+<h2>3. Hidden divergence (trend continuation)</h2>
+<p>Hidden divergence is the one most traders miss, and it points the opposite way — it signals the trend will <em>continue</em>, not reverse.</p>
+<ul>
+<li><strong>Hidden bullish:</strong> price makes a higher low, momentum makes a lower low → the uptrend resumes after a pullback.</li>
+<li><strong>Hidden bearish:</strong> price makes a lower high, momentum makes a higher high → the downtrend resumes after a bounce.</li>
+</ul>
+<p>Hidden divergence is a trend-following tool: it helps you re-enter a strong trend at a pullback rather than fighting it.</p>
+
+<h2>How to spot it on a chart</h2>
+<p>The mechanics are simple once you train your eye:</p>
+<ul>
+<li>Mark two consecutive swing highs (for bearish) or swing lows (for bullish) on price.</li>
+<li>Mark the corresponding peaks or troughs on the momentum oscillator beneath.</li>
+<li>Compare the slopes. If price and momentum point in <em>different</em> directions between those two points, you have divergence.</li>
+</ul>
+<p>The cleanest divergences form at obvious swing points, not in the middle of choppy ranges. If you have to squint to see it, it probably isn't there.</p>
+
+<h2>The trap: not every divergence is a trade</h2>
+<p>Here's what burns beginners. <strong>Divergence is a warning, not a trigger.</strong> In a powerful trend, momentum can diverge for a long time while price keeps going — markets can stay "overbought" far longer than a short seller can stay solvent. Acting on a single divergence in isolation is how good signals turn into bad trades.</p>
+<p>The fix is the same discipline that governs every reliable setup: <strong>confluence.</strong> A divergence becomes tradeable when it lines up with other evidence:</p>
+<ul>
+<li>It occurs at a <strong>key level</strong> — a major support, resistance, or prior structure.</li>
+<li>It agrees with the <strong>higher timeframe</strong>. A bearish divergence on the 1-hour means more when the daily is also stalling.</li>
+<li>It's paired with a second signal — a <strong>compression zone</strong> resolving, a trendline break, or a volume shift.</li>
+</ul>
+<p>One divergence is a question. Divergence plus confluence is an answer.</p>
+
+<h2>Common mistakes</h2>
+<p><strong>Mistake #1: Shorting strength on the first divergence.</strong><br>Wait for price confirmation — a break of structure — before acting on a reversal divergence.</p>
+<p><strong>Mistake #2: Ignoring the trend.</strong><br>Regular divergence fights the trend; hidden divergence follows it. Know which one you're looking at.</p>
+<p><strong>Mistake #3: Forcing it.</strong><br>If the swing points aren't clean, the divergence isn't reliable. No setup is better than a marginal one.</p>
+
+<h2>Putting it together</h2>
+<p>Divergence is one of the most useful leading clues on a chart — it reads momentum, which turns before price. But it earns its reputation only when filtered through confluence and higher-timeframe context. Used alone it's noise; used as one confirmation among several, it's an edge.</p>
+<p>Detecting divergence across multiple timeframes by hand is tedious. The ILT® Diamond flags regular and hidden divergence automatically and weights it against compression and multi-timeframe confluence — so you see the high-quality signals and skip the noise. For the bigger picture, see our guide to <a href="/blog/best-tradingview-indicators-2026">the best TradingView indicators for 2026</a>.</p>
+<div style="background:linear-gradient(135deg, rgba(78,204,163,0.08), rgba(78,204,163,0.02));border:1px solid var(--border);border-radius:12px;padding:32px 28px;margin:36px 0;text-align:center;">
+<div style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px;">Free Playbook</div>
+<h3 style="margin:0 0 12px;color:var(--text-primary);font-size:22px;">Get the 3-Setup Playbook (free PDF)</h3>
+<p style="color:var(--text-secondary);font-size:15px;max-width:480px;margin:0 auto 22px;line-height:1.6;">The exact compression, divergence &amp; reversal setups behind our flagged $OIL, $BTC and $VIX calls — broken down step by step.</p>
+<a href="https://b27017cd.sibforms.com/serve/MUIFAH2NQ2YSs-_l3_hJXOa3mSN2hWMfRCOQcIW8xT9j4Ou22-PKLKLm2NU02MAj996p-fzPq0QHeflEZ11yOho8qrsbh8fH72cMkq28lG4Kj6kf-dw6hvVdSJVF_o7_g6wQBhHfPYxuA8iMyFMFSPK6QLUNE4dTx77vmpRl-u6uqZY9bnwtm7-pzi3aYhubcuOUyvVUKcyqdG-FMQ==" target="_blank" rel="noopener" class="btn" style="background:var(--accent);color:#080b12;">Get the Playbook →</a>
+<p style="margin-top:14px;font-size:12px;color:var(--text-muted);">Instant access · No spam · Unsubscribe anytime</p>
+</div>
+
+<div class="cta-box">
+<h3>See it on your own charts</h3>
+<p>The ILT® Diamond surfaces divergence, compression and multi-timeframe confluence automatically — on any TradingView asset, with public, dated calls you can verify yourself.</p>
+<a href="/#pricing" class="btn">→ See plans</a>
+<p style="margin-top:16px; font-size:13px; color:var(--text-muted);">Cancel anytime · Works on all TradingView assets · Dated, verifiable calls. Trading involves risk of loss; past performance is not indicative of future results.</p>
+</div>
+</article>
+
+</body>
+</html>
