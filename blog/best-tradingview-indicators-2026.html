@@ -25,45 +25,89 @@
 <meta name="twitter:title" content="Best TradingView Indicators 2026: How to Predict Market Moves">
 <meta name="twitter:description" content="The most accurate TradingView indicators for crypto, forex & stocks in 2026 — how diamond alerts and divergence call major moves before they happen.">
 <meta name="twitter:image" content="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg-deep: #080b12; --bg-card: #0e1320; --accent: #4ecca3;
-  --text-primary: #e8edf5; --text-secondary: #8892a4; --text-muted: #5a6478;
-  --border: rgba(78, 204, 163, 0.12); --font-display: 'Unbounded', sans-serif;
-  --font-body: 'Inter', sans-serif;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --void:#050506;--bg:#08090b;--surface:#0c0d10;--surface-2:#101216;
+  --line:rgba(255,255,255,0.08);--line-soft:rgba(255,255,255,0.05);--line-strong:rgba(255,255,255,0.16);
+  --ink:#f3f5f7;--ink-2:#c7ccd2;--ink-dim:#878d96;--ink-faint:#565c64;
+  --frost:#bfe9e2;--accent:#5fcabd;--accent-deep:#2f9387;--accent-dim:rgba(95,202,189,0.10);--ember:#d96a93;
+  --font-display:'Archivo',sans-serif;--font-body:'Hanken Grotesk',sans-serif;--font-mono:'IBM Plex Mono',monospace;
+  --r:4px;
+  /* legacy aliases */
+  --bg-deep:var(--void);--bg-card:var(--surface);--accent2:var(--accent);
+  --text-primary:var(--ink);--text-secondary:var(--ink-2);--text-muted:var(--ink-faint);--border:var(--line);
 }
-body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-body); line-height: 1.7; }
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 40px;
-  background: rgba(8, 11, 18, 0.85); backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.nav-logo { font-family: var(--font-display); font-size: 17px; font-weight: 700;
-  color: var(--accent); text-decoration: none; }
-.nav-logo span { color: var(--text-secondary); }
-.nav-links { display: flex; gap: 28px; }
-.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-.nav-links a:hover { color: var(--accent); }
-article { max-width: 780px; margin: 120px auto 60px; padding: 0 24px; }
-h1 { font-family: var(--font-display); font-size: clamp(28px, 4vw, 38px); font-weight: 700;
-  line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
-.meta { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; }
-h2 { font-family: var(--font-display); font-size: 24px; font-weight: 700;
-  margin: 48px 0 20px; color: var(--text-primary); }
-h3 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; color: var(--text-primary); }
-p { margin-bottom: 20px; color: var(--text-secondary); }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-.cta-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 32px; margin: 40px 0; text-align: center; }
-.cta-box h3 { margin-top: 0; color: var(--accent); }
-.btn { display: inline-block; padding: 12px 32px; background: var(--accent); color: #080b12;
-  border-radius: 8px; font-weight: 600; text-decoration: none; transition: transform 0.2s; }
-.btn:hover { transform: translateY(-2px); text-decoration: none; }
-ul, ol { margin: 20px 0 20px 24px; color: var(--text-secondary); }
-li { margin-bottom: 12px; }
-strong { color: var(--text-primary); }
-@media (max-width: 640px) { .nav-links { display: none; } }
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--ink);font-family:var(--font-body);line-height:1.75;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+img{max-width:100%;}
+
+/* architecture */
+.arch{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.arch::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,transparent 0,transparent 159px,rgba(255,255,255,0.022) 159px,rgba(255,255,255,0.022) 160px);-webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");}
+nav,article,.hero,.posts,.site-footer{position:relative;z-index:2;}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,6,.78);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+.nav-logo{display:inline-flex;align-items:center;gap:11px;text-decoration:none;}
+.nav-logo img{height:28px;width:28px;object-fit:contain;}
+.nav-logo .wm{font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);}
+.nav-logo .wm span{color:var(--ink-faint);font-weight:500;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);transition:color .2s;}
+.nav-links a:hover{color:var(--ink);text-decoration:none;}
+@media (max-width:640px){.nav-links{display:none;}nav{padding:14px 20px;}}
+
+/* blog index hero + cards */
+.hero{max-width:720px;margin:150px auto 70px;padding:0 24px;text-align:center;}
+.hero h1{font-family:var(--font-display);font-size:clamp(34px,5vw,52px);font-weight:800;line-height:1.04;letter-spacing:-.035em;margin-bottom:16px;color:var(--ink);}
+.hero p{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);}
+.posts{max-width:900px;margin:0 auto 90px;padding:0 24px;display:grid;gap:14px;}
+.post-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;display:block;text-decoration:none;position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
+.post-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--accent);opacity:0;transition:opacity .25s;}
+.post-card:hover{border-color:var(--line-strong);transform:translateY(-3px);text-decoration:none;}
+.post-card:hover::before{opacity:1;}
+.post-tag{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.post-card h2{font-family:var(--font-display);font-size:21px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:10px;line-height:1.25;}
+.post-card p{font-size:14.5px;color:var(--ink-2);margin-bottom:16px;line-height:1.65;}
+.post-meta{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);}
+
+/* article prose */
+article{max-width:760px;margin:140px auto 70px;padding:0 24px;}
+article h1{font-family:var(--font-display);font-size:clamp(30px,4.4vw,44px);font-weight:800;line-height:1.06;letter-spacing:-.035em;margin-bottom:18px;color:var(--ink);}
+article .meta{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--line);}
+article h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.025em;margin:52px 0 20px;color:var(--ink);}
+article h3{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.01em;margin:34px 0 14px;color:var(--ink);}
+article p{margin-bottom:20px;color:var(--ink-2);font-size:16px;line-height:1.8;}
+article ul,article ol{margin:20px 0 24px 22px;color:var(--ink-2);}
+article li{margin-bottom:12px;line-height:1.75;}
+article li::marker{color:var(--accent);}
+article strong{color:var(--ink);font-weight:600;}
+article a{color:var(--accent);}
+article blockquote{border-left:1px solid var(--accent);padding-left:22px;margin:28px 0;color:var(--ink-2);font-style:normal;}
+
+/* CTA box */
+.cta-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:36px 32px;margin:48px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.cta-box h3{font-family:var(--font-display);font-weight:700;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink);}
+.cta-box p{color:var(--ink-2);}
+.btn{display:inline-flex;align-items:center;gap:9px;margin-top:6px;padding:14px 30px;background:var(--ink);color:var(--void);border:1px solid var(--ink);border-radius:var(--r);font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .2s;}
+.btn:hover{background:#fff;transform:translateY(-2px);text-decoration:none;}
+
+/* footer */
+.site-footer{border-top:1px solid var(--line);padding:40px 24px 30px;margin-top:40px;text-align:center;}
+.sf-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+.sf-logo{font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none;}
+.sf-logo span{color:var(--ink-faint);font-weight:500;}
+.sf-links{display:flex;gap:22px;flex-wrap:wrap;}
+.sf-links a{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);text-decoration:none;transition:color .2s;}
+.sf-links a:hover{color:var(--ink);text-decoration:none;}
+.sf-copy{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-faint);margin-top:18px;}
+@media (max-width:640px){.hero{margin-top:120px;}article{margin-top:120px;}}
 </style>
 <script type="application/ld+json">
 {
@@ -80,8 +124,9 @@ strong { color: var(--text-primary); }
 </script>
 </head>
 <body>
+<div class="arch" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
 <nav>
-  <a href="/" class="nav-logo">Illumi<span>Trade®</span></a>
+  <a href="/" class="nav-logo"><img src="/logo.png" alt="IllumiTrade®"><span class="wm">Illumi<span>Trade®</span></span></a>
   <div class="nav-links">
     <a href="/#proof">Results</a>
     <a href="/#pricing">Pricing</a>
@@ -229,5 +274,18 @@ Before risking real money, run the indicator on past data. Does it actually catc
 
 </article>
 
+<footer class="site-footer">
+  <div class="sf-inner">
+    <a href="/" class="sf-logo">Illumi<span>Trade®</span></a>
+    <div class="sf-links">
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <a href="https://www.iltoracle.com/" target="_blank" rel="noopener">ILT Oracle</a>
+      <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
+      <a href="https://x.com/illumi_trade" target="_blank" rel="noopener">X</a>
+    </div>
+  </div>
+  <div class="sf-copy">© 2026 IllumiTrade® — All rights reserved.</div>
+</footer>
 </body>
 </html>
