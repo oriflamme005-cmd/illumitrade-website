@@ -5,19 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IllumiTrade® — Choose Your Edge</title>
 <meta name="description" content="Two tools, one discipline. IllumiTrade TradingView indicators for precise entries, ILT Oracle macro research for the bigger picture. Dated, public, verifiable.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#050506">
+<link rel="canonical" href="https://www.illumitrade.com/start">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180x180.png">
+
+<!-- Open Graph -->
 <meta property="og:title" content="IllumiTrade® — Choose Your Edge">
 <meta property="og:description" content="TradingView indicators or macro research — pick the tool that fits how you trade.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.illumitrade.com/start">
+<meta property="og:image" content="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp">
+<meta property="og:site_name" content="IllumiTrade">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@illumi_trade">
+<meta name="twitter:title" content="IllumiTrade® — Choose Your Edge">
+<meta name="twitter:description" content="TradingView indicators or macro research — pick the tool that fits how you trade.">
+<meta name="twitter:image" content="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Hanken+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --void:#050506; --bg:#08090b; --surface:#0c0d10; --surface-2:#101216;
-    --line:#16181c; --line-bright:#22252b;
+    --line:rgba(255,255,255,0.08); --line-bright:rgba(255,255,255,0.16);
     --ink:#f3f5f7; --ink-dim:#c7ccd2; --ink-faint:#878d96;
     --accent:#5fcabd; --accent-deep:#2f9387; --frost:#bfe9e2; --ember:#d96a93;
     --font-display:'Archivo',sans-serif; --font-body:'Hanken Grotesk',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+    --r:4px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -37,8 +56,10 @@
 
   /* Hero */
   .hero{text-align:center;padding:44px 0 36px}
-  .eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:18px}
+  .eyebrow{display:inline-flex;align-items:center;justify-content:center;gap:11px;
+    font-family:var(--font-mono);font-size:10.5px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:20px}
+  .eyebrow::before,.eyebrow::after{content:"";width:26px;height:1px;background:var(--accent)}
   h1{font-family:var(--font-display);font-weight:800;font-size:clamp(32px,5.5vw,52px);
     line-height:1.05;letter-spacing:-.025em;max-width:16ch;margin:0 auto}
   .hero p{margin-top:18px;font-size:clamp(15px,2vw,18px);color:var(--ink-dim);max-width:54ch;
@@ -46,7 +67,7 @@
 
   /* Cards */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 40px}
-  .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  .card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
     padding:34px 30px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s,box-shadow .2s;overflow:hidden}
   .card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;opacity:.85}
   .card.indicators::before{background:linear-gradient(90deg,var(--accent),var(--frost))}
@@ -66,9 +87,9 @@
   .card.indicators li::before{background:var(--accent)}
   .card.macro li::before{background:var(--ember)}
 
-  .card a.go{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    font-family:var(--font-mono);font-size:13px;font-weight:600;text-decoration:none;
-    padding:13px 22px;border-radius:9px;transition:transform .15s,box-shadow .15s,background .15s;margin-top:auto}
+  .card a.go{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+    padding:14px 22px;border-radius:var(--r);transition:transform .15s,box-shadow .15s,background .15s;margin-top:auto}
   .card.indicators a.go{color:var(--void);background:var(--accent)}
   .card.indicators a.go:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(95,202,189,.3)}
   .card.macro a.go{color:var(--ink);background:transparent;border:1px solid var(--ember)}
@@ -81,6 +102,16 @@
   .creed .dot{width:4px;height:4px;border-radius:50%;background:var(--ink-faint)}
   .creed a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.35)}
 
+  /* Fork connector — title branches to the two offers */
+  .fork{margin:14px 0 -6px}
+  .fork svg{display:block;width:100%;height:auto;overflow:visible}
+  .fork .line{stroke-dasharray:1;stroke-dashoffset:1;animation:forkdraw .9s ease forwards}
+  .fork .line.r{animation-delay:.1s}
+  .fork .head{opacity:0;animation:forkhead .4s ease forwards .8s}
+  .fork .head.r{animation-delay:.9s}
+  @keyframes forkdraw{to{stroke-dashoffset:0}}
+  @keyframes forkhead{to{opacity:1}}
+
   /* Footer */
   footer{margin-top:auto;border-top:1px solid var(--line);padding:26px 0 40px;text-align:center}
   footer .row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:12px;margin-bottom:12px}
@@ -92,8 +123,13 @@
     .cards{grid-template-columns:1fr;gap:16px}
     .hero{padding:32px 0 28px}
     .card{padding:28px 24px}
+    .fork{display:none}
   }
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .fork .line{stroke-dashoffset:0}
+    .fork .head{opacity:1}
+  }
 </style>
 </head>
 <body>
@@ -108,8 +144,17 @@
   <section class="hero">
     <div class="eyebrow">Two tools · One discipline</div>
     <h1>Choose the edge that fits how you trade.</h1>
-    <p>Every call dated, public, and verifiable — including the ones we got wrong.</p>
   </section>
+
+  <div class="fork" aria-hidden="true">
+    <svg viewBox="0 0 980 80" xmlns="http://www.w3.org/2000/svg" role="presentation">
+      <circle cx="490" cy="6" r="3.5" fill="var(--ink)"/>
+      <path class="line" d="M490 12 C 490 44, 245 32, 245 62" pathLength="1" fill="none" stroke="var(--accent)" stroke-width="1.4" opacity="0.75"/>
+      <path class="head" d="M239 61 L251 61 L245 71 Z" fill="var(--accent)"/>
+      <path class="line r" d="M490 12 C 490 44, 735 32, 735 62" pathLength="1" fill="none" stroke="var(--ember)" stroke-width="1.4" opacity="0.75"/>
+      <path class="head r" d="M729 61 L741 61 L735 71 Z" fill="var(--ember)"/>
+    </svg>
+  </div>
 
   <section class="cards">
     <!-- IllumiTrade indicators -->
@@ -126,8 +171,8 @@
       <div class="kicker">For the bigger picture</div>
       <div class="pname">ILT Oracle<span class="reg">™</span></div>
       <div class="tag">Macro research &amp; discipline framework</div>
-      <div class="desc">The macro map behind the move — regime reads, conditional maps, and a public ledger that logs every call, correct and wrong.</div>
-      <a class="go" href="https://www.iltoracle.com/track-record">See the public ledger →</a>
+      <div class="desc">The macro map behind the move — regime reads, conditional maps, dated positioning, and a public ledger that puts every call on the record.</div>
+      <a class="go" href="https://www.iltoracle.com">Explore ILT Oracle →</a>
     </div>
   </section>
 
