@@ -286,6 +286,16 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .hero-micro{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-faint);margin-top:20px;text-transform:uppercase;}
 .hero-rating{margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);}
 .hero-rating .stars{color:var(--ink);letter-spacing:3px;}
+/* social proof strip directly under the CTA */
+.hero-proof{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:20px;}
+.hero-proof .hp-rating{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--ink-2);}
+.hero-proof .hp-stars{color:var(--accent);letter-spacing:2px;}
+.hero-proof .hp-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:.02em;color:var(--ink-dim);
+  border:1px solid var(--line);border-radius:var(--r);padding:5px 11px;background:var(--surface);white-space:nowrap;
+  transition:border-color .25s,color .25s;}
+.hero-proof .hp-pill:hover{border-color:var(--line-strong);color:var(--ink-2);}
+.hero-verify{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);margin-top:13px;text-transform:uppercase;}
+.hero-verify b{color:var(--accent);font-weight:400;}
 
 /* engraved diamond mark */
 .dia-wrap{display:inline-block;vertical-align:-2px;margin-right:16px;perspective:520px;}
@@ -481,7 +491,7 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 .hero .lede{animation:fadeUp .8s .2s ease both;}
 .hero-checks{animation:fadeUp .8s .32s ease both;}
 .hero-cta{animation:fadeUp .8s .42s ease both;}
-.hero-micro,.hero-rating{animation:fadeUp .8s .5s ease both;}
+.hero-micro,.hero-proof,.hero-verify{animation:fadeUp .8s .5s ease both;}
 .hv-proof{animation:fadeUp .9s .3s ease both;}
 
 /* ── RESPONSIVE ── */
@@ -550,8 +560,8 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
               <line x1="50" y1="22" x2="50" y2="90" stroke-width="1"/>
             </g>
           </svg>
-        </span>A step ahead
-        <span class="turn">of the breakout.</span>
+        </span>Predict market moves
+        <span class="turn">before they happen.</span>
       </h1>
       <p class="lede">The TradingView indicator that flags <b>compression and divergence zones</b> before the major moves — on Bitcoin, crypto, forex, stocks &amp; commodities. Public, dated, verifiable calls.</p>
       <ul class="hero-checks">
@@ -564,7 +574,13 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
         <a href="#proof" class="btn-line">See verified calls <span class="arr">→</span></a>
       </div>
       <p class="hero-micro">7-day free trial · Instant access · Cancel anytime</p>
-      <p class="hero-rating"><span class="stars">★★★★★</span> &nbsp;4.9 / 5 · every call dated &amp; verifiable on X</p>
+      <div class="hero-proof reveal" aria-label="Trader results">
+        <span class="hp-rating"><span class="hp-stars">★★★★★</span> 4.9 / 5</span>
+        <span class="hp-pill">"Up 401% on my portfolio"</span>
+        <span class="hp-pill">"20-day winning streak"</span>
+        <span class="hp-pill">"Paid for itself in minutes"</span>
+      </div>
+      <p class="hero-verify">Every result <b>dated &amp; publicly verifiable</b> on X</p>
     </div>
     <figure class="hv-proof">
       <div class="frame">
