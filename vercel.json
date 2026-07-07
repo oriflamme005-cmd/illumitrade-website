@@ -1,14 +1,48 @@
 {
   "rewrites": [
-    { "source": "/thankyou", "destination": "/thankyou.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/learn", "destination": "/learn.html" },
-    { "source": "/blog", "destination": "/blog/index.html" },
-    { "source": "/blog/best-tradingview-indicators-2026", "destination": "/blog/best-tradingview-indicators-2026.html" },
-    { "source": "/blog/how-to-spot-a-compression-zone", "destination": "/blog/how-to-spot-a-compression-zone.html" },
-    { "source": "/blog/bullish-vs-bearish-divergence", "destination": "/blog/bullish-vs-bearish-divergence.html" },
-    { "source": "/blog/smart-money-concepts-explained", "destination": "/blog/smart-money-concepts-explained.html" },
-    { "source": "/hub", "destination": "/hub.html" },
-    { "source": "/start", "destination": "/hub.html" }
+    {
+      "source": "/thankyou",
+      "destination": "/thankyou.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/learn",
+      "destination": "/learn.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/best-tradingview-indicators-2026",
+      "destination": "/blog/best-tradingview-indicators-2026.html"
+    },
+    {
+      "source": "/blog/how-to-spot-a-compression-zone",
+      "destination": "/blog/how-to-spot-a-compression-zone.html"
+    },
+    {
+      "source": "/blog/bullish-vs-bearish-divergence",
+      "destination": "/blog/bullish-vs-bearish-divergence.html"
+    },
+    {
+      "source": "/blog/smart-money-concepts-explained",
+      "destination": "/blog/smart-money-concepts-explained.html"
+    },
+    {
+      "source": "/hub",
+      "destination": "/hub.html"
+    },
+    {
+      "source": "/lp",
+      "destination": "/lp.html"
+    },
+    {
+      "source": "/start",
+      "destination": "/hub.html"
+    }
   ]
 }
