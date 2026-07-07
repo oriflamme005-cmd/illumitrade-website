@@ -55,6 +55,14 @@
   .checks span{display:inline-flex;align-items:center;gap:7px}
   .checks span::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:1px}
   .risk-micro{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:18px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero-grid .hero-copy h1{max-width:none}
+  .hero-grid .hero-copy .lede{max-width:none}
+  .hero-visual{margin:0;position:relative}
+  .hero-visual img{width:100%;height:auto;display:block;border:1px solid var(--line-strong);border-radius:var(--r)}
+  .hero-visual::before{content:"";position:absolute;top:-1px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--accent),var(--ember));border-radius:2px;z-index:1}
+  .hero-visual figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:12px;display:flex;align-items:center;gap:8px}
+  .hero-visual figcaption::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:1px}
 
   /* sections */
   section{padding:72px 0;border-bottom:1px solid var(--line)}
@@ -91,6 +99,7 @@
 
   @media(max-width:760px){
     .grid,.steps{grid-template-columns:1fr}
+    .hero-grid{grid-template-columns:1fr;gap:36px}
     .hero{padding:64px 0 48px}
   }
   @media(prefers-reduced-motion:no-preference){
@@ -112,20 +121,26 @@
 <main>
   <!-- HERO -->
   <section class="hero" style="border-bottom:1px solid var(--line)">
-    <div class="wrap fade">
-      <div class="eyebrow">TradingView Indicator Suite</div>
-      <h1>Compression &amp; divergence, <span class="a">on every chart.</span></h1>
-      <p class="lede">IllumiTrade is a <b>TradingView indicator suite</b> that flags market compression, divergence, and cycle structure — giving you a clear, rules-based way to read setups across any asset and timeframe.</p>
-      <div class="cta-row">
-        <a href="https://illumitrade.com/#pricing" class="btn">Start 7-day free trial →</a>
-        <a href="#what" class="btn-line">See what it does →</a>
+    <div class="wrap fade hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">TradingView Indicator Suite</div>
+        <h1>Compression &amp; divergence, <span class="a">on every chart.</span></h1>
+        <p class="lede">IllumiTrade is a <b>TradingView indicator suite</b> that flags market compression, divergence, and cycle structure — giving you a clear, rules-based way to read setups across any asset and timeframe.</p>
+        <div class="cta-row">
+          <a href="https://illumitrade.com/#pricing" class="btn">Start 7-day free trial →</a>
+          <a href="#what" class="btn-line">See what it does →</a>
+        </div>
+        <div class="checks">
+          <span>Works on any TradingView asset</span>
+          <span>Regular &amp; hidden divergence</span>
+          <span>Built-in alerts</span>
+        </div>
+        <p class="risk-micro">For research &amp; education · Not financial advice · Trading involves risk of loss</p>
       </div>
-      <div class="checks">
-        <span>Works on any TradingView asset</span>
-        <span>Regular &amp; hidden divergence</span>
-        <span>Built-in alerts</span>
-      </div>
-      <p class="risk-micro">For research &amp; education · Not financial advice · Trading involves risk of loss</p>
+      <figure class="hero-visual">
+        <img src="/proof-oil-diamond.jpg" alt="IllumiTrade indicator showing a divergence signal on a crude oil chart" loading="eager">
+        <figcaption>ILT® divergence signal on $OIL</figcaption>
+      </figure>
     </div>
   </section>
 
