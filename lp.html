@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IllumiTrade® — TradingView Indicator for Divergence & Market Cycles</title>
+<meta name="description" content="IllumiTrade is a TradingView indicator suite that flags market compression, divergence, and cycle structure with a clear, rules-based framework. 7-day free trial.">
+
+<!-- ============================================================
+     GOOGLE ADS / GA4 TAG GOES HERE
+     Paste your Google tag (gtag.js) or GTM container snippet
+     right below this comment, before </head>.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050506; --bg:#08090b; --surface:#0c0d10;
+    --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.16);
+    --ink:#f3f5f7; --ink-2:#c7ccd2; --ink-dim:#878d96; --ink-faint:#565c64;
+    --accent:#5fcabd; --ember:#d96a93;
+    --sans:'Archivo',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+    --r:4px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--void);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .mono{font-family:var(--mono)}
+
+  /* nav */
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(5,5,6,.82);backdrop-filter:blur(10px);z-index:10}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:var(--sans);font-weight:800;letter-spacing:.14em;font-size:16px}
+  .brand span{display:inline-block;width:34px;height:3px;background:var(--accent);margin-top:5px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;
+    background:var(--ink);color:var(--void);padding:11px 18px;border-radius:var(--r);font-weight:500;
+    transition:transform .2s,opacity .2s}
+  .btn:hover{transform:translateY(-1px);opacity:.92}
+  .btn-line{background:transparent;color:var(--ink-2);border:1px solid var(--line-strong)}
+  .btn-line:hover{border-color:var(--accent);color:var(--ink)}
+
+  /* hero */
+  .hero{padding:96px 0 72px;border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);font-weight:800;letter-spacing:-.035em;line-height:1.04;margin:20px 0 0;max-width:16ch}
+  .hero h1 .a{color:var(--ink-dim);font-weight:600}
+  .lede{color:var(--ink-2);font-size:17px;line-height:1.65;max-width:56ch;margin:22px 0 0}
+  .lede b{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin:34px 0 0}
+  .checks{display:flex;gap:20px;flex-wrap:wrap;margin:26px 0 0;font-family:var(--mono);font-size:12px;color:var(--ink-dim)}
+  .checks span{display:inline-flex;align-items:center;gap:7px}
+  .checks span::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:1px}
+  .risk-micro{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:18px}
+
+  /* sections */
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .sec-head{max-width:60ch}
+  .sec-head h2{font-size:clamp(24px,3.4vw,34px);font-weight:700;letter-spacing:-.025em;line-height:1.15;margin:14px 0 0}
+  .sec-head p{color:var(--ink-dim);margin:14px 0 0}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+  .card .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .card h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:12px 0 8px}
+  .card p{color:var(--ink-dim);font-size:14.5px}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;counter-reset:s}
+  .step{border-top:1px solid var(--line-strong);padding-top:18px}
+  .step::before{counter-increment:s;content:"0" counter(s);font-family:var(--mono);font-size:12px;color:var(--ember)}
+  .step h3{font-size:16px;font-weight:700;margin:10px 0 6px}
+  .step p{color:var(--ink-dim);font-size:14px}
+
+  /* cta band */
+  .band{text-align:center;padding:80px 0}
+  .band h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em}
+  .band p{color:var(--ink-dim);margin:14px auto 0;max-width:48ch}
+  .band .cta-row{justify-content:center}
+
+  /* disclaimer */
+  .disclaimer{background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--r);padding:22px 24px;margin-top:44px}
+  .disclaimer p{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--ink-dim)}
+  .disclaimer b{color:var(--ink-2);font-weight:500}
+
+  footer{padding:40px 0;color:var(--ink-faint);font-family:var(--mono);font-size:12px}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  @media(max-width:760px){
+    .grid,.steps{grid-template-columns:1fr}
+    .hero{padding:64px 0 48px}
+  }
+  @media(prefers-reduced-motion:no-preference){
+    .fade{opacity:0;transform:translateY(12px);animation:up .7s .1s ease forwards}
+    @keyframes up{to{opacity:1;transform:none}}
+  }
+  a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">ILLUMITRADE®<span></span></div>
+    <a href="https://illumitrade.com/#pricing" class="btn">Start free trial →</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="border-bottom:1px solid var(--line)">
+    <div class="wrap fade">
+      <div class="eyebrow">TradingView Indicator Suite</div>
+      <h1>Compression &amp; divergence, <span class="a">on every chart.</span></h1>
+      <p class="lede">IllumiTrade is a <b>TradingView indicator suite</b> that flags market compression, divergence, and cycle structure — giving you a clear, rules-based way to read setups across any asset and timeframe.</p>
+      <div class="cta-row">
+        <a href="https://illumitrade.com/#pricing" class="btn">Start 7-day free trial →</a>
+        <a href="#what" class="btn-line">See what it does →</a>
+      </div>
+      <div class="checks">
+        <span>Works on any TradingView asset</span>
+        <span>Regular &amp; hidden divergence</span>
+        <span>Built-in alerts</span>
+      </div>
+      <p class="risk-micro">For research &amp; education · Not financial advice · Trading involves risk of loss</p>
+    </div>
+  </section>
+
+  <!-- WHAT IT DOES -->
+  <section id="what">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">What it detects</div>
+        <h2>A structured read on the chart — not a black box.</h2>
+        <p>Three layers of market structure, plotted clearly so you can see the picture at a glance.</p>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="k">01 · Compression</div>
+          <h3>Volatility compression zones</h3>
+          <p>Highlights where price is coiling and volatility is contracting — the build-up phases that often precede larger moves.</p>
+        </div>
+        <div class="card">
+          <div class="k">02 · Divergence</div>
+          <h3>Regular &amp; hidden divergence</h3>
+          <p>Detects momentum divergence directly on the oscillator, marking where price and momentum disagree.</p>
+        </div>
+        <div class="card">
+          <div class="k">03 · Cycle</div>
+          <h3>Multi-timeframe structure</h3>
+          <p>Reads directional bias across timeframes so you can judge whether a setup aligns with the wider structure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">Why traders use it</div>
+        <h2>Clarity and discipline, built into the chart.</h2>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="k">Framework</div>
+          <h3>Rules over guesswork</h3>
+          <p>A consistent, repeatable way to read structure — instead of eyeballing every chart from scratch.</p>
+        </div>
+        <div class="card">
+          <div class="k">Coverage</div>
+          <h3>Any asset, any timeframe</h3>
+          <p>Crypto, forex, stocks, indices, commodities — the same framework applies wherever you trade.</p>
+        </div>
+        <div class="card">
+          <div class="k">Alerts</div>
+          <h3>Never miss the setup</h3>
+          <p>Set alerts on the conditions that matter to you and get notified when they print.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">How it works</div>
+        <h2>Live on your charts in minutes.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Add to TradingView</h3><p>Get instant access and add the suite to any chart in a couple of clicks.</p></div>
+        <div class="step"><h3>Read the structure</h3><p>Compression, divergence and cycle bias are plotted clearly, in real time.</p></div>
+        <div class="step"><h3>Set your alerts</h3><p>Choose the conditions you care about and let the alerts come to you.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="band">
+    <div class="wrap">
+      <div class="eyebrow">Start today</div>
+      <h2>Try IllumiTrade free for 7 days.</h2>
+      <p>Instant access. Cancel anytime. See the framework on your own charts before you decide.</p>
+      <div class="cta-row">
+        <a href="https://illumitrade.com/#pricing" class="btn">Start 7-day free trial →</a>
+      </div>
+
+      <div class="disclaimer" style="text-align:left;max-width:760px;margin-left:auto;margin-right:auto">
+        <p><b>Risk disclosure.</b> IllumiTrade provides technical analysis tools for research and educational purposes only. It does not provide financial, investment, or trading advice, and nothing here is a recommendation to buy or sell any asset. Trading and investing involve a substantial risk of loss and are not suitable for everyone. Past market behaviour does not guarantee future results. You are solely responsible for your own decisions — consider seeking advice from a licensed professional.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© IllumiTrade® · illumitrade.com</span>
+    <span>Technical analysis tools · Not financial advice</span>
+  </div>
+</footer>
+
+</body>
+</html>
