@@ -95,6 +95,11 @@ twq('config','omn00');
           "@type": "Question",
           "name": "What is a Diamond alert?",
           "acceptedAnswer": { "@type": "Answer", "text": "A Diamond alert is ILT's most powerful signal — it identifies compression zones where the market is about to make a major move. Historically these have preceded the biggest price swings in both directions." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a paid TradingView plan to use IllumiTrade?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No — the free TradingView plan is enough. ILT is an invite-only script: once access is granted to your TradingView username, it appears in your Indicators menu. Access is typically granted within a few hours of purchase, 24h maximum." }
         }
       ]
     },
@@ -428,6 +433,65 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .checkout-reassure .alt{color:var(--ink-faint);margin-top:10px;}
 .checkout-reassure a{color:var(--accent);text-decoration:none;}
 
+/* ── HOW IT WORKS ── */
+#how-it-works{border-top:1px solid var(--line-soft);}
+.hiw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
+.hiw-step{padding:34px 28px 38px;background:var(--surface);border-right:1px solid var(--line);position:relative;transition:background .25s;}
+.hiw-step:last-child{border-right:0;}
+.hiw-step:hover{background:var(--surface-2);}
+.hiw-step::before{content:'';position:absolute;top:0;left:28px;width:30px;height:1px;background:var(--accent);}
+.hiw-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--ink-faint);}
+.hiw-step h3{font-size:16.5px;font-weight:700;letter-spacing:-.01em;margin:14px 0 10px;}
+.hiw-step p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;}
+.hiw-step p b{color:var(--ink-2);font-weight:600;}
+.hiw-note{text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--ink-dim);margin-top:26px;}
+.hiw-note b{color:var(--accent);font-weight:400;}
+
+/* ── FAQ ── */
+#faq{border-top:1px solid var(--line-soft);background:linear-gradient(180deg,var(--void),var(--bg));}
+.faq-list{max-width:760px;margin:0 auto;}
+.faq-item{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);margin-bottom:10px;transition:border-color .25s;}
+.faq-item:hover,.faq-item[open]{border-color:var(--line-strong);}
+.faq-item summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 24px;font-family:var(--font-display);font-size:15.5px;font-weight:600;letter-spacing:-.01em;color:var(--ink);
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:'+';font-family:var(--font-mono);font-size:16px;color:var(--ink-faint);transition:transform .25s,color .25s;flex-shrink:0;}
+.faq-item[open] summary::after{transform:rotate(45deg);color:var(--accent);}
+.faq-item .faq-a{padding:0 24px 22px;font-size:14px;color:var(--ink-dim);line-height:1.75;}
+.faq-item .faq-a b{color:var(--ink-2);font-weight:600;}
+.faq-item .faq-a a{color:var(--accent);text-decoration:none;}
+.faq-item .faq-a a:hover{text-decoration:underline;}
+
+/* USDT accordion in checkout reassure */
+.pay-alt{max-width:560px;margin:14px auto 0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-align:left;}
+.pay-alt summary{list-style:none;cursor:pointer;padding:13px 18px;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);display:flex;justify-content:space-between;align-items:center;}
+.pay-alt summary::-webkit-details-marker{display:none;}
+.pay-alt summary::after{content:'+';font-size:14px;color:var(--ink-faint);}
+.pay-alt[open] summary::after{content:'−';color:var(--accent);}
+.pay-alt .pa-body{padding:0 18px 16px;font-size:13px;color:var(--ink-dim);line-height:1.7;}
+.pay-alt .pa-body a{color:var(--accent);text-decoration:none;}
+.pa-amounts{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.03em;color:var(--ink-faint);margin-bottom:12px;}
+.pa-address{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--void);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;}
+.pa-address .pa-net{display:block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px;}
+.pa-address code{font-family:var(--font-mono);font-size:11.5px;color:var(--frost);word-break:break-all;}
+.pa-copy{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  background:var(--ink);color:var(--void);border:1px solid var(--ink);border-radius:var(--r);padding:8px 16px;
+  transition:background .2s;flex-shrink:0;}
+.pa-copy:hover{background:#fff;}
+.pa-copy.done{background:transparent;color:var(--accent);border-color:var(--accent);}
+.pa-warn{font-family:var(--font-mono);font-size:10.5px;color:var(--ember);margin-top:10px;letter-spacing:.02em;}
+
+/* ── FINAL CTA ── */
+.final-cta{border-top:1px solid var(--line);text-align:center;padding:110px 0;}
+.final-cta h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.05;}
+.final-cta h2 .q{color:var(--ink-faint);font-weight:600;}
+.final-cta p{font-size:15px;color:var(--ink-2);max-width:520px;margin:20px auto 34px;line-height:1.7;}
+.final-cta .hero-micro{margin-top:18px;}
+
 /* ── ORACLE CTA ── */
 .oracle-cta-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   background:var(--bg);padding:108px 0;}
@@ -484,6 +548,9 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 @media (max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:40px;}
   .arch::after{display:none;}
+  .hiw-grid{grid-template-columns:1fr 1fr;}
+  .hiw-step:nth-child(2){border-right:0;}
+  .hiw-step:nth-child(-n+2){border-bottom:1px solid var(--line);}
 }
 @media (max-width:640px){
   nav{padding:14px 20px;}
@@ -492,6 +559,9 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
   section{padding:84px 0;}
   .hero{padding:150px 0 70px;}
   .price-bookend{min-width:100%;}
+  .hiw-grid{grid-template-columns:1fr;}
+  .hiw-step{border-right:0;border-bottom:1px solid var(--line);}
+  .hiw-step:last-child{border-bottom:0;}
   .oracle-stats{flex-wrap:wrap;}
   .oracle-stat{flex:1 1 33%;border-bottom:1px solid var(--line);}
 }
@@ -523,6 +593,7 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
     <a href="#proof">Results</a>
     <a href="#testimonials">Reviews</a>
     <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
     <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
   </div>
   <a href="#pricing" class="nav-cta">Start Free Trial</a>
@@ -553,6 +624,7 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
         <li>Dated &amp; verifiable calls</li>
         <li>Every TradingView asset</li>
         <li>Setup in minutes</li>
+        <li>No advanced charting skills needed</li>
       </ul>
       <div class="hero-cta">
         <a href="#pricing" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
@@ -646,11 +718,44 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
       <div class="testi-card reveal"><p class="testi-text">I'm on a <strong>20-day winning streak</strong> because of your indicator. It's completely changed the way I trade and given me confidence I've never felt before.</p><div class="testi-meta"><div class="testi-code">AU</div><span class="testi-source">Verified Trader · AU</span></div></div>
       <div class="testi-card reveal"><p class="testi-text"><strong>How did you even create this? It feels like you can predict the market.</strong> My strategy has leveled up since using this indicator.</p><div class="testi-meta"><div class="testi-code">CA</div><span class="testi-source">Verified Trader · CA</span></div></div>
       <div class="testi-card reveal"><p class="testi-text">This thing should be illegal — seriously, it's that good. <strong>Trading feels effortless now.</strong></p><div class="testi-meta"><div class="testi-code">DE</div><span class="testi-source">Verified Trader · DE</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">I made my month back in just a few trades. <strong>I feel like I'm looking at charts differently</strong> now — almost in 3D.</p><div class="testi-meta"><div class="testi-code">JP</div><span class="testi-source">Verified Trader · JP</span></div></div>
+      <div class="testi-card reveal"><p class="testi-text"><strong>117 trades, winning 116 of them.</strong> I've 15x'd my initial balance. This indicator is the reason.</p><div class="testi-meta"><div class="testi-code">JP</div><span class="testi-source">Verified Trader · JP</span></div></div>
       <div class="testi-card reveal"><p class="testi-text">After a hiatus, coming back to <strong>the best tool I've used.</strong> I tried others &amp; have to say you developed a monster — the rest are just playing catch-up.</p><div class="testi-meta"><div class="testi-code">SG</div><span class="testi-source">Verified Trader · SG</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">There is only one indicator worth using. Works like a charm and <strong>predicted this dump in advance.</strong> Can't recommend it enough.</p><div class="testi-meta"><div class="testi-code">BR</div><span class="testi-source">Verified Trader · BR</span></div></div>
+      <div class="testi-card reveal"><p class="testi-text"><strong>I made $1,500 in 3 days.</strong> Started with $1,500 — now at $3,000. Doubled my account with the first signals.</p><div class="testi-meta"><div class="testi-code">BR</div><span class="testi-source">Verified Trader · BR</span></div></div>
     </div>
     <p class="disclaimer-fine">Genuine results shared by IllumiTrade® members. Individual results vary and are not representative, typical, or guaranteed. Trading involves risk of loss.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">Getting Started</div>
+      <h2 class="section-title">From checkout to first signal <span class="q">in hours.</span></h2>
+    </div>
+    <div class="hiw-grid reveal">
+      <div class="hiw-step">
+        <span class="hiw-num">01</span>
+        <h3>Pick your plan</h3>
+        <p>Start with the <b>7-day free trial</b> on monthly, or lock in a prepaid plan and save up to 27%. Checkout takes under a minute.</p>
+      </div>
+      <div class="hiw-step">
+        <span class="hiw-num">02</span>
+        <h3>Send your TradingView username</h3>
+        <p>That's the only thing we need. <b>No downloads, no installs</b> — the indicator lives inside TradingView.</p>
+      </div>
+      <div class="hiw-step">
+        <span class="hiw-num">03</span>
+        <h3>Access appears in your account</h3>
+        <p>We grant you invite-only access, usually <b>within a few hours</b>. Open any chart, add ILT® from your Invite-only scripts.</p>
+      </div>
+      <div class="hiw-step">
+        <span class="hiw-num">04</span>
+        <h3>Set your alerts &amp; trade</h3>
+        <p>Turn on Diamond &amp; divergence alerts once and <b>let the indicator watch the market for you</b> — on any asset, any timeframe.</p>
+      </div>
+    </div>
+    <p class="hiw-note reveal">Works with the <b>free TradingView plan</b> — no paid TradingView subscription required.</p>
   </div>
 </section>
 
@@ -729,7 +834,54 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 
     <div class="checkout-reassure reveal">
       <p>Monthly: free for 7 days, cancel anytime · Prepaid plans: pay once, no auto-renew · Instant access · Support within 24h</p>
-      <p class="alt">Prefer to pay with crypto (USDT)? <a href="mailto:illumitrade.contact@gmail.com">Contact us</a> and we'll set you up.</p>
+      <details class="pay-alt">
+        <summary>Prefer to pay with crypto (USDT)?</summary>
+        <div class="pa-body">
+          <p style="margin-bottom:10px;">We accept <b style="color:var(--ink-2);">USDT on BNB Smart Chain (BEP-20)</b> for any plan:</p>
+          <p class="pa-amounts">1 Month $80 · 3 Months $210 · 6 Months $360 · 1 Year $699 · Lifetime $3,750</p>
+          <div class="pa-address">
+            <div>
+              <span class="pa-net">BNB Smart Chain (BEP-20)</span>
+              <code id="usdt-addr">0xB8183593d13570DA7EBF1Ec0102C2D145E4D1932</code>
+            </div>
+            <button type="button" class="pa-copy" onclick="copyUsdt(this)">Copy</button>
+          </div>
+          <p class="pa-warn">⚠ Send on BEP-20 only — funds sent on any other network cannot be recovered.</p>
+          <p style="margin-top:10px;">After sending, <a href="mailto:illumitrade.contact@gmail.com">email us</a> or <a href="https://x.com/illumi_trade" target="_blank" rel="noopener">DM us on X</a> with your <b style="color:var(--ink-2);">transaction hash + TradingView username</b> — access is granted within 24h.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">Questions</div>
+      <h2 class="section-title">Everything traders ask <span class="q">before joining.</span></h2>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Do I need a paid TradingView plan?</summary>
+        <div class="faq-a">No — the <b>free TradingView plan is enough</b>. ILT® is an invite-only script: once we grant access, it appears in your Indicators menu like any built-in tool.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How fast do I get access after paying?</summary>
+        <div class="faq-a">Access is granted to your TradingView username <b>usually within a few hours</b>, 24h maximum. You'll get a confirmation once it's live, plus a quick-start guide.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Which assets and timeframes does it work on?</summary>
+        <div class="faq-a"><b>Every asset TradingView offers</b> — Bitcoin and crypto, forex pairs, stocks, indices, gold, silver, oil — and every timeframe. Higher timeframes (4H, 12H, Daily) tend to produce the highest-conviction Diamond signals.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need trading experience?</summary>
+        <div class="faq-a">No advanced charting skills needed. The indicator marks the zones and fires the alerts — <b>you don't have to interpret raw price action</b>. Members range from first-year traders to full-time professionals.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I cancel the free trial?</summary>
+        <div class="faq-a">One email is enough. <b>Cancel any time before day 7 and you pay nothing.</b> Prepaid plans never auto-renew — they simply expire at the end of the period.</div>
+      </details>
     </div>
   </div>
 </section>
@@ -750,6 +902,17 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
     </div>
   </div>
 </div>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container reveal">
+    <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
+    <h2>Your first 7 days <span class="q">are free.</span></h2>
+    <p>See the Diamond print on your own charts before you pay a cent. Add your card, get instant access, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
+    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
+    <p class="hero-micro">Instant access · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -812,6 +975,19 @@ function closeLightbox(){
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape'){ closeLightbox(); } });
+
+// ─── USDT COPY ───
+function copyUsdt(btn){
+  var addr = document.getElementById('usdt-addr').textContent.trim();
+  function done(){ btn.textContent='Copied ✓'; btn.classList.add('done');
+    setTimeout(function(){ btn.textContent='Copy'; btn.classList.remove('done'); }, 2200); }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(addr).then(done);
+  } else {
+    var ta=document.createElement('textarea'); ta.value=addr; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+  }
+}
 
 // ─── NAV scroll state ───
 window.addEventListener('scroll', () => {
