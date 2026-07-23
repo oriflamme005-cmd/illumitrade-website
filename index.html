@@ -340,13 +340,24 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
   padding:9px 20px;border-radius:30px;cursor:pointer;transition:all .2s;user-select:none;
 }
 .proof-tab.active,.proof-tab:hover{border-color:var(--accent);color:var(--ink);}
-.proof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.proof-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:18px;}
+@media(max-width:520px){.proof-grid{grid-template-columns:1fr;}}
 .proof-card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
-  cursor:pointer;transition:border-color .25s,transform .25s;
+  cursor:pointer;transition:border-color .25s,transform .25s;position:relative;
 }
-.proof-card:hover{border-color:var(--line-strong);transform:translateY(-3px);}
-.proof-card img{width:100%;height:200px;display:block;object-fit:contain;padding:10px;background:#000;}
+.proof-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.proof-card .imgwrap{position:relative;background:#000;}
+.proof-card img{width:100%;height:300px;display:block;object-fit:contain;padding:8px;background:#000;}
+@media(max-width:520px){.proof-card img{height:230px;}}
+.proof-zoom{
+  position:absolute;bottom:10px;right:10px;display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);background:rgba(5,5,6,.72);border:1px solid var(--line-strong);
+  padding:5px 10px;border-radius:3px;pointer-events:none;backdrop-filter:blur(4px);
+  opacity:.85;transition:opacity .2s,border-color .2s;
+}
+.proof-card:hover .proof-zoom{opacity:1;border-color:var(--accent);}
 .proof-card-label{
   padding:12px 14px;border-top:1px solid var(--line);
   font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink-dim);
@@ -522,12 +533,23 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 .footer-disc strong{color:var(--ink-dim);}
 
 /* ── LIGHTBOX ── */
-.lightbox{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,5,6,.92);
-  align-items:center;justify-content:center;padding:24px;cursor:pointer;}
+.lightbox{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,5,6,.94);
+  align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;cursor:pointer;}
 .lightbox.open{display:flex;}
-.lightbox img{max-width:90vw;max-height:86vh;object-fit:contain;border:1px solid var(--line);border-radius:var(--r);}
+.lightbox img{max-width:94vw;max-height:80vh;object-fit:contain;border:1px solid var(--line);border-radius:var(--r);cursor:default;}
 .lightbox-close{position:absolute;top:22px;right:28px;font-size:22px;color:var(--ink-2);cursor:pointer;z-index:2;
   font-family:var(--font-mono);}
+.lightbox-cap{font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;color:var(--ink-2);
+  text-align:center;max-width:90vw;cursor:default;}
+.lightbox-count{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--ink-faint);}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  font-family:var(--font-mono);font-size:26px;line-height:1;color:var(--ink-2);cursor:pointer;
+  background:rgba(5,5,6,.6);border:1px solid var(--line);border-radius:4px;padding:14px 16px;user-select:none;
+  transition:border-color .2s,color .2s;}
+.lightbox-nav:hover{border-color:var(--accent);color:var(--ink);}
+.lightbox-nav.prev{left:18px;}
+.lightbox-nav.next{right:18px;}
+@media(max-width:640px){.lightbox-nav{padding:10px 12px;font-size:20px;}.lightbox-nav.prev{left:8px;}.lightbox-nav.next{right:8px;}}
 
 /* ── REVEAL ── */
 .reveal{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease;}
@@ -642,7 +664,7 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
     <figure class="hv-proof">
       <div class="frame">
         <span class="corner tl"></span><span class="corner br"></span>
-        <img src="/proof-oil-diamond.jpg" alt="The ILT Diamond flagged the OIL top on Apr 7 2026, followed by a ~17 point drop">
+        <img src="/proof-oil-diamond.jpg" fetchpriority="high" alt="The ILT Diamond flagged the OIL top on Apr 7 2026, followed by a ~17 point drop">
       </div>
       <figcaption>
         <span class="badge-live"><span class="d"></span> Public call · Apr 7, 2026</span>
@@ -669,37 +691,37 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 
     <!-- CRYPTO -->
     <div class="proof-grid" id="proof-crypto">
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp" alt="BTC prediction"><div class="proof-card-label">BTC — Diamond → Dump <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65a106cfdd206_6584311dc999c_INJUSDT.P_2023-12-21_13-34-24.webp" alt="INJ prediction"><div class="proof-card-label">INJ — Bullish Setup → Surge <span class="tag tag-major">+ Major</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67652773480c9_BTCUSDT.P_2024-12-20_09-13-19.webp" alt="BTC pump prediction"><div class="proof-card-label">BTC — Pump Predicted in Advance <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68ee160934db8_BTCUSDT.P_2025-10-14_11-13-58.webp" alt="BTC dump prediction"><div class="proof-card-label">BTC — $6,500 Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65ccf007aad58_GGTiBwnWkAAeH5-.webp" alt="BTC 11k move"><div class="proof-card-label">BTC — $11,000 Upside Move <span class="tag tag-major">+ Major</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65aaa823e39b6_BTCUSDT.P_2024-01-19_17-46-32.webp" alt="BTC divergence"><div class="proof-card-label">BTC — Bearish Divergence Call <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67d93de12a62a_GmKV03IboAA37Op.webp" alt="BTC 25k to 74k"><div class="proof-card-label">BTC — $25k → $74k Call <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6919985d9b7e5_G53WB84X0AAhPtK.webp" alt="BTC dump"><div class="proof-card-label">BTC — Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65a1061ab86d8_659556581b9db_BTCUSD_2024-01-03_13-30-11.webp" alt="BTC divergence drop"><div class="proof-card-label">BTC — Divergence → Major Drop <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68dfe4c62109c_BTCUSDT.P_2025-10-03_16-55-21.webp" alt="BTC surge"><div class="proof-card-label">BTC — Surge After ILT Signal <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67696935cebe6_GfeOA9RWgAAOaNA.webp" alt="BTC prediction screenshot"><div class="proof-card-label">BTC — Market Prediction <span class="tag tag-major">+ Major</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968f45dd8659_G6BeR69XUAA7DkV.webp" alt="BTC precise top"><div class="proof-card-label">BTC — Precise Top Caught <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp" alt="BTC prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Diamond → Dump <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65a106cfdd206_6584311dc999c_INJUSDT.P_2023-12-21_13-34-24.webp" alt="INJ prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">INJ — Bullish Setup → Surge <span class="tag tag-major">+ Major</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67652773480c9_BTCUSDT.P_2024-12-20_09-13-19.webp" alt="BTC pump prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Pump Predicted in Advance <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68ee160934db8_BTCUSDT.P_2025-10-14_11-13-58.webp" alt="BTC dump prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — $6,500 Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65ccf007aad58_GGTiBwnWkAAeH5-.webp" alt="BTC 11k move"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — $11,000 Upside Move <span class="tag tag-major">+ Major</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65aaa823e39b6_BTCUSDT.P_2024-01-19_17-46-32.webp" alt="BTC divergence"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Bearish Divergence Call <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67d93de12a62a_GmKV03IboAA37Op.webp" alt="BTC 25k to 74k"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — $25k → $74k Call <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6919985d9b7e5_G53WB84X0AAhPtK.webp" alt="BTC dump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/65a1061ab86d8_659556581b9db_BTCUSD_2024-01-03_13-30-11.webp" alt="BTC divergence drop"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Divergence → Major Drop <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68dfe4c62109c_BTCUSDT.P_2025-10-03_16-55-21.webp" alt="BTC surge"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Surge After ILT Signal <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/67696935cebe6_GfeOA9RWgAAOaNA.webp" alt="BTC prediction screenshot"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Market Prediction <span class="tag tag-major">+ Major</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6968f45dd8659_G6BeR69XUAA7DkV.webp" alt="BTC precise top"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC — Precise Top Caught <span class="tag tag-pred">◆ Predicted</span></div></div>
     </div>
 
     <!-- STOCKS & COMMODITIES -->
     <div class="proof-grid" id="proof-stocks" style="display:none;">
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68f90487a51a4_G335YG8WwAAs8li.webp" alt="PLTR dump"><div class="proof-card-label">PLTR — Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697c72c69859e_XAGEUR_2026-01-29_13-55-27.webp" alt="Silver dump"><div class="proof-card-label">SILVER/EUR — Top Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68fa004542d53_25329c56-87d3-4094-94bd-04571255617d.webp" alt="Oil pump"><div class="proof-card-label">OIL — Pump Predicted <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e3723195273_G2j35BgXAAASo1v.webp" alt="Silver pump"><div class="proof-card-label">SILVER — Diamond → Surge <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697b23063d48b_G_0bMZnbUAUd_xf.webp" alt="BTC/Silver ratio"><div class="proof-card-label">BTC/SILVER — Ratio Prediction <span class="tag tag-major">+ Major</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e373332d913_G2j30dIXAAA80Z8.webp" alt="SocGen drop"><div class="proof-card-label">SOCIÉTÉ GÉNÉRALE — Drop Call <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68a579c6e6e06_Gyx0Os7XAAAqd_k.webp" alt="PLTR prediction 2"><div class="proof-card-label">PLTR — Second Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/691dc82dcbb76_PLATINUM_2025-11-19_14-24-32.webp" alt="Platinum surge"><div class="proof-card-label">PLATINUM — Surge Predicted <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6979ce0cc7e8f_HSI1_2026-01-28_09-44-26.webp" alt="HSI prediction"><div class="proof-card-label">HSI — Top Identified <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/665dee5430f17_BRK.A_2024-06-03_18-05-52.webp" alt="Berkshire drop"><div class="proof-card-label">BRK.A — Drop Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697cfc520cf9c_XAGEUR_2026-01-30_19-24-28.webp" alt="Silver drop 2"><div class="proof-card-label">SILVER — €100 → €60 Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6924903d0090f_VIX_2025-10-10_17-34-13.webp" alt="VIX pump"><div class="proof-card-label">VIX — Pump Predicted <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68fb694b07e78_G4Bf0cpXQAAknj1.webp" alt="Oil sanctions"><div class="proof-card-label">OIL — Sanctions Move Called <span class="tag tag-conf">Confirmed</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e37208aa397_G2j31yaXcAAB3Qd.webp" alt="VIX prediction"><div class="proof-card-label">VIX — Signal Confirmed <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6979cddd46004_EWH_2026-01-27_15-32-51.webp" alt="EWH prediction"><div class="proof-card-label">EWH — Signal Confirmed <span class="tag tag-major">+ Major</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68f90487a51a4_G335YG8WwAAs8li.webp" alt="PLTR dump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">PLTR — Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697c72c69859e_XAGEUR_2026-01-29_13-55-27.webp" alt="Silver dump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">SILVER/EUR — Top Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68fa004542d53_25329c56-87d3-4094-94bd-04571255617d.webp" alt="Oil pump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">OIL — Pump Predicted <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e3723195273_G2j35BgXAAASo1v.webp" alt="Silver pump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">SILVER — Diamond → Surge <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697b23063d48b_G_0bMZnbUAUd_xf.webp" alt="BTC/Silver ratio"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BTC/SILVER — Ratio Prediction <span class="tag tag-major">+ Major</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e373332d913_G2j30dIXAAA80Z8.webp" alt="SocGen drop"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">SOCIÉTÉ GÉNÉRALE — Drop Call <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68a579c6e6e06_Gyx0Os7XAAAqd_k.webp" alt="PLTR prediction 2"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">PLTR — Second Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/691dc82dcbb76_PLATINUM_2025-11-19_14-24-32.webp" alt="Platinum surge"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">PLATINUM — Surge Predicted <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6979ce0cc7e8f_HSI1_2026-01-28_09-44-26.webp" alt="HSI prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">HSI — Top Identified <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/665dee5430f17_BRK.A_2024-06-03_18-05-52.webp" alt="Berkshire drop"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">BRK.A — Drop Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697cfc520cf9c_XAGEUR_2026-01-30_19-24-28.webp" alt="Silver drop 2"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">SILVER — €100 → €60 Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6924903d0090f_VIX_2025-10-10_17-34-13.webp" alt="VIX pump"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">VIX — Pump Predicted <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68fb694b07e78_G4Bf0cpXQAAknj1.webp" alt="Oil sanctions"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">OIL — Sanctions Move Called <span class="tag tag-conf">Confirmed</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68e37208aa397_G2j31yaXcAAB3Qd.webp" alt="VIX prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">VIX — Signal Confirmed <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6979cddd46004_EWH_2026-01-27_15-32-51.webp" alt="EWH prediction"><span class="proof-zoom">⛶ Click to enlarge</span></div><div class="proof-card-label">EWH — Signal Confirmed <span class="tag tag-major">+ Major</span></div></div>
     </div>
   </div>
 </section>
@@ -936,7 +958,11 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <span class="lightbox-close" onclick="closeLightbox()">✕</span>
-  <img id="lightbox-img" src="" alt="Enlarged chart">
+  <span class="lightbox-nav prev" onclick="event.stopPropagation();navLightbox(-1)" aria-label="Previous">‹</span>
+  <span class="lightbox-nav next" onclick="event.stopPropagation();navLightbox(1)" aria-label="Next">›</span>
+  <img id="lightbox-img" src="" alt="Enlarged chart" onclick="event.stopPropagation()">
+  <div class="lightbox-cap" id="lightbox-cap" onclick="event.stopPropagation()"></div>
+  <div class="lightbox-count" id="lightbox-count"></div>
 </div>
 
 <script>
@@ -964,17 +990,58 @@ function filterProof(btn, type){
   });
 }
 
-// ─── LIGHTBOX ───
+// ─── LIGHTBOX (gallery mode) ───
+var lbCards = [], lbIndex = 0;
+function visibleProofCards(){
+  return Array.prototype.filter.call(
+    document.querySelectorAll('.proof-card'),
+    function(c){ var g = c.closest('.proof-grid'); return !g || g.style.display !== 'none'; }
+  );
+}
+function renderLightbox(){
+  var card = lbCards[lbIndex];
+  if(!card) return;
+  var img = card.querySelector('img');
+  var label = card.querySelector('.proof-card-label');
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-img').alt = img.alt || 'Enlarged chart';
+  document.getElementById('lightbox-cap').textContent = label ? label.textContent.trim() : '';
+  document.getElementById('lightbox-count').textContent = (lbIndex+1) + ' / ' + lbCards.length;
+}
 function openLightbox(card){
-  document.getElementById('lightbox-img').src = card.querySelector('img').src;
+  lbCards = visibleProofCards();
+  lbIndex = Math.max(0, lbCards.indexOf(card));
+  if(lbCards.length === 0){ lbCards = [card]; lbIndex = 0; }
+  renderLightbox();
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+function navLightbox(dir){
+  if(lbCards.length === 0) return;
+  lbIndex = (lbIndex + dir + lbCards.length) % lbCards.length;
+  renderLightbox();
 }
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape'){ closeLightbox(); } });
+document.addEventListener('keydown', function(e){
+  if(!document.getElementById('lightbox').classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  else if(e.key === 'ArrowLeft') navLightbox(-1);
+  else if(e.key === 'ArrowRight') navLightbox(1);
+});
+// swipe support (mobile)
+(function(){
+  var lb = document.getElementById('lightbox'), sx = null;
+  lb.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    if(sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    if(Math.abs(dx) > 48) navLightbox(dx < 0 ? 1 : -1);
+    sx = null;
+  }, {passive:true});
+})();
 
 // ─── USDT COPY ───
 function copyUsdt(btn){
