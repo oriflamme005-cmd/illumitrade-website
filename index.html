@@ -702,6 +702,46 @@ html{scrollbar-color:#25282d var(--void);}
 .price-card.featured{box-shadow:0 0 0 1px rgba(95,202,189,.16),0 34px 90px -36px rgba(95,202,189,.32);}
 .price-card.featured::before{height:2px;background:linear-gradient(90deg,transparent,var(--accent) 30%,var(--accent) 70%,transparent);}
 @media (prefers-reduced-motion:reduce){.btn::after,.nav-cta::after,.price-card.featured .btn-plan::after{display:none;}}
+
+/* ════ HIGH-TECH FX LAYER (subtle) ════ */
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg;}
+/* 1 · aurora behind the hero */
+.hero{isolation:isolate;}
+.hero::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(38% 46% at 72% 38%,rgba(95,202,189,.10),transparent 70%),
+    radial-gradient(30% 40% at 18% 70%,rgba(217,106,147,.06),transparent 70%);
+  filter:blur(10px);animation:aurora 22s ease-in-out infinite alternate;}
+@keyframes aurora{0%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(-3%,2%,0) scale(1.06);}100%{transform:translate3d(2%,-2%,0) scale(1.02);}}
+/* 2 · cursor spotlight in the hero (desktop) */
+.hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:radial-gradient(620px circle at var(--hx,50%) var(--hy,40%),rgba(95,202,189,.10),transparent 60%);}
+.hero.lit::after{opacity:1;}
+/* 3 · light beam travelling around the hero chart frame */
+.hv-proof::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:3;
+  padding:1.5px;background:conic-gradient(from var(--ang),transparent 0 58%,rgba(95,202,189,.05) 62%,rgba(95,202,189,.55) 80%,rgba(95,202,189,1) 87%,#fff 88.5%,transparent 90% 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:beam 7s linear infinite;}
+@keyframes beam{to{--ang:360deg;}}
+/* 4 · edge light that follows the cursor on cards */
+.fx{position:relative;}
+.fx::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;opacity:0;transition:opacity .35s;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(95,202,189,.75),rgba(95,202,189,.12) 45%,transparent 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);}
+.fx.on::after{opacity:1;}
+.fx.on{background-image:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(95,202,189,.055),transparent 60%);}
+/* 6 · scan line on the track strip + lit nav edge */
+.track{overflow:hidden;}
+.track::after{content:'';position:absolute;top:-1px;left:0;height:1px;width:28%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(95,202,189,.9),transparent);animation:scan 6.5s cubic-bezier(.45,0,.2,1) infinite;}
+@keyframes scan{0%{transform:translateX(-110%);}60%,100%{transform:translateX(420%);}}
+nav::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:linear-gradient(90deg,transparent,rgba(95,202,189,.45) 50%,transparent);}
+nav.scrolled::after{opacity:1;}
+@media (hover:none){.hero::after,.fx::after{display:none;}.fx.on{background-image:none;}}
+@media (prefers-reduced-motion:reduce){.hero::before,.hv-proof::after,.track::after{animation:none!important;}}
 </style>
 </head>
 <body>
@@ -1266,6 +1306,43 @@ function openLatestCall(bar){
   }
   window.addEventListener('scroll', function(){ if(!ticking){ window.requestAnimationFrame(update); ticking=true; } }, {passive:true});
   update();
+})();
+
+// ─── HIGH-TECH FX: hero spotlight, card edge light, counting numbers ───
+(function(){
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var still=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  document.querySelectorAll('.proof-card,.price-card,.price-bookend,.wall-tile,.testi-card,.hiw-step,.track-i,.cmp')
+    .forEach(function(el){ el.classList.add('fx'); });
+  if(fine){
+    var hero=document.querySelector('.hero'), raf=0, last=null, ev=null;
+    document.addEventListener('pointermove',function(e){ ev=e; if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
+    function tick(){
+      raf=0; var e=ev; if(!e) return;
+      if(hero){ var r=hero.getBoundingClientRect(), inH=e.clientY>=r.top&&e.clientY<=r.bottom;
+        hero.classList.toggle('lit',inH);
+        if(inH){ hero.style.setProperty('--hx',(e.clientX-r.left)+'px'); hero.style.setProperty('--hy',(e.clientY-r.top)+'px'); } }
+      var t=e.target && e.target.closest ? e.target.closest('.fx') : null;
+      if(last && last!==t) last.classList.remove('on');
+      if(t){ var b=t.getBoundingClientRect(); t.style.setProperty('--mx',(e.clientX-b.left)+'px'); t.style.setProperty('--my',(e.clientY-b.top)+'px'); t.classList.add('on'); }
+      last=t;
+    }
+    document.addEventListener('pointerleave',function(){ if(last){last.classList.remove('on'); last=null;} if(hero) hero.classList.remove('lit'); });
+  }
+  // count-up on the track-record numbers (final text stays exactly as written)
+  var nums=document.querySelectorAll('.track-i b');
+  if(still || !('IntersectionObserver' in window)) return;
+  nums.forEach(function(b){
+    var txt=b.textContent.trim(), m=txt.match(/^(\d+)(.*)$/); if(!m) return;
+    var end=parseInt(m[1],10), suf=m[2]; b.dataset.final=txt; b.textContent='0'+suf;
+    var io=new IntersectionObserver(function(en){
+      if(!en[0].isIntersecting) return; io.disconnect();
+      var t0=performance.now(), dur=1400;
+      (function step(now){ var k=Math.min(1,(now-t0)/dur), ease=1-Math.pow(1-k,3);
+        b.textContent=Math.round(end*ease)+suf; if(k<1) requestAnimationFrame(step); else b.textContent=b.dataset.final; })(t0);
+    },{threshold:.6});
+    io.observe(b);
+  });
 })();
 </script>
 
