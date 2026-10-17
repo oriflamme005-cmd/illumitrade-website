@@ -625,6 +625,64 @@ nav.scrolled{top:0;}
 }
 @media (max-width:370px){.urgency-bar .ub-go{display:none;}}
 
+/* ── TRACK RECORD STRIP ── */
+.track{position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);}
+.track-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.track-i{padding:26px 28px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:6px;}
+.track-i:last-child{border-right:0;}
+.track-i b{font-family:var(--font-display);font-size:clamp(26px,3vw,36px);font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums;}
+.track-i span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);}
+.track-i:first-child b{color:var(--accent);}
+@media (max-width:760px){.track-in{grid-template-columns:1fr 1fr;}.track-i{padding:20px;}.track-i:nth-child(2){border-right:0;}.track-i:nth-child(-n+2){border-bottom:1px solid var(--line);}}
+
+/* ── WHY ILT COMPARISON ── */
+#why{border-top:1px solid var(--line-soft);}
+.cmp{max-width:980px;margin:0 auto;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface);}
+.cmp-row{display:grid;grid-template-columns:170px 1fr 1.25fr;border-bottom:1px solid var(--line);}
+.cmp-row:last-child{border-bottom:0;}
+.cmp-row>div{padding:18px 22px;font-size:14px;line-height:1.55;color:var(--ink-dim);}
+.cmp-row>div:first-child{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:flex;align-items:center;}
+.cmp-row>div.cmp-ilt{color:var(--ink-2);background:rgba(95,202,189,.045);border-left:1px solid rgba(95,202,189,.22);}
+.cmp-ilt b{color:var(--ink);font-weight:600;}
+.cmp-head>div{font-family:var(--font-mono)!important;font-size:10.5px!important;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding-top:16px;padding-bottom:16px;}
+.cmp-head>div.cmp-ilt{color:var(--accent)!important;}
+.cmp-row:not(.cmp-head)>div:nth-child(2)::before{content:'— ';color:var(--ink-faint);}
+.cmp-row:not(.cmp-head)>div.cmp-ilt::before{content:'◆ ';color:var(--accent);font-size:11px;}
+@media (max-width:640px){
+  .cmp-row{grid-template-columns:1fr 1fr;}
+  .cmp-row>div:first-child{grid-column:1 / -1;padding:14px 16px 0;}
+  .cmp-row>div{padding:8px 16px 14px;font-size:13px;}
+  .cmp-head>div:first-child{display:none;}
+}
+
+/* ── TESTIMONIAL WALL (real screenshots) ── */
+.shead-sub{margin-top:14px;color:var(--ink-dim);font-size:14.5px;}
+.wall{columns:3 300px;column-gap:14px;}
+.wall-tile{break-inside:avoid;margin:0 0 14px;background:#000;border:1px solid var(--line);border-radius:var(--r);padding:10px;transition:border-color .25s,transform .25s;}
+.wall-tile:hover{border-color:var(--line-strong);transform:translateY(-2px);}
+.wall-tile img{width:100%;height:auto;display:block;border-radius:2px;}
+.wall-more{display:none;}
+.testi-3{margin-top:26px;grid-template-columns:repeat(3,1fr);}
+@media (max-width:900px){.testi-3{grid-template-columns:1fr;}}
+@media (max-width:640px){
+  .wall:not(.open) .wall-tile:nth-child(n+7){display:none;}
+  .wall-more{display:block;margin:4px auto 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-2);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r);padding:13px 22px;cursor:pointer;}
+}
+
+/* ── STICKY MOBILE CTA ── */
+.m-cta{display:none;}
+@media (max-width:768px){
+  .m-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:150;flex-direction:column;align-items:stretch;gap:6px;
+    padding:12px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(5,5,6,.92);
+    -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--line);
+    transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.7,.2,1);}
+  .m-cta.show{transform:translateY(0);}
+  .m-cta .btn{justify-content:center;padding:14px 18px;}
+  .m-cta-sub{text-align:center;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);}
+  footer{padding-bottom:110px;}
+}
+
 /* ── PREMIUM POLISH (minor) ── */
 ::selection{background:rgba(95,202,189,.28);color:#fff;}
 html{scrollbar-color:#25282d var(--void);}
@@ -708,7 +766,7 @@ html{scrollbar-color:#25282d var(--void);}
         <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
         <a href="#proof" class="btn-line">See verified calls <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">$0 today · Instant access · Cancel anytime · <a href="#pricing">Compare all plans</a></p>
+      <p class="hero-micro">$0 today · Instant access · Cancel in 1 click · <a href="#pricing">Compare all plans</a></p>
       <div class="hero-proof reveal" aria-label="Trader results">
         <span class="hp-rating"><span class="hp-stars">★★★★★</span> 4.9 / 5</span>
         <span class="hp-pill">"Up 401% on my portfolio"</span>
@@ -730,6 +788,17 @@ html{scrollbar-color:#25282d var(--void);}
     </figure>
   </div>
 </header>
+
+<!-- TRACK RECORD STRIP
+     ✏️ Once you've counted your calls on X, change the first stat, e.g.  <b>100+</b> / Public calls on X  -->
+<div class="track reveal" aria-label="Track record">
+  <div class="track-in">
+    <div class="track-i"><b>2023</b><span>Calling markets publicly since</span></div>
+    <div class="track-i"><b>12</b><span>Markets called · crypto to stocks</span></div>
+    <div class="track-i"><b>26</b><span>Documented calls on this page</span></div>
+    <div class="track-i"><b>100%</b><span>Timestamped &amp; public on X</span></div>
+  </div>
+</div>
 
 <!-- VERIFIED PROOF -->
 <section id="proof">
@@ -773,8 +842,8 @@ html{scrollbar-color:#25282d var(--void);}
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68a579c6e6e06_Gyx0Os7XAAAqd_k.webp" alt="PLTR prediction 2"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">PLTR — Second Dump Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/691dc82dcbb76_PLATINUM_2025-11-19_14-24-32.webp" alt="Platinum surge"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">PLATINUM — Surge Predicted <span class="tag tag-conf">Confirmed</span></div></div>
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6979ce0cc7e8f_HSI1_2026-01-28_09-44-26.webp" alt="HSI prediction"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">HSI — Top Identified <span class="tag tag-pred">◆ Predicted</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/665dee5430f17_BRK.A_2024-06-03_18-05-52.webp" alt="Berkshire drop"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BRK.A — Drop Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/697cfc520cf9c_XAGEUR_2026-01-30_19-24-28.webp" alt="Silver drop 2"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">SILVER — €100 → €60 Predicted <span class="tag tag-pred">◆ Predicted</span></div></div>
+      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-vix-may-2025.webp" alt="ILT Diamond on VIX May 18 2025, followed by an overnight gap from 17.25 to 19.85"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">VIX — Diamond → +15% Overnight Gap <span class="tag tag-pred">◆ Predicted</span></div></div>
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/6924903d0090f_VIX_2025-10-10_17-34-13.webp" alt="VIX pump"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">VIX — Pump Predicted <span class="tag tag-conf">Confirmed</span></div></div>
       <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://d1yei2z3i6k35z.cloudfront.net/4454502/68fb694b07e78_G4Bf0cpXQAAknj1.webp" alt="Oil sanctions"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">OIL — Sanctions Move Called <span class="tag tag-conf">Confirmed</span></div></div>
     </div>
@@ -786,18 +855,34 @@ html{scrollbar-color:#25282d var(--void);}
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">Member Feedback</div>
-      <h2 class="section-title">What traders <span class="q">are saying.</span></h2>
+      <h2 class="section-title">Real messages. <span class="q">Unedited.</span></h2>
+      <p class="shead-sub">Straight from our DMs — screenshots from members, names hidden for privacy.</p>
     </div>
-    <div class="testi-grid">
+    <div class="wall" id="wall">
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-1500-3000.webp" alt="Member message: I actually made around $1500 in these 3 days. Started with $1500, and now at $3000. All because of your indicator!"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-legit.webp" alt="Member message: Been using the indicator for the last week. From what I can tell testing and back testing, this is fire. Legit AF"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-220-profit.webp" alt="Member message: Thx to your indicator so damn good. Using the 12hr mostly for downside, already 220% in profit"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-6-month-paid.webp" alt="Member message: 6 month sub already paid for in a matter of minutes"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-not-legal.webp" alt="Member message: This thing should not be legal"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-never-seen-accurate.webp" alt="Member message: I have never seen such accurate indicator in my life, I am shocked why not many people know about it yet"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-killing-it.webp" alt="Member message: Bro I'm killing it. I'm using your indicator with my strategy"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-how-did-you-create.webp" alt="Member message: How on earth did you create this, how are you able to predict market"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever-money-back.webp" alt="Member message: Sir your indicator is the best I had ever used. Also made my month money back, indicator is awesome"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sp500.webp" alt="Member message: Took one of my best trades in sp500 all thanks to the indicator"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-took-profits.webp" alt="Member message: Brilliant, that's what I thought and I took profits at a good time. Thanks again"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-money-back.webp" alt="Member message: It's working beautifully. Already made the money back. Really appreciate the work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
+    </div>
+    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 18 messages ↓</button>
+    <div class="testi-grid testi-3">
       <div class="testi-card reveal"><p class="testi-text"><strong>Up 401% on my portfolio.</strong> All-time gain is now +63,867.54 USDT — without you, that wouldn't be possible.</p><div class="testi-meta"><div class="testi-code">EU</div><span class="testi-source">Verified Trader · EU</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">Using the 12-hour chart for short positions, and <strong>I'm already 220% in profit.</strong> I haven't even taken profit yet because it keeps paying.</p><div class="testi-meta"><div class="testi-code">US</div><span class="testi-source">Verified Trader · US</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text"><strong>6-month subscription paid for in minutes.</strong> The accuracy of this indicator is insane.</p><div class="testi-meta"><div class="testi-code">UK</div><span class="testi-source">Verified Trader · UK</span></div></div>
       <div class="testi-card reveal"><p class="testi-text">I'm on a <strong>20-day winning streak</strong> because of your indicator. It's completely changed the way I trade and given me confidence I've never felt before.</p><div class="testi-meta"><div class="testi-code">AU</div><span class="testi-source">Verified Trader · AU</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text"><strong>How did you even create this? It feels like you can predict the market.</strong> My strategy has leveled up since using this indicator.</p><div class="testi-meta"><div class="testi-code">CA</div><span class="testi-source">Verified Trader · CA</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">This thing should be illegal — seriously, it's that good. <strong>Trading feels effortless now.</strong></p><div class="testi-meta"><div class="testi-code">DE</div><span class="testi-source">Verified Trader · DE</span></div></div>
       <div class="testi-card reveal"><p class="testi-text"><strong>117 trades, winning 116 of them.</strong> I've 15x'd my initial balance. This indicator is the reason.</p><div class="testi-meta"><div class="testi-code">JP</div><span class="testi-source">Verified Trader · JP</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">After a hiatus, coming back to <strong>the best tool I've used.</strong> I tried others &amp; have to say you developed a monster — the rest are just playing catch-up.</p><div class="testi-meta"><div class="testi-code">SG</div><span class="testi-source">Verified Trader · SG</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text"><strong>I made $1,500 in 3 days.</strong> Started with $1,500 — now at $3,000. Doubled my account with the first signals.</p><div class="testi-meta"><div class="testi-code">BR</div><span class="testi-source">Verified Trader · BR</span></div></div>
     </div>
     <p class="disclaimer-fine">Genuine results shared by IllumiTrade® members. Individual results vary and are not representative, typical, or guaranteed. Trading involves risk of loss.</p>
   </div>
@@ -836,6 +921,25 @@ html{scrollbar-color:#25282d var(--void);}
   </div>
 </section>
 
+<!-- WHY ILT -->
+<section id="why">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">Why ILT</div>
+      <h2 class="section-title">Most indicators react. <span class="q">ILT anticipates.</span></h2>
+    </div>
+    <div class="cmp reveal" role="table" aria-label="ILT compared with typical indicators">
+      <div class="cmp-row cmp-head" role="row"><div role="columnheader"></div><div role="columnheader">Typical indicators</div><div role="columnheader" class="cmp-ilt">ILT<sup>®</sup> suite</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Timing</div><div role="cell">Signal after the move has started</div><div role="cell" class="cmp-ilt">Flags compression <b>before</b> the breakout</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Proof</div><div role="cell">Backtests &amp; hand-picked screenshots</div><div role="cell" class="cmp-ilt">Every call <b>timestamped publicly on X</b></div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">What you get</div><div role="cell">One line, you decode the rest</div><div role="cell" class="cmp-ilt"><b>3-in-1:</b> Diamond alerts, divergences, S/R channels &amp; trendlines</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Markets</div><div role="cell">Tuned for one market</div><div role="cell" class="cmp-ilt">Any TradingView asset, <b>any timeframe</b></div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Reading it</div><div role="cell">Cluttered oscillators to interpret</div><div role="cell" class="cmp-ilt">Clear labels: <b>Bull / Bear, Diamond, zones</b></div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Commitment</div><div role="cell">Upfront payment, no trial</div><div role="cell" class="cmp-ilt"><b>7 days free</b> · cancel in 1 click</div></div>
+    </div>
+  </div>
+</section>
+
 <!-- PRICING -->
 <section id="pricing">
   <div class="container">
@@ -844,14 +948,14 @@ html{scrollbar-color:#25282d var(--void);}
       <h2 class="section-title">Simple, transparent <span class="q">plans.</span></h2>
     </div>
     <div class="trial-banner reveal">
-      <span><strong>Start risk-free with a 7-day free trial</strong> on the monthly plan — add your card, get instant access, cancel before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27%.</span>
+      <span><strong>Start risk-free with a 7-day free trial</strong> on the monthly plan — add your card, get instant access, cancel in 1 click before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27%.</span>
     </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
         <span class="price-tag trial">◆ Start here · 7 days free</span>
         <div class="price-period">1 Month</div>
         <div class="price-amount"><sup>$</sup>80<span class="mo">/mo</span></div>
-        <div class="price-billing">Free for 7 days · then $80/mo · cancel anytime</div>
+        <div class="price-billing">Free for 7 days · then $80/mo · cancel in 1 click</div>
         <div class="price-divider"></div>
         <ul class="price-features">
           <li>Full ILT Indicator Suite</li>
@@ -910,7 +1014,7 @@ html{scrollbar-color:#25282d var(--void);}
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel anytime · Prepaid plans: pay once, no auto-renew · Instant access · Support within 24h</p>
+      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Instant access · Support within 24h</p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDT)?</summary>
         <div class="pa-body">
@@ -957,7 +1061,7 @@ html{scrollbar-color:#25282d var(--void);}
       </details>
       <details class="faq-item">
         <summary>How do I cancel the free trial?</summary>
-        <div class="faq-a">One email is enough. <b>Cancel any time before day 7 and you pay nothing.</b> Prepaid plans never auto-renew — they simply expire at the end of the period.</div>
+        <div class="faq-a">In 1 click — or simply email us. <b>Cancel any time before day 7 and you pay nothing.</b> Prepaid plans never auto-renew — they simply expire at the end of the period.</div>
       </details>
     </div>
   </div>
@@ -987,7 +1091,7 @@ html{scrollbar-color:#25282d var(--void);}
     <h2>Your first 7 days <span class="q">are free.</span></h2>
     <p>See the Diamond print on your own charts before you pay a cent. Add your card, get instant access, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
     <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
-    <p class="hero-micro">Instant access · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+    <p class="hero-micro">$0 today · Instant access · Cancel in 1 click · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
   </div>
 </section>
 
@@ -1011,6 +1115,12 @@ html{scrollbar-color:#25282d var(--void);}
 </footer>
 
 <!-- LIGHTBOX -->
+<!-- STICKY MOBILE CTA -->
+<div class="m-cta" id="m-cta" aria-hidden="true">
+  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn" tabindex="-1">Start 7-day free trial <span class="arr">→</span></a>
+  <span class="m-cta-sub">$0 today · cancel in 1 click</span>
+</div>
+
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <span class="lightbox-close" onclick="closeLightbox()">✕</span>
   <span class="lightbox-nav prev" onclick="event.stopPropagation();navLightbox(-1)" aria-label="Previous">‹</span>
@@ -1115,6 +1225,20 @@ function copyUsdt(btn){
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
 }, {passive:true});
+
+// ─── STICKY MOBILE CTA: show after hero, hide over pricing / final CTA ───
+(function(){
+  var bar=document.getElementById('m-cta'); if(!bar) return;
+  var hero=document.querySelector('.hero'), stops=[document.getElementById('pricing'),document.querySelector('.final-cta')];
+  function inView(el){ if(!el) return false; var r=el.getBoundingClientRect(); return r.top<window.innerHeight && r.bottom>0; }
+  function upd(){
+    var past = hero ? hero.getBoundingClientRect().bottom < 0 : window.scrollY>600;
+    var on = past && !stops.some(inView) && !document.getElementById('lightbox').classList.contains('open');
+    bar.classList.toggle('show', on); bar.setAttribute('aria-hidden', on?'false':'true');
+    bar.querySelector('a').tabIndex = on?0:-1;
+  }
+  window.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd();
+})();
 
 // ─── LATEST CALL (status bar) → open that chart in the gallery ───
 function openLatestCall(bar){
