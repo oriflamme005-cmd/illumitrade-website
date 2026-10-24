@@ -730,7 +730,7 @@ html{scrollbar-color:#25282d var(--void);}
 .hero.lit::after{opacity:1;}
 /* 3 · neon beam travelling around the hero chart frame
    SVG stroke = constant speed on every edge, own GPU layer (no repaint of the chart).
-   Colour is fixed in space: electric blue at the bottom → red at the top. */
+   Colour is fixed in space: theme ice-teal at the bottom → theme ember at the top. */
 .hv-proof{position:relative;overflow:visible;
   box-shadow:0 40px 90px rgba(0,0,0,.6);}
 .hv-proof .frame{overflow:hidden;border-radius:var(--r) var(--r) 0 0;}
@@ -847,18 +847,18 @@ nav.scrolled::after{opacity:1;}
       </figcaption>
       <svg class="hv-neon" aria-hidden="true" focusable="false">
         <defs>
-          <!-- y1=1 → y2=0 : bottom of the frame = blue, top = red -->
+          <!-- site theme colours: ice-teal --accent (bottom) → ember --ember (top) -->
           <linearGradient id="neonGrad" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#1f7bff"/>
-            <stop offset=".18" stop-color="#2e8bff"/>
-            <stop offset=".55" stop-color="#9b4dff"/>
-            <stop offset=".85" stop-color="#ff2a4d"/>
-            <stop offset="1" stop-color="#ff1f3d"/>
+            <stop offset="0" stop-color="#5fcabd"/>
+            <stop offset=".2" stop-color="#6fd6c9"/>
+            <stop offset=".55" stop-color="#a68ccb"/>
+            <stop offset=".85" stop-color="#d96a93"/>
+            <stop offset="1" stop-color="#e2799f"/>
           </linearGradient>
           <linearGradient id="neonHot" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#cfe3ff"/>
-            <stop offset=".55" stop-color="#ecd9ff"/>
-            <stop offset="1" stop-color="#ffd3db"/>
+            <stop offset="0" stop-color="#bfe9e2"/>
+            <stop offset=".55" stop-color="#e4e4ea"/>
+            <stop offset="1" stop-color="#f6d6e2"/>
           </linearGradient>
         </defs>
         <rect class="n-base"/>
