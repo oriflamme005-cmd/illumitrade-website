@@ -79,7 +79,7 @@ twq('config','omn00');
         {
           "@type": "Question",
           "name": "How accurate is the ILT indicator?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Traders report a 4.9/5 rating with results including 401% portfolio gains, 20-day winning streaks, and 15x account growth. The indicator has a verified 4-year track record across crypto, forex, stocks and commodities." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Traders report a 4.9/5 rating with results including a 401% all-time portfolio gain (+63,867 USDT), $1,500 turned into $3,000 in 3 days, 20-day winning streaks, and 15x account growth. The indicator has a verified 4-year track record across crypto, forex, stocks and commodities." }
         },
         {
           "@type": "Question",
@@ -193,7 +193,8 @@ a{color:inherit;}
           mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);
   opacity:.7;
 }
-.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+/* grain: plain alpha blend (an 'overlay' blend on a fixed full-screen layer forced a re-blend of the whole viewport every animated frame — visually identical on this dark background) */
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");}
 
 nav,section,header,footer,.urgency-bar,.oracle-cta-section{position:relative;z-index:2;}
@@ -428,6 +429,9 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .price-amount sup{font-size:22px;vertical-align:super;color:var(--ink-dim);}
 .price-amount .mo{font-family:var(--font-mono);font-size:13px;color:var(--ink-faint);letter-spacing:0;font-weight:400;}
 .price-billing{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);margin-top:8px;letter-spacing:.02em;}
+.price-billing s,.pb-sub s{color:var(--ink-faint);text-decoration-color:rgba(217,106,147,.75);text-decoration-thickness:1px;}
+.price-billing .now,.pb-sub .now{color:var(--ink-2);}
+.price-billing .save,.pb-sub .save{color:var(--accent);font-weight:500;}
 .price-divider{height:1px;background:var(--line);margin:24px 0;}
 .price-features{list-style:none;margin-bottom:26px;}
 .price-features li{font-size:13.5px;color:var(--ink-2);padding:6px 0;display:flex;align-items:center;gap:10px;}
@@ -514,7 +518,7 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .final-cta h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.05;}
 .final-cta h2 .q{color:var(--ink-faint);font-weight:600;}
 .final-cta p{font-size:15px;color:var(--ink-2);max-width:520px;margin:20px auto 34px;line-height:1.7;}
-.final-cta .hero-micro{margin-top:18px;}
+.final-cta p.hero-micro{font-size:10.5px;line-height:1.7;max-width:none;margin:18px auto 0;color:var(--ink-faint);}
 
 /* ── ORACLE CTA ── */
 .oracle-cta-section{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
@@ -661,14 +665,23 @@ nav.scrolled{top:0;}
 .wall-tile{break-inside:avoid;margin:0 0 14px;background:#000;border:1px solid var(--line);border-radius:var(--r);padding:10px;transition:border-color .25s,transform .25s;}
 .wall-tile:hover{border-color:var(--line-strong);transform:translateY(-2px);}
 .wall-tile img{width:100%;height:auto;display:block;border-radius:2px;}
-.wall-more{display:none;}
-.testi-3{margin-top:26px;grid-template-columns:repeat(3,1fr);}
-@media (max-width:900px){.testi-3{grid-template-columns:1fr;}}
-@media (max-width:640px){
-  .wall:not(.open) .wall-tile:nth-child(n+7){display:none;}
-  .wall-more{display:block;margin:4px auto 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--ink-2);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r);padding:13px 22px;cursor:pointer;}
-}
+/* featured results: the 3 biggest claims, each backed by its real screenshot */
+.feat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px;align-items:start;}
+.feat{margin:0;background:#000;border:1px solid var(--line-strong);border-radius:var(--r);overflow:hidden;position:relative;transition:border-color .25s,transform .25s;}
+.feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.feat:hover{border-color:rgba(95,202,189,.45);transform:translateY(-2px);}
+.feat-k{display:flex;align-items:center;gap:9px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface);
+  font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-.01em;color:var(--ink);}
+.feat-d{width:6px;height:6px;flex-shrink:0;background:var(--accent);transform:rotate(45deg);}
+.feat img{display:block;width:100%;height:auto;padding:10px;}
+@media (max-width:900px){.feat-grid{grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto;}}
+.testi-solo{max-width:560px;margin:0 auto 14px;}
+/* wall: first 12 visible, the rest behind "Show all" (6 on mobile) */
+.wall:not(.open) .wall-tile:nth-child(n+13){display:none;}
+.wall-more{display:block;margin:6px auto 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-2);background:transparent;border:1px solid var(--line-strong);border-radius:var(--r);padding:13px 22px;cursor:pointer;transition:border-color .2s,color .2s;}
+.wall-more:hover{border-color:var(--accent);color:var(--ink);}
+@media (max-width:640px){.wall:not(.open) .wall-tile:nth-child(n+7){display:none;}}
 
 /* ── STICKY MOBILE CTA ── */
 .m-cta{display:none;}
@@ -696,8 +709,6 @@ html{scrollbar-color:#25282d var(--void);}
   background:linear-gradient(100deg,transparent,rgba(95,202,189,.38),transparent);transform:skewX(-20deg);
   transition:left .7s cubic-bezier(.2,.7,.2,1);pointer-events:none;}
 .btn:hover::after,.nav-cta:hover::after,.price-card.featured .btn-plan:hover::after{left:125%;}
-/* hero chart: faint teal halo so the proof reads as the focal point */
-.hv-proof{box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 1px rgba(95,202,189,.08),0 30px 120px -40px rgba(95,202,189,.28);}
 /* featured plan: glowing edge instead of a flat line */
 .price-card.featured{box-shadow:0 0 0 1px rgba(95,202,189,.16),0 34px 90px -36px rgba(95,202,189,.32);}
 .price-card.featured::before{height:2px;background:linear-gradient(90deg,transparent,var(--accent) 30%,var(--accent) 70%,transparent);}
@@ -711,19 +722,30 @@ html{scrollbar-color:#25282d var(--void);}
   background:
     radial-gradient(38% 46% at 72% 38%,rgba(95,202,189,.10),transparent 70%),
     radial-gradient(30% 40% at 18% 70%,rgba(217,106,147,.06),transparent 70%);
-  filter:blur(10px);animation:aurora 22s ease-in-out infinite alternate;}
+  animation:aurora 22s ease-in-out infinite alternate;will-change:transform;}
 @keyframes aurora{0%{transform:translate3d(0,0,0) scale(1);}50%{transform:translate3d(-3%,2%,0) scale(1.06);}100%{transform:translate3d(2%,-2%,0) scale(1.02);}}
 /* 2 · cursor spotlight in the hero (desktop) */
 .hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .5s;
   background:radial-gradient(620px circle at var(--hx,50%) var(--hy,40%),rgba(95,202,189,.10),transparent 60%);}
 .hero.lit::after{opacity:1;}
-/* 3 · light beam travelling around the hero chart frame */
-.hv-proof::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:3;
-  padding:1.5px;background:conic-gradient(from var(--ang),transparent 0 58%,rgba(95,202,189,.05) 62%,rgba(95,202,189,.55) 80%,rgba(95,202,189,1) 87%,#fff 88.5%,transparent 90% 100%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-          mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  animation:beam 7s linear infinite;}
-@keyframes beam{to{--ang:360deg;}}
+/* 3 · neon beam travelling around the hero chart frame
+   SVG stroke = constant speed on every edge, own GPU layer (no repaint of the chart).
+   Colour is fixed in space: electric blue at the bottom → red at the top. */
+.hv-proof{position:relative;overflow:visible;
+  box-shadow:0 40px 90px rgba(0,0,0,.6),
+    0 46px 120px -54px rgba(46,139,255,.55),
+    0 -34px 110px -60px rgba(255,42,77,.42);}
+.hv-proof .frame{overflow:hidden;border-radius:var(--r) var(--r) 0 0;}
+.hv-neon{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);
+  overflow:visible;pointer-events:none;z-index:3;will-change:transform;transform:translateZ(0);}
+.hv-neon rect{fill:none;vector-effect:non-scaling-stroke;}
+.hv-neon .n-base{stroke:url(#neonGrad);stroke-width:1.2;opacity:.6;}
+.hv-neon .n-glow{stroke:url(#neonGrad);stroke-width:16;opacity:.12;stroke-linecap:round;}
+.hv-neon .n-glow2{stroke:url(#neonGrad);stroke-width:7;opacity:.32;stroke-linecap:round;}
+.hv-neon .n-tail{stroke:url(#neonGrad);stroke-width:2;opacity:.7;stroke-linecap:round;}
+.hv-neon .n-head{stroke:url(#neonGrad);stroke-width:3;opacity:1;stroke-linecap:round;}
+.hv-neon .n-core{stroke:url(#neonHot);stroke-width:1.4;opacity:1;stroke-linecap:round;}
+.hv-neon:not(.ready) .n-glow,.hv-neon:not(.ready) .n-glow2,.hv-neon:not(.ready) .n-tail,.hv-neon:not(.ready) .n-head,.hv-neon:not(.ready) .n-core{opacity:0;}
 /* 4 · edge light that follows the cursor on cards */
 .fx{position:relative;}
 .fx::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;opacity:0;transition:opacity .35s;
@@ -741,7 +763,7 @@ nav::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;po
   background:linear-gradient(90deg,transparent,rgba(95,202,189,.45) 50%,transparent);}
 nav.scrolled::after{opacity:1;}
 @media (hover:none){.hero::after,.fx::after{display:none;}.fx.on{background-image:none;}}
-@media (prefers-reduced-motion:reduce){.hero::before,.hv-proof::after,.track::after{animation:none!important;}}
+@media (prefers-reduced-motion:reduce){.hero::before,.track::after{animation:none!important;}.hv-neon .n-base{opacity:.9;}}
 </style>
 </head>
 <body>
@@ -806,7 +828,7 @@ nav.scrolled::after{opacity:1;}
         <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
         <a href="#proof" class="btn-line">See verified calls <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">$0 today · Instant access · Cancel in 1 click · <a href="#pricing">Compare all plans</a></p>
+      <p class="hero-micro">$0 today · Live on your charts within hours · Cancel in 1 click · <a href="#pricing">Compare all plans</a></p>
       <div class="hero-proof reveal" aria-label="Trader results">
         <span class="hp-rating"><span class="hp-stars">★★★★★</span> 4.9 / 5</span>
         <span class="hp-pill">"Up 401% on my portfolio"</span>
@@ -825,6 +847,29 @@ nav.scrolled::after{opacity:1;}
         <div class="cap-txt">The Diamond printed at the $OIL top — then the market dropped ~17 points.</div>
         <a href="https://x.com/illumi_trade" target="_blank" rel="noopener">Verify on X →</a>
       </figcaption>
+      <svg class="hv-neon" aria-hidden="true" focusable="false">
+        <defs>
+          <!-- y1=1 → y2=0 : bottom of the frame = blue, top = red -->
+          <linearGradient id="neonGrad" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#1f7bff"/>
+            <stop offset=".18" stop-color="#2e8bff"/>
+            <stop offset=".55" stop-color="#9b4dff"/>
+            <stop offset=".85" stop-color="#ff2a4d"/>
+            <stop offset="1" stop-color="#ff1f3d"/>
+          </linearGradient>
+          <linearGradient id="neonHot" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#cfe3ff"/>
+            <stop offset=".55" stop-color="#ecd9ff"/>
+            <stop offset="1" stop-color="#ffd3db"/>
+          </linearGradient>
+        </defs>
+        <rect class="n-base"/>
+        <rect class="n-glow" data-len=".2"/>
+        <rect class="n-glow2" data-len=".12"/>
+        <rect class="n-tail" data-len=".34"/>
+        <rect class="n-head" data-len=".13"/>
+        <rect class="n-core" data-len=".035"/>
+      </svg>
     </figure>
   </div>
 </header>
@@ -896,34 +941,59 @@ nav.scrolled::after{opacity:1;}
     <div class="shead reveal">
       <div class="eyebrow centered">Member Feedback</div>
       <h2 class="section-title">Real messages. <span class="q">Unedited.</span></h2>
-      <p class="shead-sub">Straight from our DMs — screenshots from members, names hidden for privacy.</p>
+      <p class="shead-sub">41 screenshots straight from our DMs and X — unedited, names hidden for privacy.</p>
     </div>
-    <div class="wall" id="wall">
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-1500-3000.webp" alt="Member message: I actually made around $1500 in these 3 days. Started with $1500, and now at $3000. All because of your indicator!"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-legit.webp" alt="Member message: Been using the indicator for the last week. From what I can tell testing and back testing, this is fire. Legit AF"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-220-profit.webp" alt="Member message: Thx to your indicator so damn good. Using the 12hr mostly for downside, already 220% in profit"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-6-month-paid.webp" alt="Member message: 6 month sub already paid for in a matter of minutes"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-not-legal.webp" alt="Member message: This thing should not be legal"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-never-seen-accurate.webp" alt="Member message: I have never seen such accurate indicator in my life, I am shocked why not many people know about it yet"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-killing-it.webp" alt="Member message: Bro I'm killing it. I'm using your indicator with my strategy"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-how-did-you-create.webp" alt="Member message: How on earth did you create this, how are you able to predict market"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever-money-back.webp" alt="Member message: Sir your indicator is the best I had ever used. Also made my month money back, indicator is awesome"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sp500.webp" alt="Member message: Took one of my best trades in sp500 all thanks to the indicator"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-took-profits.webp" alt="Member message: Brilliant, that's what I thought and I took profits at a good time. Thanks again"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-money-back.webp" alt="Member message: It's working beautifully. Already made the money back. Really appreciate the work"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
+    <div class="feat-grid">
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>+401% · +63,867 USDT all-time</figcaption><img loading="lazy" decoding="async" src="/review-401-percent.webp" alt="Member message showing an all-time gain of +63,867.54 USDT (+401%): Without you that wouldn't be possible"></figure>
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>$1,500 → $3,000 in 3 days</figcaption><img loading="lazy" decoding="async" src="/review-1500-3000.webp" alt="Member message: I actually made around $1500 in these 3 days. Started with $1500, and now at $3000. All because of your indicator!"></figure>
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>20-day winning streak</figcaption><img loading="lazy" decoding="async" src="/review-20-day-streak.webp" alt="Member message: I am on 20 day winning streak because of your indicator"></figure>
     </div>
-    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 18 messages ↓</button>
-    <div class="testi-grid testi-3">
-      <div class="testi-card reveal"><p class="testi-text"><strong>Up 401% on my portfolio.</strong> All-time gain is now +63,867.54 USDT — without you, that wouldn't be possible.</p><div class="testi-meta"><div class="testi-code">EU</div><span class="testi-source">Verified Trader · EU</span></div></div>
-      <div class="testi-card reveal"><p class="testi-text">I'm on a <strong>20-day winning streak</strong> because of your indicator. It's completely changed the way I trade and given me confidence I've never felt before.</p><div class="testi-meta"><div class="testi-code">AU</div><span class="testi-source">Verified Trader · AU</span></div></div>
+    <!-- ✏️ 117/116 testimonial: swap this card for its screenshot once found
+         (save it as /review-117-trades.webp and add it to .feat-grid above) -->
+    <div class="testi-solo">
       <div class="testi-card reveal"><p class="testi-text"><strong>117 trades, winning 116 of them.</strong> I've 15x'd my initial balance. This indicator is the reason.</p><div class="testi-meta"><div class="testi-code">JP</div><span class="testi-source">Verified Trader · JP</span></div></div>
     </div>
+    <div class="wall" id="wall">
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-desk-setup.webp" alt="Member photo of their trading desk with the IllumiTrade guide on screen: I'm in now and feeling much more confident thank you! And thank you for the updated guide as well as your indicator"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-others-playing-catch.webp" alt="Member message: coming back to the best tool I've used. I tried some others &amp; have to say you developed a monster &amp; others are just playing catch"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-220-profit.webp" alt="Member message: Thx to your indicator so damn good. Using the 12hr mostly for downside, already 220% in profit"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-6-month-paid.webp" alt="Member message: 6 month sub already paid for in a matter of minutes"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-legit.webp" alt="Member message: Been using the indicator for the last week. From what I can tell testing and back testing, this is fire. Legit AF"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-v1-v2-cl2.webp" alt="Member message: working with both coloured line on ILT V1.0 with the confirmation of the CL2 on ILT V2.0 can be very accurate of predicting the next moves"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-dump-money-back.webp" alt="Member message: already made money back from the purchase this morning from that dump"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-not-legal.webp" alt="Member message: This thing should not be legal"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-edge-without-it.webp" alt="Member message after renewing: Was losing too much of an edge without it. Very enlightening, I am no longer in the dark"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-never-seen-accurate.webp" alt="Member message: I have never seen such accurate indicator in my life, I am shocked why not many people know about it yet"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-killing-it.webp" alt="Member message: Bro I'm killing it. I'm using your indicator with my strategy"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trial-impressed.webp" alt="Trial user message: Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months!"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-recommended-friends.webp" alt="Member message: Sick indicator bro! I recommended it to my friends as well, they will buy too"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever-money-back.webp" alt="Member message: Sir your indicator is the best I had ever used. Also made my month money back, indicator is awesome"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-patient-trader.webp" alt="Member message: Just wanted to say how great your indicator and strategies are. It keeps me patient and a better trader"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-how-did-you-create.webp" alt="Member message: How on earth did you create this, how are you able to predict market"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sp500.webp" alt="Member message: Took one of my best trades in sp500 all thanks to the indicator"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-diamonds-work.webp" alt="Member message with a TradingView chart showing ILT on a daily chart: I think ur diamonds work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-aqua-diamonds.webp" alt="Member message: Ordinals has so many aqua diamonds on 2 and 4 hr. Love the indicator my friend"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-wizardry-suite.webp" alt="Public post on X, Oct 29 2024: Sir, I'm loving using your wizardry indicator suite once again"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trendlines-auto.webp" alt="Member message: I see the trendlines prints automatically this is amazing bro"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-improved-a-lot.webp" alt="Member message: I used your first version of the indicator a while ago and I must say you improved a lot my friend! Great work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-money-back.webp" alt="Member message: It's working beautifully. Already made the money back. Really appreciate the work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-took-profits.webp" alt="Member message: Brilliant, that's what I thought and I took profits at a good time. Thanks again"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-method.webp" alt="Member message: So this is THE BEST method/indicator I have ever used"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-crazy-good.webp" alt="Member message: Dude your indicator is crazy good"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-changing-lives.webp" alt="Member message: I bet you must be changing so many peoples life"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-good-week.webp" alt="Member message: Love the indicator and yes good results this week"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sick-amazing.webp" alt="Member message: Wow thank so much sir. Ur indicator is sick amazing"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-damn-good.webp" alt="Member message: Whoa, that's a damn good indicator"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever.webp" alt="Member message: Best indicator ever"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
+    </div>
+    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 41 messages ↓</button>
     <p class="disclaimer-fine">Genuine results shared by IllumiTrade® members. Individual results vary and are not representative, typical, or guaranteed. Trading involves risk of loss.</p>
   </div>
 </section>
@@ -943,8 +1013,8 @@ nav.scrolled::after{opacity:1;}
       </div>
       <div class="hiw-step">
         <span class="hiw-num">02</span>
-        <h3>Send your TradingView username</h3>
-        <p>That's the only thing we need. <b>No downloads, no installs</b> — the indicator lives inside TradingView.</p>
+        <h3>Enter your TradingView username at checkout</h3>
+        <p>One field on the payment page — that's all we need. <b>No downloads, no installs</b> — the indicator lives inside TradingView.</p>
       </div>
       <div class="hiw-step">
         <span class="hiw-num">03</span>
@@ -988,7 +1058,7 @@ nav.scrolled::after{opacity:1;}
       <h2 class="section-title">Simple, transparent <span class="q">plans.</span></h2>
     </div>
     <div class="trial-banner reveal">
-      <span><strong>Start risk-free with a 7-day free trial</strong> on the monthly plan — add your card, get instant access, cancel in 1 click before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27%.</span>
+      <span><strong>Start risk-free with a 7-day free trial</strong> on the monthly plan — add your card, your access goes live within hours, cancel in 1 click before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27%.</span>
     </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
@@ -1008,7 +1078,7 @@ nav.scrolled::after{opacity:1;}
         <span class="price-tag ghost">·</span>
         <div class="price-period">6 Months <span class="best">· Save 25%</span></div>
         <div class="price-amount"><sup>$</sup>60<span class="mo">/mo</span></div>
-        <div class="price-billing">One-time $360 · save 25% · no auto-renew</div>
+        <div class="price-billing"><s>$480</s> <span class="now">$360 one-time</span> · <span class="save">save $120</span> · no auto-renew</div>
         <div class="price-divider"></div>
         <ul class="price-features">
           <li>Full ILT Indicator Suite</li>
@@ -1022,7 +1092,7 @@ nav.scrolled::after{opacity:1;}
         <span class="price-tag ghost">·</span>
         <div class="price-period">1 Year <span class="best">· Best value</span></div>
         <div class="price-amount"><sup>$</sup>58<span class="mo">/mo</span></div>
-        <div class="price-billing">One-time $699 · save 27% · no auto-renew</div>
+        <div class="price-billing"><s>$960</s> <span class="now">$699 one-time</span> · <span class="save">save $261</span> · no auto-renew</div>
         <div class="price-divider"></div>
         <ul class="price-features">
           <li>Full ILT Indicator Suite</li>
@@ -1038,7 +1108,7 @@ nav.scrolled::after{opacity:1;}
       <div class="price-bookend">
         <div>
           <div class="pb-name">Prefer shorter? · 3 Months</div>
-          <div class="pb-sub">One-time $210 · save 12% · no auto-renew</div>
+          <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">save $30</span> · no auto-renew</div>
         </div>
         <div class="pb-price">$70<span class="mo">/mo</span></div>
         <a href="https://buy.stripe.com/5kQdR8dw9e8x8KU2KY0Ba01" target="_blank" rel="noopener" class="pb-link">Get →</a>
@@ -1054,7 +1124,7 @@ nav.scrolled::after{opacity:1;}
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Instant access · Support within 24h</p>
+      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Access within hours (24h max) · Support within 24h</p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDT)?</summary>
         <div class="pa-body">
@@ -1107,6 +1177,17 @@ nav.scrolled::after{opacity:1;}
   </div>
 </section>
 
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container reveal">
+    <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
+    <h2>Your first 7 days <span class="q">are free.</span></h2>
+    <p>See the Diamond print on your own charts before you pay a cent. Add your card, your access goes live within hours, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
+    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
+    <p class="hero-micro">$0 today · Live within hours · Cancel in 1 click · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+  </div>
+</section>
+
 <!-- ORACLE CTA -->
 <div class="oracle-cta-section">
   <div class="container">
@@ -1123,17 +1204,6 @@ nav.scrolled::after{opacity:1;}
     </div>
   </div>
 </div>
-
-<!-- FINAL CTA -->
-<section class="final-cta">
-  <div class="container reveal">
-    <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
-    <h2>Your first 7 days <span class="q">are free.</span></h2>
-    <p>See the Diamond print on your own charts before you pay a cent. Add your card, get instant access, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
-    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
-    <p class="hero-micro">$0 today · Instant access · Cancel in 1 click · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
-  </div>
-</section>
 
 <!-- FOOTER -->
 <footer>
@@ -1308,11 +1378,60 @@ function openLatestCall(bar){
   update();
 })();
 
+// ─── HERO NEON BEAM: constant-speed comet around the chart frame ───
+(function(){
+  var fig=document.querySelector('.hv-proof'), svg=fig && fig.querySelector('.hv-neon');
+  if(!svg || !svg.animate) return;
+  var rects=[].slice.call(svg.querySelectorAll('rect'));
+  var movers=rects.filter(function(r){ return r.hasAttribute('data-len'); });
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DUR=6800, anims=[], visible=true, lastW=0, lastH=0, raf=0;
+  function layout(){
+    raf=0;
+    var b=svg.getBoundingClientRect(), w=b.width, h=b.height;
+    if(w<10 || h<10 || (Math.abs(w-lastW)<.5 && Math.abs(h-lastH)<.5)) return;
+    lastW=w; lastH=h;
+    // stroke centred on the 1px border line
+    rects.forEach(function(r){
+      r.setAttribute('x','.5'); r.setAttribute('y','.5');
+      r.setAttribute('width',(w-1).toFixed(2)); r.setAttribute('height',(h-1).toFixed(2));
+      r.setAttribute('rx','4'); r.setAttribute('ry','4');
+    });
+    var L; try{ L=rects[0].getTotalLength(); }catch(e){}
+    if(!L || !isFinite(L)) L=2*(w+h-2)-(8-2*Math.PI)*4;
+    var t=anims.length ? (anims[0].currentTime||0)%DUR : 0;
+    anims.forEach(function(a){ a.cancel(); }); anims=[];
+    movers.forEach(function(r){
+      var len=L*parseFloat(r.getAttribute('data-len'));
+      r.style.strokeDasharray=len.toFixed(2)+'px '+(L-len).toFixed(2)+'px';
+      // every layer ends at the same "head" point → comet with a fading tail
+      if(still){ r.style.strokeDashoffset=(len-L*0.62).toFixed(2)+'px'; return; }
+      var a=r.animate([{strokeDashoffset:len+'px'},{strokeDashoffset:(len-L)+'px'}],
+                      {duration:DUR,iterations:Infinity,easing:'linear'});
+      a.currentTime=t; if(!visible) a.pause();
+      anims.push(a);
+    });
+    svg.classList.add('ready');
+  }
+  function queue(){ if(!raf) raf=requestAnimationFrame(layout); }
+  if('ResizeObserver' in window) new ResizeObserver(queue).observe(fig);
+  window.addEventListener('resize',queue,{passive:true});
+  window.addEventListener('load',queue);
+  // pause off-screen (saves battery, keeps the scroll smooth)
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){
+      visible=en[0].isIntersecting;
+      anims.forEach(function(a){ visible ? a.play() : a.pause(); });
+    }).observe(fig);
+  }
+  queue();
+})();
+
 // ─── HIGH-TECH FX: hero spotlight, card edge light, counting numbers ───
 (function(){
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var still=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  document.querySelectorAll('.proof-card,.price-card,.price-bookend,.wall-tile,.testi-card,.hiw-step,.track-i,.cmp')
+  document.querySelectorAll('.proof-card,.price-card,.price-bookend,.wall-tile,.feat,.testi-card,.hiw-step,.track-i,.cmp')
     .forEach(function(el){ el.classList.add('fx'); });
   if(fine){
     var hero=document.querySelector('.hero'), raf=0, last=null, ev=null;
