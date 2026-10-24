@@ -732,16 +732,14 @@ html{scrollbar-color:#25282d var(--void);}
    SVG stroke = constant speed on every edge, own GPU layer (no repaint of the chart).
    Colour is fixed in space: electric blue at the bottom → red at the top. */
 .hv-proof{position:relative;overflow:visible;
-  box-shadow:0 40px 90px rgba(0,0,0,.6),
-    0 46px 120px -54px rgba(46,139,255,.55),
-    0 -34px 110px -60px rgba(255,42,77,.42);}
+  box-shadow:0 40px 90px rgba(0,0,0,.6);}
 .hv-proof .frame{overflow:hidden;border-radius:var(--r) var(--r) 0 0;}
 .hv-neon{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);
   overflow:visible;pointer-events:none;z-index:3;will-change:transform;transform:translateZ(0);}
 .hv-neon rect{fill:none;vector-effect:non-scaling-stroke;}
-.hv-neon .n-base{stroke:url(#neonGrad);stroke-width:1.2;opacity:.6;}
-.hv-neon .n-glow{stroke:url(#neonGrad);stroke-width:16;opacity:.12;stroke-linecap:round;}
-.hv-neon .n-glow2{stroke:url(#neonGrad);stroke-width:7;opacity:.32;stroke-linecap:round;}
+.hv-neon .n-base{display:none;}
+.hv-neon .n-glow{stroke:url(#neonGrad);stroke-width:22;opacity:.13;stroke-linecap:round;}
+.hv-neon .n-glow2{stroke:url(#neonGrad);stroke-width:9;opacity:.34;stroke-linecap:round;}
 .hv-neon .n-tail{stroke:url(#neonGrad);stroke-width:2;opacity:.7;stroke-linecap:round;}
 .hv-neon .n-head{stroke:url(#neonGrad);stroke-width:3;opacity:1;stroke-linecap:round;}
 .hv-neon .n-core{stroke:url(#neonHot);stroke-width:1.4;opacity:1;stroke-linecap:round;}
@@ -763,7 +761,7 @@ nav::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;po
   background:linear-gradient(90deg,transparent,rgba(95,202,189,.45) 50%,transparent);}
 nav.scrolled::after{opacity:1;}
 @media (hover:none){.hero::after,.fx::after{display:none;}.fx.on{background-image:none;}}
-@media (prefers-reduced-motion:reduce){.hero::before,.track::after{animation:none!important;}.hv-neon .n-base{opacity:.9;}}
+@media (prefers-reduced-motion:reduce){.hero::before,.track::after{animation:none!important;}.hv-neon .n-base{display:inline;stroke:url(#neonGrad);stroke-width:1.2;opacity:.8;}}
 </style>
 </head>
 <body>
