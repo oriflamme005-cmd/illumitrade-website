@@ -1,0 +1,66 @@
+# IllumiTrade — one-time import of the proof images hosted on Systeme.io
+# Run it once: GitHub → Actions → "Import proof images" → Run workflow.
+# It downloads every image into /proofs, points all pages to the local copies,
+# and commits. If a single download fails, NOTHING is changed (safe to re-run).
+name: Import proof images
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download images
+        run: |
+          set -euo pipefail
+          mkdir -p proofs
+          for u in \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/65a1061ab86d8_659556581b9db_BTCUSD_2024-01-03_13-30-11.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/65a106cfdd206_6584311dc999c_INJUSDT.P_2023-12-21_13-34-24.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/65ccf007aad58_GGTiBwnWkAAeH5-.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/67652773480c9_BTCUSDT.P_2024-12-20_09-13-19.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/67d93de12a62a_GmKV03IboAA37Op.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68a579c6e6e06_Gyx0Os7XAAAqd_k.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68dfe4c62109c_BTCUSDT.P_2025-10-03_16-55-21.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68e3723195273_G2j35BgXAAASo1v.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68e373332d913_G2j30dIXAAA80Z8.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68ee160934db8_BTCUSDT.P_2025-10-14_11-13-58.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68f90487a51a4_G335YG8WwAAs8li.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68fa004542d53_25329c56-87d3-4094-94bd-04571255617d.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/68fb694b07e78_G4Bf0cpXQAAknj1.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/691dc82dcbb76_PLATINUM_2025-11-19_14-24-32.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/6924903d0090f_VIX_2025-10-10_17-34-13.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/6968ca195f991_G8M0JNpWEAU6X4e.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/6968f45dd8659_G6BeR69XUAA7DkV.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/6979ce0cc7e8f_HSI1_2026-01-28_09-44-26.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/697c72c69859e_XAGEUR_2026-01-29_13-55-27.webp \
+            https://d1yei2z3i6k35z.cloudfront.net/4454502/697cfc520cf9c_XAGEUR_2026-01-30_19-24-28.webp
+          do
+            f="proofs/$(basename "$u")"
+            curl -fsSL --retry 4 --retry-delay 3 -o "$f" "$u"
+            size=$(stat -c%s "$f")
+            if [ "$size" -lt 2000 ]; then echo "Too small: $u ($size bytes)"; exit 1; fi
+            file "$f" | grep -qiE 'image|web/p|RIFF' || { echo "Not an image: $u"; exit 1; }
+            echo "OK $f ($size bytes)"
+          done
+
+      - name: Point every page to the local copies
+        run: |
+          grep -rl 'd1yei2z3i6k35z.cloudfront.net/4454502/' --include='*.html' --include='*.xml' . \
+            | xargs -r sed -i 's#https://d1yei2z3i6k35z\.cloudfront\.net/4454502/#https://www.illumitrade.com/proofs/#g'
+          echo "Remaining external references:"; grep -rn 'd1yei2z3i6k35z' --include='*.html' . || echo "none"
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add proofs *.html blog/*.html || true
+          if git diff --cached --quiet; then echo "Nothing to commit"; exit 0; fi
+          git commit -m "Import proof images from Systeme.io into the repo"
+          git push
