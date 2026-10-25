@@ -762,6 +762,87 @@ nav::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;po
 nav.scrolled::after{opacity:1;}
 @media (hover:none){.hero::after,.fx::after{display:none;}.fx.on{background-image:none;}}
 @media (prefers-reduced-motion:reduce){.hero::before,.track::after{animation:none!important;}.hv-neon .n-base{display:inline;stroke:url(#neonGrad);stroke-width:1.2;opacity:.8;}}
+
+
+/* ── Telegram quick contact ── */
+.faq-more{text-align:center;margin-top:26px;font-size:14px;color:var(--ink-dim);}
+.faq-more a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.35);}
+.faq-more a:hover{border-color:var(--accent);}
+.tg-fab{position:fixed;right:22px;bottom:22px;z-index:140;display:inline-flex;align-items:center;gap:9px;
+  padding:11px 16px 11px 13px;border-radius:30px;text-decoration:none;
+  background:rgba(12,13,16,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid var(--line-strong);color:var(--ink-2);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
+  box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);pointer-events:none;
+  transition:opacity .3s,transform .3s,border-color .2s,color .2s;}
+.tg-fab svg{color:var(--accent);flex-shrink:0;}
+.tg-fab b{color:var(--ink);font-weight:500;}
+.tg-fab.show{opacity:1;transform:none;pointer-events:auto;}
+.tg-fab:hover{border-color:var(--accent);color:var(--ink);}
+body.co-lock .tg-fab{opacity:0;pointer-events:none;}
+@media (max-width:768px){
+  .tg-fab{right:14px;bottom:calc(98px + env(safe-area-inset-bottom));padding:12px;border-radius:50%;}
+  .tg-fab span{display:none;}
+  .tg-fab svg{width:19px;height:19px;}
+}
+@media (prefers-reduced-motion:reduce){.tg-fab{transition:none;}}
+/* ════ ON-SITE CHECKOUT (Stripe Elements, same design, no redirect) ════ */
+.co{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px;}
+.co[hidden]{display:none;}
+.co-bg{position:absolute;inset:0;background:rgba(5,5,6,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .25s;}
+.co.open .co-bg{opacity:1;}
+.co-panel{position:relative;width:100%;max-width:460px;max-height:calc(100vh - 48px);overflow:auto;overscroll-behavior:contain;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;padding:28px 28px 22px;
+  box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(95,202,189,.06);
+  opacity:0;transform:translateY(14px) scale(.985);transition:opacity .28s ease,transform .28s cubic-bezier(.2,.7,.2,1);}
+.co.open .co-panel{opacity:1;transform:none;}
+.co-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.co-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border:1px solid var(--line);border-radius:var(--r);background:transparent;
+  color:var(--ink-dim);font-size:15px;cursor:pointer;transition:color .2s,border-color .2s;}
+.co-x:hover{color:var(--ink);border-color:var(--line-strong);}
+.co-k{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);display:flex;align-items:center;gap:8px;}
+.co-k::before{content:'';width:6px;height:6px;background:var(--accent);transform:rotate(45deg);}
+.co-plan{margin:14px 0 4px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.co-plan b{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--ink);}
+.co-change{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);text-decoration:none;border-bottom:1px solid var(--line-strong);}
+.co-change:hover{color:var(--accent);border-color:var(--accent);}
+.co-sub{font-size:13.5px;color:var(--ink-2);}
+.co-steps{display:flex;gap:18px;margin:20px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);}
+.co-steps span{display:inline-flex;align-items:center;gap:7px;}
+.co-steps i{font-style:normal;width:18px;height:18px;border-radius:50%;border:1px solid var(--line-strong);display:inline-flex;align-items:center;justify-content:center;font-size:9.5px;letter-spacing:0;}
+.co-steps .on{color:var(--ink);} .co-steps .on i{background:var(--accent);border-color:var(--accent);color:var(--void);}
+.co-steps .done i{border-color:var(--accent);color:var(--accent);}
+.co-f{display:block;margin-bottom:14px;}
+.co-f span{display:block;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:7px;}
+.co-f input{width:100%;font-family:var(--font-body);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r);padding:12px 13px;outline:none;transition:border-color .2s,box-shadow .2s;}
+.co-f input:focus{border-color:var(--accent);box-shadow:0 0 0 1px rgba(95,202,189,.35);}
+.co-f input[aria-invalid="true"]{border-color:var(--ember);}
+.co-f small{display:block;margin-top:7px;font-size:12px;color:var(--ink-faint);line-height:1.5;}
+.co-btn{width:100%;justify-content:center;margin-top:6px;padding:15px 20px;}
+.co-btn[disabled]{opacity:.55;cursor:not-allowed;transform:none!important;}
+.co-who{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);
+  border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;margin-bottom:16px;}
+.co-who b{color:var(--ink-2);font-weight:500;}
+.co-who button{background:none;border:0;color:var(--accent);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;}
+.co-or{display:flex;align-items:center;gap:12px;margin:14px 0;font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+.co-or::before,.co-or::after{content:'';flex:1;height:1px;background:var(--line);}
+.co-or[hidden]{display:none;}
+.co-sk{height:46px;border-radius:var(--r);background:linear-gradient(90deg,var(--surface-2),var(--surface-3),var(--surface-2));background-size:200% 100%;animation:cosk 1.2s linear infinite;margin-bottom:10px;}
+@keyframes cosk{to{background-position:-200% 0;}}
+.co-total{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0 4px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);}
+.co-total b{font-family:var(--font-display);font-size:20px;letter-spacing:-.02em;color:var(--ink);text-transform:none;}
+.co-then{font-size:12px;color:var(--ink-faint);text-align:right;margin-bottom:6px;}
+.co-err{color:var(--ember);font-size:13px;margin-top:10px;min-height:1px;}
+.co-trust{margin-top:16px;text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);}
+.co-trust b{color:var(--ink-dim);font-weight:500;}
+body.co-lock{overflow:hidden;}
+body.co-lock .m-cta{transform:translateY(110%)!important;}
+@media (max-width:640px){
+  .co{padding:0;align-items:flex-end;}
+  .co-panel{max-width:none;max-height:94vh;border-radius:12px 12px 0 0;padding:24px 20px calc(18px + env(safe-area-inset-bottom));transform:translateY(40px);}
+}
+@media (prefers-reduced-motion:reduce){.co-panel,.co-bg{transition:none;}.co-sk{animation:none;}}
 </style>
 </head>
 <body>
@@ -792,7 +873,7 @@ nav.scrolled::after{opacity:1;}
     <a href="#faq">FAQ</a>
     <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
   </div>
-  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="nav-cta">Start Free Trial</a>
+  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="nav-cta">Start Free Trial</a>
 </nav>
 
 <!-- HERO -->
@@ -823,7 +904,7 @@ nav.scrolled::after{opacity:1;}
         <li>No advanced charting skills needed</li>
       </ul>
       <div class="hero-cta">
-        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
+        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
         <a href="#proof" class="btn-line">See verified calls <span class="arr">→</span></a>
       </div>
       <p class="hero-micro">$0 today · Live on your charts within hours · Cancel in 1 click · <a href="#pricing">Compare all plans</a></p>
@@ -1070,7 +1151,7 @@ nav.scrolled::after{opacity:1;}
           <li>Diamond &amp; Divergence Alerts</li>
           <li>Priority Support</li>
         </ul>
-        <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn-plan">Start 7-day free trial →</a></div>
+        <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start 7-day free trial →</a></div>
       </div>
       <div class="price-card">
         <span class="price-tag ghost">·</span>
@@ -1084,7 +1165,7 @@ nav.scrolled::after{opacity:1;}
           <li>Priority Support</li>
           <li>Exclusive Trade Ideas</li>
         </ul>
-        <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
+        <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" data-plan="m6" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
       </div>
       <div class="price-card">
         <span class="price-tag ghost">·</span>
@@ -1098,7 +1179,7 @@ nav.scrolled::after{opacity:1;}
           <li>Priority Support</li>
           <li>Exclusive Trade Ideas</li>
         </ul>
-        <div class="pay"><a href="https://buy.stripe.com/8x214m63H5C1e5egBO0Ba03" target="_blank" rel="noopener" class="btn-plan">Get the 1-year plan →</a></div>
+        <div class="pay"><a href="https://buy.stripe.com/8x214m63H5C1e5egBO0Ba03" data-plan="y1" target="_blank" rel="noopener" class="btn-plan">Get the 1-year plan →</a></div>
       </div>
     </div>
 
@@ -1109,7 +1190,7 @@ nav.scrolled::after{opacity:1;}
           <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">save $30</span> · no auto-renew</div>
         </div>
         <div class="pb-price">$70<span class="mo">/mo</span></div>
-        <a href="https://buy.stripe.com/5kQdR8dw9e8x8KU2KY0Ba01" target="_blank" rel="noopener" class="pb-link">Get →</a>
+        <a href="https://buy.stripe.com/5kQdR8dw9e8x8KU2KY0Ba01" data-plan="m3" target="_blank" rel="noopener" class="pb-link">Get →</a>
       </div>
       <div class="price-bookend">
         <div>
@@ -1117,12 +1198,12 @@ nav.scrolled::after{opacity:1;}
           <div class="pb-sub">One-time payment · no trial · all updates free</div>
         </div>
         <div class="pb-price">$3,750</div>
-        <a href="https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04" target="_blank" rel="noopener" class="pb-link">Choose →</a>
+        <a href="https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04" data-plan="lifetime" target="_blank" rel="noopener" class="pb-link">Choose →</a>
       </div>
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Access within hours (24h max) · Support within 24h</p>
+      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Access within hours (24h max) · Questions? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Ask us on Telegram</a></p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDT)?</summary>
         <div class="pa-body">
@@ -1172,6 +1253,7 @@ nav.scrolled::after{opacity:1;}
         <div class="faq-a">In 1 click — or simply email us. <b>Cancel any time before day 7 and you pay nothing.</b> Prepaid plans never auto-renew — they simply expire at the end of the period.</div>
       </details>
     </div>
+    <p class="faq-more reveal">Still have a question? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Message us on Telegram →</a> — we reply personally.</p>
   </div>
 </section>
 
@@ -1181,7 +1263,7 @@ nav.scrolled::after{opacity:1;}
     <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
     <h2>Your first 7 days <span class="q">are free.</span></h2>
     <p>See the Diamond print on your own charts before you pay a cent. Add your card, your access goes live within hours, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
-    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
+    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
     <p class="hero-micro">$0 today · Live within hours · Cancel in 1 click · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
   </div>
 </section>
@@ -1225,8 +1307,49 @@ nav.scrolled::after{opacity:1;}
 <!-- LIGHTBOX -->
 <!-- STICKY MOBILE CTA -->
 <div class="m-cta" id="m-cta" aria-hidden="true">
-  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" target="_blank" rel="noopener" class="btn" tabindex="-1">Start 7-day free trial <span class="arr">→</span></a>
+  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn" tabindex="-1">Start 7-day free trial <span class="arr">→</span></a>
   <span class="m-cta-sub">$0 today · cancel in 1 click</span>
+</div>
+
+<!-- TELEGRAM QUICK CONTACT -->
+<a class="tg-fab" id="tg-fab" href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg aria-label="Questions? Chat with us on Telegram">
+  <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M21.94 4.3 18.7 19.6c-.24 1.08-.88 1.35-1.79.84l-4.94-3.64-2.38 2.29c-.26.26-.49.49-1 .49l.36-5.03 9.16-8.28c.4-.36-.09-.55-.62-.2L6.16 13.2l-4.88-1.52c-1.06-.33-1.08-1.06.22-1.57L20.6 2.8c.88-.33 1.65.2 1.34 1.5z"/></svg>
+  <span>Questions? <b>Telegram</b></span>
+</a>
+
+<!-- ON-SITE CHECKOUT -->
+<div class="co" id="co" hidden role="dialog" aria-modal="true" aria-labelledby="co-plan-name">
+  <div class="co-bg" data-co-close></div>
+  <div class="co-panel">
+    <button type="button" class="co-x" data-co-close aria-label="Close">✕</button>
+    <div class="co-k">Secure checkout</div>
+    <div class="co-plan"><b id="co-plan-name">1 Month</b><a href="#pricing" class="co-change" data-co-close>Change plan</a></div>
+    <div class="co-sub" id="co-plan-sub"></div>
+    <div class="co-steps"><span id="co-s1" class="on"><i>1</i>Your access</span><span id="co-s2"><i>2</i>Payment</span></div>
+
+    <form id="co-step1" novalidate>
+      <label class="co-f"><span>Email</span>
+        <input id="co-email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required></label>
+      <label class="co-f"><span>TradingView username</span>
+        <input id="co-user" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. trader_123" required>
+        <small>We grant your invite-only access to this username. Find it top-right in TradingView, under your profile.</small></label>
+      <button type="submit" class="btn co-btn" id="co-next">Continue to payment <span class="arr">→</span></button>
+      <p class="co-err" id="co-err1" role="alert"></p>
+    </form>
+
+    <div id="co-step2" hidden>
+      <div class="co-who"><span><b id="co-who-email"></b> · @<b id="co-who-user"></b></span><button type="button" id="co-edit">Edit</button></div>
+      <div id="co-express"></div>
+      <div class="co-or" id="co-or" hidden>or pay with card</div>
+      <div id="co-payment"><div class="co-sk"></div><div class="co-sk"></div><div class="co-sk" style="width:60%"></div></div>
+      <div class="co-total"><span>Due today</span><b id="co-due">—</b></div>
+      <div class="co-then" id="co-then"></div>
+      <button type="button" class="btn co-btn" id="co-pay" disabled>Start my free trial <span class="arr">→</span></button>
+      <p class="co-err" id="co-err2" role="alert"></p>
+    </div>
+
+    <p class="co-trust" id="co-trust">🔒 Secured by <b>Stripe</b> · Cancel in 1 click</p>
+  </div>
 </div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -1460,6 +1583,179 @@ function openLatestCall(bar){
     },{threshold:.6});
     io.observe(b);
   });
+})();
+</script>
+
+<script>
+// ─── TELEGRAM quick contact: appears once the visitor scrolls past the hero ───
+(function(){
+  var fab=document.getElementById('tg-fab'), hero=document.querySelector('.hero'), lb=document.getElementById('lightbox');
+  if(!fab) return;
+  function upd(){
+    var past = hero ? hero.getBoundingClientRect().bottom < 80 : window.scrollY > 600;
+    fab.classList.toggle('show', past && !(lb && lb.classList.contains('open')));
+  }
+  window.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd();
+})();
+</script>
+
+<script>
+// ─── ON-SITE CHECKOUT ─────────────────────────────────────────────────────
+// Every Stripe button keeps its Payment Link as href: if anything here fails
+// (no keys yet, Stripe.js blocked, API error) the visitor simply goes to the
+// usual Stripe page — a sale is never lost.
+(function(){
+  var API='/api/checkout', STRIPE_JS='https://js.stripe.com/dahlia/stripe.js';
+  var PLANS={
+    monthly:{name:'1 Month', sub:'7 days free · then $80/mo · cancel in 1 click', cta:'Start my free trial', then:'Then $80/mo after your 7-day trial', trust:'$0 today · Cancel in 1 click'},
+    m3:{name:'3 Months', sub:'One-time $210 · save $30 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
+    m6:{name:'6 Months', sub:'One-time $360 · save $120 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
+    y1:{name:'1 Year', sub:'One-time $699 · save $261 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
+    lifetime:{name:'Lifetime', sub:'One-time $3,750 · all future updates included', cta:'Pay & get lifetime access', then:'One-time payment · lifetime access', trust:'One-time payment'}
+  };
+  var $=function(id){return document.getElementById(id);};
+  var co=$('co'); if(!co || !window.fetch || !window.Promise) return;
+  var ready=false, plan=null, fallbackUrl=null, stripeP=null, checkout=null, actionsP=null, lastFocus=null, busy=false;
+
+  // is checkout configured on the server? (until then: normal Stripe links)
+  fetch(API,{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
+    .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); })
+    .catch(function(){ ready=false; });
+
+  function loadStripe(){
+    if(stripeP) return stripeP;
+    stripeP=new Promise(function(res,rej){
+      if(window.Stripe) return res(window.Stripe);
+      var sc=document.createElement('script'); sc.src=STRIPE_JS; sc.async=true;
+      sc.onload=function(){ window.Stripe?res(window.Stripe):rej(new Error('Stripe.js')); };
+      sc.onerror=function(){ stripeP=null; rej(new Error('Stripe.js blocked')); };
+      document.head.appendChild(sc);
+      setTimeout(function(){ rej(new Error('Stripe.js timeout')); }, 12000);
+    });
+    return stripeP;
+  }
+  function goFallback(){ if(fallbackUrl){ var u=fallbackUrl; close(); window.location.href=u; } }
+
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[data-plan]');
+    if(!a || !ready || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var p=a.getAttribute('data-plan'); if(!PLANS[p]) return;
+    e.preventDefault(); open(p, a.href, a);
+  });
+
+  function step(n){
+    $('co-step1').hidden = n!==1; $('co-step2').hidden = n!==2;
+    $('co-s1').className = n===1?'on':'done'; $('co-s2').className = n===2?'on':'';
+  }
+  function open(p, href, src){
+    plan=p; fallbackUrl=href; lastFocus=src||null;
+    var c=PLANS[p];
+    $('co-plan-name').textContent=c.name; $('co-plan-sub').textContent=c.sub;
+    $('co-trust').innerHTML='🔒 Secured by <b>Stripe</b> · '+c.trust;
+    $('co-err1').textContent=''; $('co-err2').textContent='';
+    step(1); loadStripe().catch(function(){});
+    co.hidden=false; document.body.classList.add('co-lock');
+    requestAnimationFrame(function(){ co.classList.add('open'); });
+    setTimeout(function(){ ($('co-email').value?$('co-user'):$('co-email')).focus(); }, 60);
+  }
+  function close(){
+    co.classList.remove('open'); document.body.classList.remove('co-lock');
+    setTimeout(function(){ co.hidden=true; resetPayment(); }, 260);
+    if(lastFocus && lastFocus.focus) try{ lastFocus.focus({preventScroll:true}); }catch(e){}
+  }
+  function resetPayment(){
+    checkout=null; actionsP=null; busy=false;
+    $('co-express').innerHTML=''; $('co-or').hidden=true;
+    $('co-payment').innerHTML='<div class="co-sk"></div><div class="co-sk"></div><div class="co-sk" style="width:60%"></div>';
+    $('co-due').textContent='—'; var b=$('co-pay'); b.disabled=true;
+  }
+  co.addEventListener('click',function(e){
+    if(e.target.closest('[data-co-close]')){
+      var isChange=e.target.closest('.co-change'); if(isChange) e.preventDefault();
+      close();
+      if(isChange){ var pr=$('pricing'); if(pr) pr.scrollIntoView({behavior:'smooth'}); }
+    }
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !co.hidden) close(); });
+  $('co-edit').addEventListener('click',function(){ resetPayment(); step(1); $('co-user').focus(); });
+
+  // step 1 → create the Checkout Session, then mount Stripe Elements
+  var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, USER_RE=/^@?[A-Za-z0-9_.\-]{2,40}$/;
+  $('co-step1').addEventListener('submit',function(e){
+    e.preventDefault(); if(busy) return;
+    var em=$('co-email'), us=$('co-user'), err=$('co-err1');
+    var email=em.value.trim(), user=us.value.trim().replace(/^@/,'');
+    em.setAttribute('aria-invalid','false'); us.setAttribute('aria-invalid','false'); err.textContent='';
+    if(!EMAIL_RE.test(email)){ em.setAttribute('aria-invalid','true'); err.textContent='Please enter a valid email.'; em.focus(); return; }
+    if(!USER_RE.test(user)){ us.setAttribute('aria-invalid','true'); err.textContent='Please enter your TradingView username (letters, numbers, _ . -).'; us.focus(); return; }
+    busy=true; var nb=$('co-next'); nb.disabled=true;
+    $('co-who-email').textContent=email; $('co-who-user').textContent=user;
+    $('co-then').textContent=PLANS[plan].then;
+    $('co-pay').innerHTML=PLANS[plan].cta+' <span class="arr">→</span>';
+    step(2);
+
+    var sessionP=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({plan:plan,email:email,username:user})})
+      .then(function(r){ return r.json().then(function(j){ j._status=r.status; return j; }); });
+
+    Promise.all([sessionP, loadStripe()]).then(function(v){
+      var j=v[0];
+      if(j._status===400){ step(1); err.textContent=j.error||'Please check your details.';
+        if(j.field){ var f=j.field==='email'?em:us; f.setAttribute('aria-invalid','true'); f.focus(); } throw 'handled'; }
+      if(!j.clientSecret || !j.publishableKey) throw new Error(j.error||'no session');
+      mount(j);
+    }).catch(function(x){ if(x!=='handled') goFallback(); })
+      .then(function(){ busy=false; nb.disabled=false; });
+  });
+
+  var APPEARANCE={
+    theme:'night',
+    variables:{colorPrimary:'#5fcabd', colorBackground:'#08090b', colorText:'#f3f5f7', colorTextSecondary:'#878d96',
+      colorDanger:'#d96a93', fontFamily:'"Hanken Grotesk", system-ui, sans-serif', fontSizeBase:'15px', borderRadius:'4px', spacingUnit:'4px'},
+    rules:{
+      '.Input':{border:'1px solid rgba(255,255,255,0.12)', boxShadow:'none'},
+      '.Input:focus':{border:'1px solid #5fcabd', boxShadow:'0 0 0 1px rgba(95,202,189,0.35)'},
+      '.Tab':{border:'1px solid rgba(255,255,255,0.10)', boxShadow:'none', backgroundColor:'#08090b'},
+      '.Tab--selected':{border:'1px solid #5fcabd', boxShadow:'none'}
+    }
+  };
+  var FONTS=[{cssSrc:'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap'}];
+
+  function mount(j){
+    var stripe=window.Stripe(j.publishableKey);
+    var opts={clientSecret:j.clientSecret, elementsOptions:{appearance:APPEARANCE, fonts:FONTS}};
+    try{ checkout=stripe.initCheckoutElementsSdk(Object.assign({adaptivePricing:{allowed:true}},opts)); } // local currency when enabled in Stripe
+    catch(e){ checkout=stripe.initCheckoutElementsSdk(opts); }
+    checkout.on('change',function(s){
+      try{ $('co-due').textContent=s.total.total.amount; }catch(e){}
+      $('co-pay').disabled=!s.canConfirm;
+    });
+    $('co-payment').innerHTML='';
+    try{
+      var ex=checkout.createExpressCheckoutElement();
+      ex.on('ready',function(ev){ if(ev && ev.availablePaymentMethods) $('co-or').hidden=false; });
+      ex.on('confirm',function(ev){ confirmWith({expressCheckoutConfirmEvent:ev}); });
+      ex.mount('#co-express');
+    }catch(e){ /* wallets optional */ }
+    var pe=checkout.createPaymentElement({layout:'tabs'});
+    pe.mount('#co-payment');
+    actionsP=checkout.loadActions();
+    actionsP.then(function(r){ if(!r || r.type==='error') goFallback(); }).catch(goFallback);
+  }
+
+  function confirmWith(opts){
+    var b=$('co-pay'), err=$('co-err2'); err.textContent=''; b.disabled=true;
+    var label=b.innerHTML; b.textContent='Processing…';
+    (actionsP||Promise.reject()).then(function(r){
+      if(!r || r.type==='error') throw new Error('load');
+      return r.actions.confirm(opts||undefined);
+    }).then(function(res){
+      // success → Stripe redirects to /thankyou ; we only land here on an error
+      if(res && res.type==='error'){ err.textContent=res.error.message; }
+    }).catch(function(){ err.textContent='Something went wrong. Please try again.'; })
+      .then(function(){ b.innerHTML=label; b.disabled=false; });
+  }
+  $('co-pay').addEventListener('click',function(){ confirmWith(); });
 })();
 </script>
 

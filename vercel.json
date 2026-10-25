@@ -43,6 +43,10 @@
     {
       "source": "/start",
       "destination": "/hub.html"
+    },
+    {
+      "source": "/compare/luxalgo-alternative",
+      "destination": "/compare/luxalgo-alternative.html"
     }
   ]
 }
