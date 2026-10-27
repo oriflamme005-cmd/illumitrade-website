@@ -70,6 +70,10 @@ h1 .q{color:var(--ink-faint);font-weight:600;}
 .lead strong{color:var(--ink);font-weight:600;}
 .sub{color:var(--ink-faint);font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;margin-bottom:44px;}
 
+.manage{margin:-20px 0 40px;font-size:13.5px;color:var(--ink-dim);line-height:1.7;}
+.manage a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.35);white-space:nowrap;}
+.manage a:hover{border-color:var(--accent);}
+.manage span{font-size:12px;color:var(--ink-faint);}
 .res-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px;}
 .res{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px;text-align:left;}
 @media(max-width:560px){.res{grid-template-columns:1fr;}}
@@ -192,6 +196,8 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
       </a>
     </div>
 
+    <p class="manage">Trying it out? You can manage or cancel your membership anytime, in 1 click: <a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Manage subscription →</a><br><span>Enter the email you signed up with — you'll receive a secure login link.</span></p>
+
     <div class="team">
       <p>Thank you for joining ILT®. We're confident you'll find the experience both insightful and rewarding — and we look forward to having you on board.</p>
       <p class="sig">— The ILT Team</p>
@@ -204,6 +210,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
     <a href="https://www.illumitrade.com/">Home</a>
     <a href="https://www.iltoracle.com/">ILT Oracle</a>
     <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
+    <a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Manage subscription</a>
   </div>
   <div class="copy">© 2026 IllumiTrade® — All rights reserved.</div>
 </footer>
