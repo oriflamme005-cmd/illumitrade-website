@@ -99,6 +99,41 @@
   .stats b{display:block;font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-.03em;color:var(--ink)}
   .stats span{display:block;color:var(--ink-dim);font-size:13.5px;margin-top:4px}
   @media(max-width:760px){.stats{grid-template-columns:1fr}}
+  /* WHAT YOU GET */
+  .get{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
+  .stack{list-style:none;margin:28px 0 0;padding:0}
+  .stack li{position:relative;padding:12px 0 12px 28px;border-bottom:1px solid var(--line);color:var(--ink-dim);font-size:15px}
+  .stack li::before{content:"";position:absolute;left:4px;top:19px;width:9px;height:9px;border-radius:2px;background:var(--accent)}
+  .stack li b{color:var(--ink);font-weight:600}
+  .offer{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--r);padding:28px;position:sticky;top:90px}
+  .offer .price{margin:14px 0 10px}
+  .offer .price b{display:block;font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+  .offer .price span{color:var(--ink-dim);font-family:var(--mono);font-size:13px}
+  .offer p{color:var(--ink-dim);font-size:14px;margin:0 0 18px}
+  .offer .btn{display:block;text-align:center}
+  .offer .ask{margin:16px 0 0;font-size:13px}
+  .offer .ask a{color:var(--accent)}
+  /* FAQ */
+  .faq{margin-top:32px;max-width:780px}
+  .faq details{border-bottom:1px solid var(--line);padding:4px 0}
+  .faq summary{cursor:pointer;list-style:none;padding:16px 28px 16px 0;font-weight:600;color:var(--ink);position:relative}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";position:absolute;right:4px;top:14px;color:var(--accent);font-size:20px}
+  .faq details[open] summary::after{content:"–"}
+  .faq details p{color:var(--ink-dim);font-size:14.5px;margin:0 0 16px}
+  .faq details a{color:var(--accent)}
+  /* sticky mobile CTA */
+  .mbar{display:none}
+  @media(max-width:760px){
+    .get{grid-template-columns:1fr}
+    .offer{position:static}
+    .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(5,5,6,.94);border-top:1px solid var(--line-strong);transform:translateY(110%);transition:transform .25s}
+    .mbar.on{transform:none}
+    header .btn{padding:9px 12px;font-size:12px;white-space:nowrap}
+    .mbar span{font-family:var(--mono);font-size:11.5px;color:var(--ink-dim)}
+    .mbar .btn{padding:10px 14px;font-size:13px;white-space:nowrap}
+    body{padding-bottom:64px}
+  }
   .band{text-align:center;padding:80px 0}
   .band h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em}
   .band p{color:var(--ink-dim);margin:14px auto 0;max-width:48ch}
@@ -139,15 +174,15 @@
     <div class="wrap fade hero-grid">
       <div class="hero-copy">
         <div class="eyebrow">TradingView Indicator Suite</div>
-        <h1>Compression &amp; divergence, <span class="a">on every chart.</span></h1>
+        <h1>Spot the setup <span class="a">while it's still forming.</span></h1>
         <p class="lede">IllumiTrade is a <b>TradingView indicator suite</b> that flags market compression, divergence, and cycle structure — giving you a clear, rules-based way to read setups across any asset and timeframe.</p>
         <div class="cta-row">
           <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" class="btn">Start 7-day free trial →</a>
           <a href="#what" class="btn-line">See what it does →</a>
         </div>
         <div class="checks">
-          <span>Works on any TradingView asset</span>
-          <span>Regular &amp; hidden divergence</span>
+          <span>400+ traders since 2022</span>
+          <span>Any asset, any timeframe</span>
           <span>Built-in alerts</span>
         </div>
         <p class="risk-micro">7 days free, then $80/month · Cancel before day 7 and pay nothing<br>For research &amp; education · Not financial advice · Trading involves risk of loss</p>
@@ -187,48 +222,6 @@
     </div>
   </section>
 
-  <!-- WHY -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="eyebrow">Why traders use it</div>
-        <h2>Clarity and discipline, built into the chart.</h2>
-      </div>
-      <div class="grid">
-        <div class="card">
-          <div class="k">Framework</div>
-          <h3>Rules over guesswork</h3>
-          <p>A consistent, repeatable way to read structure — instead of eyeballing every chart from scratch.</p>
-        </div>
-        <div class="card">
-          <div class="k">Coverage</div>
-          <h3>Any asset, any timeframe</h3>
-          <p>Crypto, forex, stocks, indices, commodities — the same framework applies wherever you trade.</p>
-        </div>
-        <div class="card">
-          <div class="k">Alerts</div>
-          <h3>Never miss the setup</h3>
-          <p>Set alerts on the conditions that matter to you and get notified when they print.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="eyebrow">How it works</div>
-        <h2>Live on your charts within hours.</h2>
-      </div>
-      <div class="steps">
-        <div class="step"><h3>Add to TradingView</h3><p>Start your trial with your TradingView username. Access is added to your account within a few hours (24h max) — then add the suite to any chart in a couple of clicks.</p></div>
-        <div class="step"><h3>Read the structure</h3><p>Compression, divergence and cycle bias are plotted clearly, in real time.</p></div>
-        <div class="step"><h3>Set your alerts</h3><p>Choose the conditions you care about and let the alerts come to you.</p></div>
-      </div>
-    </div>
-  </section>
-
   <!-- MEMBERS -->
   <section id="members">
     <div class="wrap">
@@ -258,6 +251,68 @@
     </div>
   </section>
 
+  <!-- WHAT YOU GET -->
+  <section id="get">
+    <div class="wrap get">
+      <div>
+        <div class="sec-head">
+          <div class="eyebrow">What you get</div>
+          <h2>The full ILT® 2026 suite, from day one.</h2>
+        </div>
+        <ul class="stack">
+          <li><b>ILT® V1 2026</b> — the GCL, Colored Line, Cross Line and Aqua / Fuchsia Diamonds</li>
+          <li><b>ILT® 2.0 2026</b> — CL2 / TL2 momentum with Risky &amp; Safe Zones</li>
+          <li><b>ILT® Add-on 2026</b> — structure markers plotted right on price</li>
+          <li><b>ILT® 2+</b> — optional extra layer, included</li>
+          <li><b>Multi-timeframe dashboards</b> — 15m to Weekly, readable in seconds</li>
+          <li><b>Ready-made alert settings</b> — so the setups come to you</li>
+          <li><b>Two guides</b> — a 15-minute Quick Start and the complete Full Edition</li>
+          <li><b>Members' Telegram community</b> + every 2026 update included</li>
+        </ul>
+      </div>
+      <aside class="offer">
+        <div class="eyebrow">Membership</div>
+        <div class="price"><b>7 days free</b><span>then $80 / month</span></div>
+        <p>Cancel in one click before day 7 and you pay nothing. Access within a few hours (24h max).</p>
+        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" class="btn">Start 7-day free trial →</a>
+        <p class="ask">Questions first? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener">Ask us on Telegram</a></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">How it works</div>
+        <h2>Live on your charts within hours.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Add to TradingView</h3><p>Start your trial with your TradingView username. Access is added to your account within a few hours (24h max) — then add the suite to any chart in a couple of clicks.</p></div>
+        <div class="step"><h3>Read the structure</h3><p>Compression, divergence and cycle bias are plotted clearly, in real time.</p></div>
+        <div class="step"><h3>Set your alerts</h3><p>Choose the conditions you care about and let the alerts come to you.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">FAQ</div>
+        <h2>Before you start.</h2>
+      </div>
+      <div class="faq">
+        <details><summary>Do I need a paid TradingView plan?</summary><p>No. ILT® is an invite-only script and works on free TradingView accounts. The free plan limits how many indicators you can show on one chart, so you may need to display them one at a time — paid TradingView plans remove that limit.</p></details>
+        <details><summary>How fast do I get access?</summary><p>Enter your TradingView username at checkout. Access is added to your account within a few hours (24h max), and TradingView notifies you when it's live. Meanwhile you can read the Quick Start guide.</p></details>
+        <details><summary>Which markets and timeframes does it work on?</summary><p>Any asset TradingView offers — crypto, stocks, indices, forex, gold, silver, oil — and any timeframe, from 15 minutes to weekly.</p></details>
+        <details><summary>I'm not an experienced trader. Will I understand it?</summary><p>The Quick Start guide takes about 15 minutes: set up the suite, read your first signal with two simple rules, and set your alerts. Members range from first-year traders to full-time professionals.</p></details>
+        <details><summary>How do I cancel?</summary><p>In one click from your <a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">membership page</a> — enter the email you signed up with and you get a secure login link. Cancel before day 7 and you pay nothing.</p></details>
+        <details><summary>Is this a signals service or financial advice?</summary><p>No. ILT® is a set of technical-analysis tools you use on your own charts. Every decision — and every risk — stays yours.</p></details>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA BAND -->
   <section class="band">
     <div class="wrap">
@@ -282,5 +337,10 @@
   </div>
 </footer>
 
+<div class="mbar" id="mbar"><span>7 days free · then $80/mo</span><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" class="btn">Start free trial →</a></div>
+<script>
+(function(){var b=document.getElementById('mbar'),h=document.querySelector('.hero');if(!b||!h||!('IntersectionObserver' in window))return;
+new IntersectionObserver(function(e){b.classList.toggle('on',!e[0].isIntersecting);},{threshold:0}).observe(h);})();
+</script>
 </body>
 </html>
