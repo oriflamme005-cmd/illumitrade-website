@@ -18,14 +18,9 @@ twq('config','omn00');
   gtag('js', new Date());
   gtag('config', 'AW-11355613809');
 </script>
-<!-- Event snippet for Purchase conversion — fires on this Thank You page -->
-<script>
-  gtag('event', 'conversion', {
-      'send_to': 'AW-11355613809/Ad_7CLP5qcwcEPHU46Yq',
-      'value': 80.0,
-      'currency': 'USD'
-  });
-</script>
+<!-- Conversions (X + Google Ads) fire from /ilt-track.js: real plan & amount, once per checkout,
+     never on a bookmarked visit or on /members -->
+<script src="/ilt-track.js" defer></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Thank You — IllumiTrade®</title>
@@ -85,6 +80,15 @@ h1 .q{color:var(--ink-faint);font-weight:600;}
 .res .tx span{color:var(--ink-faint);font-size:12px;font-weight:400;}
 .res .ar{color:var(--accent);font-size:15px;}
 
+.keep{display:flex;align-items:center;gap:16px;text-align:left;padding:20px 22px;margin:-4px 0 44px;background:linear-gradient(135deg,rgba(95,202,189,.08),rgba(95,202,189,.02));border:1px solid rgba(95,202,189,.32);border-radius:var(--r);}
+.keep .k-ic{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:1px solid rgba(95,202,189,.45);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:16px;}
+.keep .k-tx{flex:1;min-width:0;}
+.keep .k-tx b{display:block;font-family:var(--font-display);color:var(--ink);font-size:14.5px;font-weight:600;margin-bottom:4px;}
+.keep .k-tx > span{display:block;color:var(--ink-dim);font-size:13px;line-height:1.55;}
+.keep .k-url{font-family:var(--font-mono);color:var(--accent);font-size:12.5px;letter-spacing:.02em;}
+.keep button{flex-shrink:0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--void);background:var(--accent);border:0;border-radius:var(--r);padding:11px 14px;cursor:pointer;white-space:nowrap;}
+.keep button:hover{filter:brightness(1.08);}
+@media(max-width:560px){.keep{flex-wrap:wrap;}.keep button{width:100%;}}
 .team{border-top:1px solid var(--line);padding-top:34px;margin-top:8px;}
 .team p{color:var(--ink-2);font-size:15px;font-weight:400;line-height:1.75;}
 .team .sig{color:var(--ink);font-weight:600;margin-top:10px;}
@@ -152,10 +156,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
 
 <main>
   <div class="wrap">
-    <div class="badge"><span class="dot"></span> Payment Confirmed</div>
-    <h1>Thank <span class="q">you.</span></h1>
-    <p class="lead">Your access to the <strong>ILT® indicators</strong> is being activated and will be live within the next few hours.</p>
-    <p class="sub">You'll receive a confirmation once everything is ready.</p>
+    <div class="badge"><span class="dot"></span> <span id="ty-badge-t">You're in</span></div>
+    <h1 id="ty-h1">Thank <span class="q">you.</span></h1>
+    <p class="lead" id="ty-lead">Your access to the <strong>ILT® indicators</strong> is being activated and will be live within the next few hours.</p>
+    <p class="sub" id="ty-sub">TradingView notifies you the moment your access is live.</p>
 
     <div class="res-label">Your guides · in this order</div>
     <div class="guides">
@@ -177,7 +181,16 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
       </div>
     </div>
 
-    <div class="res-label">Get started while you wait</div>
+    <div class="keep" id="ty-keep">
+      <div class="k-ic" aria-hidden="true">★</div>
+      <div class="k-tx">
+        <b>Save this page for later</b>
+        <span>Your guides, the community and your membership settings stay at <span class="k-url">illumitrade.com/members</span> — bookmark it (<span id="ty-kbd">Ctrl+D</span>) so it's one click away once your indicators are live.</span>
+      </div>
+      <button type="button" id="ty-copy">Copy link</button>
+    </div>
+
+    <div class="res-label" id="ty-res-label">Get started while you wait</div>
     <div class="res">
       <a href="https://t.me/+F0JSzA8w7rIzOTFk" target="_blank" rel="noopener">
         <div class="ic">◇</div>
@@ -215,5 +228,32 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
   <div class="copy">© 2026 IllumiTrade® — All rights reserved.</div>
 </footer>
 
+<script>
+(function () {
+  var MEMBERS = 'https://www.illumitrade.com/members', $ = function (id) { return document.getElementById(id); };
+  // Member space (/members): same page, evergreen wording, never counted as a sale
+  if (/^\/members/.test(location.pathname)) {
+    document.title = 'Member Space — IllumiTrade®';
+    $('ty-badge-t').textContent = 'Member space';
+    $('ty-h1').innerHTML = 'Your ILT<span class="q">® toolkit.</span>';
+    $('ty-lead').innerHTML = 'Your guides, alert settings, community and membership — <strong>all in one place</strong>.';
+    $('ty-sub').textContent = 'Access not live yet? It usually takes a few hours (24h max) after checkout.';
+    $('ty-res-label').textContent = 'Stay connected';
+    $('ty-keep').querySelector('b').textContent = 'Bookmark this page';
+  }
+  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) $('ty-kbd').textContent = '⌘+D';
+  $('ty-copy').addEventListener('click', function () {
+    var b = this, done = function () { b.textContent = 'Copied ✓'; setTimeout(function () { b.textContent = 'Copy link'; }, 2200); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(MEMBERS).then(done, function () { prompt('Copy this link:', MEMBERS); });
+    else { prompt('Copy this link:', MEMBERS); }
+    if (window.ILT) ILT.track('members_link_copy');
+  });
+  document.addEventListener('ilt:conversion', function (e) {
+    var k = e.detail && e.detail.kind, t = $('ty-badge-t');
+    if (k === 'trial') t.textContent = 'Free trial started · $0 charged today';
+    else if (k === 'purchase') t.textContent = 'Payment confirmed';
+  });
+})();
+</script>
 </body>
 </html>

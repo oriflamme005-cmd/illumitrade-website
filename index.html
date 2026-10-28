@@ -9,6 +9,7 @@
 a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
 twq('config','omn00');
 </script>
+<script src="/ilt-track.js" defer></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050506">
@@ -1672,6 +1673,7 @@ function openLatestCall(bar){
     $('co-trust').innerHTML='🔒 Secured by <b>Stripe</b> · '+c.trust;
     $('co-err1').textContent=''; $('co-err2').textContent='';
     step(1); loadStripe().catch(function(){});
+    window.ILT&&ILT.track('checkout_open',{plan:p},'checkout',{});
     co.hidden=false; document.body.classList.add('co-lock');
     requestAnimationFrame(function(){ co.classList.add('open'); });
     setTimeout(function(){ ($('co-email').value?$('co-user'):$('co-email')).focus(); }, 60);
