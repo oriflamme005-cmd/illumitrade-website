@@ -134,6 +134,18 @@
     .mbar .btn{padding:10px 14px;font-size:13px;white-space:nowrap}
     body{padding-bottom:64px}
   }
+  /* CALLS */
+  .calls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  .call{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s,transform .25s}
+  .call:hover{transform:translateY(-3px);border-color:var(--line-strong)}
+  .call-img{display:block;background:#000}
+  .call-img img{display:block;width:100%;height:auto;aspect-ratio:1600/974;object-fit:cover}
+  .call figcaption{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .call-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  .call p{color:var(--ink-dim);font-size:14px;margin:0;flex:1}
+  .call-x{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);border-bottom:1px solid var(--line-strong);align-self:flex-start}
+  .call-x:hover{color:var(--accent);border-color:var(--accent)}
+  @media(max-width:900px){.calls{grid-template-columns:1fr}}
   .band{text-align:center;padding:80px 0}
   .band h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em}
   .band p{color:var(--ink-dim);margin:14px auto 0;max-width:48ch}
@@ -313,6 +325,32 @@
     </div>
   </section>
 
+  <!-- CALLS -->
+  <section id="calls">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="eyebrow">On real charts</div>
+        <h2>Posted publicly. Dated. Check them yourself.</h2>
+        <p>Three recent examples from our X account — each post is embedded right in the chart, with its date.</p>
+      </div>
+      <div class="calls">
+        <figure class="call">
+          <a class="call-img" href="/proof-btc-bottom-top-2026.webp" target="_blank" rel="noopener"><img src="/proof-btc-bottom-top-2026.webp" alt="ILT on a Bitcoin chart with two dated public posts embedded: Aug 10 and Sep 21, 2026" loading="lazy" decoding="async"></a>
+          <figcaption><span class="call-t">Bitcoin · 23H</span><p>Posted Aug 10, 2026 with Aqua Diamonds on the GCL — and again on Sep 21 with a Fuchsia Diamond. Both posts are embedded in the chart.</p><a class="call-x" href="https://x.com/illumi_trade/status/2110264832280723871" target="_blank" rel="noopener">View the post on X →</a></figcaption>
+        </figure>
+        <figure class="call">
+          <a class="call-img" href="/proof-gold-top-2026.webp" target="_blank" rel="noopener"><img src="/proof-gold-top-2026.webp" alt="ILT Add-on on a 4-hour gold chart with a dated public post from Aug 26, 2026 embedded" loading="lazy" decoding="async"></a>
+          <figcaption><span class="call-t">Gold · 4H</span><p>Posted Aug 26, 2026 — the post is embedded in the chart, with the ILT® Add-on structure around it.</p><a class="call-x" href="https://x.com/illumi_trade" target="_blank" rel="noopener">See all posts on X →</a></figcaption>
+        </figure>
+        <figure class="call">
+          <a class="call-img" href="/proof-jpm-tops-bottoms-2026.webp" target="_blank" rel="noopener"><img src="/proof-jpm-tops-bottoms-2026.webp" alt="ILT Add-on bull and bear markers over twelve months on a JPMorgan 12-hour chart, with a dated post from Sep 7, 2026" loading="lazy" decoding="async"></a>
+          <figcaption><span class="call-t">JPMorgan · 12H</span><p>Twelve months of the Add-on's Bull / Bear markers on one chart, with the Sep 7, 2026 post embedded.</p><a class="call-x" href="https://x.com/illumi_trade" target="_blank" rel="noopener">See all posts on X →</a></figcaption>
+        </figure>
+      </div>
+      <p class="voices-note">Shown for illustration and education. Past signals do not guarantee future results — trading involves risk of loss.</p>
+    </div>
+  </section>
+
   <!-- MEMBERS -->
   <section id="members">
     <div class="wrap">
@@ -463,7 +501,7 @@ new IntersectionObserver(function(e){b.classList.toggle('on',!e[0].isIntersectin
 // ─── HERO SPOTLIGHT, CARD EDGE LIGHT, COUNT-UP NUMBERS ───
 (function(){
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches, still=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  document.querySelectorAll('.card,.voice,.offer,.stats > div').forEach(function(el){ el.classList.add('fx'); });
+  document.querySelectorAll('.card,.voice,.offer,.stats > div,.call').forEach(function(el){ el.classList.add('fx'); });
   if(fine){
     var hero=document.querySelector('.hero'), raf=0, last=null, ev=null;
     document.addEventListener('pointermove',function(e){ ev=e; if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
