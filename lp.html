@@ -19,19 +19,20 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --void:#050506; --bg:#08090b; --surface:#0c0d10;
     --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.16);
     --ink:#f3f5f7; --ink-2:#c7ccd2; --ink-dim:#878d96; --ink-faint:#565c64;
     --accent:#5fcabd; --ember:#d96a93;
-    --sans:'Archivo',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+    --sans:'Archivo',system-ui,sans-serif; --body:'Hanken Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
     --r:4px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--void);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{background:var(--void);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,.brand{font-family:var(--sans)}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
@@ -64,8 +65,7 @@
   .hero-grid .hero-copy h1{max-width:none}
   .hero-grid .hero-copy .lede{max-width:none}
   .hero-visual{margin:0;position:relative}
-  .hero-visual img{width:100%;height:auto;display:block;border:1px solid var(--line-strong);border-radius:var(--r)}
-  .hero-visual::before{content:"";position:absolute;top:-1px;left:16px;right:16px;height:2px;background:linear-gradient(90deg,var(--accent),var(--ember));border-radius:2px;z-index:1}
+  .hero-visual img{width:100%;height:auto;display:block}
   .hero-visual figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:12px;display:flex;align-items:center;gap:8px}
   .hero-visual figcaption::before{content:"";width:6px;height:6px;background:var(--accent);border-radius:1px}
 
@@ -157,9 +157,86 @@
     @keyframes up{to{opacity:1;transform:none}}
   }
   a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  /* ════ MAIN-SITE FX LAYER — same effects as illumitrade.com ════ */
+  ::selection{background:rgba(95,202,189,.28);color:#fff}
+  /* architectural background: column hairlines + grain */
+  .arch{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .arch::before{content:'';position:absolute;inset:0;
+    background-image:repeating-linear-gradient(90deg,transparent 0,transparent 159px,rgba(255,255,255,0.022) 159px,rgba(255,255,255,0.022) 160px);
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent)}
+  .arch::after{content:'';position:absolute;top:0;bottom:0;left:50%;width:760px;transform:translateX(-50%);
+    background:linear-gradient(90deg,rgba(255,255,255,.05),transparent 1px) left/1px 100% no-repeat,linear-gradient(90deg,transparent calc(100% - 1px),rgba(255,255,255,.05)) right/1px 100% no-repeat;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);opacity:.7}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E")}
+  main,footer{position:relative;z-index:2}
+  header{z-index:20}
+  header::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(95,202,189,.45) 50%,transparent)}
+  /* eyebrow like the main site */
+  .eyebrow{display:inline-flex;align-items:center;gap:11px;font-size:10.5px;font-weight:500;letter-spacing:.28em;color:var(--ink-dim)}
+  .eyebrow::before{content:'';width:26px;height:1px;background:var(--accent)}
+  /* buttons: fixed outline button + teal light sweep */
+  .btn-line{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;letter-spacing:.02em;font-weight:500;
+    padding:11px 18px;border-radius:var(--r);line-height:1.6;transition:border-color .2s,color .2s}
+  .btn{position:relative;overflow:hidden}
+  .btn::after{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;pointer-events:none;
+    background:linear-gradient(100deg,transparent,rgba(95,202,189,.38),transparent);transform:skewX(-20deg);transition:left .7s cubic-bezier(.2,.7,.2,1)}
+  .btn:hover::after{left:125%}
+  .btn:not(.btn-line):hover{background:#fff;opacity:1;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  /* hero: aurora + cursor spotlight */
+  .hero{position:relative;isolation:isolate}
+  .hero::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(38% 46% at 72% 38%,rgba(95,202,189,.10),transparent 70%),radial-gradient(30% 40% at 18% 70%,rgba(217,106,147,.06),transparent 70%);
+    animation:aurora 22s ease-in-out infinite alternate;will-change:transform}
+  @keyframes aurora{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-3%,2%,0) scale(1.06)}100%{transform:translate3d(2%,-2%,0) scale(1.02)}}
+  .hero::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .5s;
+    background:radial-gradient(620px circle at var(--hx,50%) var(--hy,40%),rgba(95,202,189,.10),transparent 60%)}
+  .hero.lit::after{opacity:1}
+  /* hero chart: framed, deep shadow, neon comet travelling around the frame */
+  .hv-frame{position:relative;background:#000;border:1px solid var(--line-strong);border-radius:var(--r);box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 1px rgba(95,202,189,.06)}
+  .hv-frame img{border-radius:var(--r)}
+  .hv-frame .corner{position:absolute;width:16px;height:16px;border:1px solid var(--line-strong);z-index:2}
+  .hv-frame .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0}
+  .hv-frame .corner.br{bottom:12px;right:12px;border-left:0;border-top:0}
+  .hv-neon{position:absolute;inset:-1px;width:calc(100% + 2px);height:calc(100% + 2px);overflow:visible;pointer-events:none;z-index:3;will-change:transform;transform:translateZ(0)}
+  .hv-neon rect{fill:none;vector-effect:non-scaling-stroke}
+  .hv-neon .n-base{display:none}
+  .hv-neon .n-glow{stroke:url(#neonGrad);stroke-width:22;opacity:.13;stroke-linecap:round}
+  .hv-neon .n-glow2{stroke:url(#neonGrad);stroke-width:9;opacity:.34;stroke-linecap:round}
+  .hv-neon .n-tail{stroke:url(#neonGrad);stroke-width:2;opacity:.7;stroke-linecap:round}
+  .hv-neon .n-head{stroke:url(#neonGrad);stroke-width:3;opacity:1;stroke-linecap:round}
+  .hv-neon .n-core{stroke:url(#neonHot);stroke-width:1.4;opacity:1;stroke-linecap:round}
+  .hv-neon:not(.ready) rect{opacity:0}
+  /* edge light that follows the cursor on cards */
+  .fx{position:relative}
+  .fx::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;opacity:0;transition:opacity .35s;
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(95,202,189,.75),rgba(95,202,189,.12) 45%,transparent 70%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+  .fx.on::after{opacity:1}
+  .fx.on{background-image:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(95,202,189,.055),transparent 60%)}
+  .card,.voice{transition:border-color .25s,transform .25s}
+  .card:hover,.voice:hover{transform:translateY(-3px)}
+  /* stats strip: scan line + glowing membership box */
+  .stats{position:relative;overflow:hidden}
+  .stats::after{content:'';position:absolute;top:0;left:0;height:1px;width:28%;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(95,202,189,.9),transparent);animation:scan 6.5s cubic-bezier(.45,0,.2,1) infinite}
+  @keyframes scan{0%{transform:translateX(-110%)}60%,100%{transform:translateX(420%)}}
+  .stats b{font-variant-numeric:tabular-nums}
+  .offer{box-shadow:0 0 0 1px rgba(95,202,189,.16),0 34px 90px -36px rgba(95,202,189,.32)}
+  .offer.fx{position:sticky}
+  @media(max-width:760px){.offer.fx{position:relative}}
+  .offer::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent) 30%,var(--accent) 70%,transparent)}
+  @media (hover:none){.hero::after,.fx::after{display:none}.fx.on{background-image:none}}
+  @media (max-width:760px){.arch::after{display:none}}
+  @media (prefers-reduced-motion:reduce){.hero::before,.stats::after{animation:none!important}.btn::after{display:none}
+    .hv-neon .n-base{display:inline;stroke:url(#neonGrad);stroke-width:1.2;opacity:.8}}
 </style>
 </head>
 <body>
+<div class="arch" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 
 <header>
   <div class="wrap nav">
@@ -188,7 +265,21 @@
         <p class="risk-micro">7 days free, then $80/month · Cancel before day 7 and pay nothing<br>For research &amp; education · Not financial advice · Trading involves risk of loss</p>
       </div>
       <figure class="hero-visual">
-        <img src="/proof-oil-diamond.jpg" alt="IllumiTrade indicator showing a divergence signal on a crude oil chart" loading="eager">
+        <div class="hv-frame">
+          <span class="corner tl"></span><span class="corner br"></span>
+          <img src="/proof-oil-diamond.jpg" alt="IllumiTrade indicator showing a divergence signal on a crude oil chart" loading="eager" fetchpriority="high">
+          <svg class="hv-neon" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="neonGrad" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#5fcabd"/><stop offset=".2" stop-color="#6fd6c9"/><stop offset=".55" stop-color="#a68ccb"/><stop offset=".85" stop-color="#d96a93"/><stop offset="1" stop-color="#e2799f"/>
+              </linearGradient>
+              <linearGradient id="neonHot" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#bfe9e2"/><stop offset=".55" stop-color="#e4e4ea"/><stop offset="1" stop-color="#f6d6e2"/>
+              </linearGradient>
+            </defs>
+            <rect class="n-base"/><rect class="n-glow" data-len=".2"/><rect class="n-glow2" data-len=".12"/><rect class="n-tail" data-len=".34"/><rect class="n-head" data-len=".13"/><rect class="n-core" data-len=".035"/>
+          </svg>
+        </div>
         <figcaption>ILT® divergence signal on $OIL</figcaption>
       </figure>
     </div>
@@ -341,6 +432,62 @@
 <script>
 (function(){var b=document.getElementById('mbar'),h=document.querySelector('.hero');if(!b||!h||!('IntersectionObserver' in window))return;
 new IntersectionObserver(function(e){b.classList.toggle('on',!e[0].isIntersecting);},{threshold:0}).observe(h);})();
+</script>
+<script>
+// ─── NEON BEAM around the hero chart (same as illumitrade.com) ───
+(function(){
+  var fig=document.querySelector('.hv-frame'), svg=fig && fig.querySelector('.hv-neon');
+  if(!svg || !svg.animate) return;
+  var rects=[].slice.call(svg.querySelectorAll('rect')), movers=rects.filter(function(r){return r.hasAttribute('data-len');});
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches, DUR=6800, anims=[], visible=true, lastW=0, lastH=0, raf=0;
+  function layout(){
+    raf=0; var b=svg.getBoundingClientRect(), w=b.width, h=b.height;
+    if(w<10||h<10||(Math.abs(w-lastW)<.5&&Math.abs(h-lastH)<.5)) return; lastW=w; lastH=h;
+    rects.forEach(function(r){ r.setAttribute('x','.5'); r.setAttribute('y','.5'); r.setAttribute('width',(w-1).toFixed(2)); r.setAttribute('height',(h-1).toFixed(2)); r.setAttribute('rx','4'); r.setAttribute('ry','4'); });
+    var L; try{ L=rects[0].getTotalLength(); }catch(e){} if(!L||!isFinite(L)) L=2*(w+h-2)-(8-2*Math.PI)*4;
+    var t=anims.length?(anims[0].currentTime||0)%DUR:0; anims.forEach(function(a){a.cancel();}); anims=[];
+    movers.forEach(function(r){
+      var len=L*parseFloat(r.getAttribute('data-len')); r.style.strokeDasharray=len.toFixed(2)+'px '+(L-len).toFixed(2)+'px';
+      if(still){ r.style.strokeDashoffset=(len-L*0.62).toFixed(2)+'px'; return; }
+      var a=r.animate([{strokeDashoffset:len+'px'},{strokeDashoffset:(len-L)+'px'}],{duration:DUR,iterations:Infinity,easing:'linear'});
+      a.currentTime=t; if(!visible) a.pause(); anims.push(a);
+    });
+    svg.classList.add('ready');
+  }
+  function queue(){ if(!raf) raf=requestAnimationFrame(layout); }
+  if('ResizeObserver' in window) new ResizeObserver(queue).observe(fig);
+  window.addEventListener('resize',queue,{passive:true}); window.addEventListener('load',queue);
+  if('IntersectionObserver' in window) new IntersectionObserver(function(en){ visible=en[0].isIntersecting; anims.forEach(function(a){ visible?a.play():a.pause(); }); }).observe(fig);
+  queue();
+})();
+// ─── HERO SPOTLIGHT, CARD EDGE LIGHT, COUNT-UP NUMBERS ───
+(function(){
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches, still=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  document.querySelectorAll('.card,.voice,.offer,.stats > div').forEach(function(el){ el.classList.add('fx'); });
+  if(fine){
+    var hero=document.querySelector('.hero'), raf=0, last=null, ev=null;
+    document.addEventListener('pointermove',function(e){ ev=e; if(!raf) raf=requestAnimationFrame(tick); },{passive:true});
+    function tick(){
+      raf=0; var e=ev; if(!e) return;
+      if(hero){ var r=hero.getBoundingClientRect(), inH=e.clientY>=r.top&&e.clientY<=r.bottom; hero.classList.toggle('lit',inH);
+        if(inH){ hero.style.setProperty('--hx',(e.clientX-r.left)+'px'); hero.style.setProperty('--hy',(e.clientY-r.top)+'px'); } }
+      var t=e.target&&e.target.closest?e.target.closest('.fx'):null;
+      if(last&&last!==t) last.classList.remove('on');
+      if(t){ var b=t.getBoundingClientRect(); t.style.setProperty('--mx',(e.clientX-b.left)+'px'); t.style.setProperty('--my',(e.clientY-b.top)+'px'); t.classList.add('on'); }
+      last=t;
+    }
+    document.addEventListener('pointerleave',function(){ if(last){last.classList.remove('on'); last=null;} if(hero) hero.classList.remove('lit'); });
+  }
+  if(still || !('IntersectionObserver' in window)) return;
+  document.querySelectorAll('.stats b').forEach(function(b){
+    var txt=b.textContent.trim(), m=txt.match(/^(\d+)(.*)$/); if(!m) return;
+    var end=parseInt(m[1],10), suf=m[2]; b.textContent='0'+suf;
+    var io=new IntersectionObserver(function(en){ if(!en[0].isIntersecting) return; io.disconnect();
+      var t0=performance.now(), dur=1400;
+      (function step(now){ var k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3); b.textContent=Math.round(end*e)+suf; if(k<1) requestAnimationFrame(step); else b.textContent=txt; })(t0);
+    },{threshold:.4}); io.observe(b);
+  });
+})();
 </script>
 </body>
 </html>
