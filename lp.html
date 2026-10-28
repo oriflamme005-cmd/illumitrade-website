@@ -94,6 +94,11 @@
   .voice{break-inside:avoid;margin:0 0 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px}
   .voice img{display:block;width:100%;height:auto;border-radius:calc(var(--r) - 2px)}
   .voices-note{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:8px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+  .stats div{border-top:1px solid var(--line-strong);padding-top:14px}
+  .stats b{display:block;font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+  .stats span{display:block;color:var(--ink-dim);font-size:13.5px;margin-top:4px}
+  @media(max-width:760px){.stats{grid-template-columns:1fr}}
   .band{text-align:center;padding:80px 0}
   .band h2{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em}
   .band p{color:var(--ink-dim);margin:14px auto 0;max-width:48ch}
@@ -230,13 +235,22 @@
       <div class="sec-head">
         <div class="eyebrow">From members</div>
         <h2>What traders say after using it.</h2>
-        <p>Unedited messages from IllumiTrade members.</p>
+        <p>Unedited messages from IllumiTrade members — including the ones who left, tried other tools, and came back.</p>
+      </div>
+      <div class="stats">
+        <div><b>400+</b><span>traders have used ILT® since 2022</span></div>
+        <div><b>300+</b><span>dated calls posted publicly on X</span></div>
+        <div><b>200+</b><span>markets covered — crypto, stocks, FX, commodities</span></div>
       </div>
       <div class="voices">
+        <figure class="voice"><img src="/review-others-playing-catch.webp" alt="Returning member: after trying other tools, this is the best one I've used — others are just playing catch-up" loading="lazy" decoding="async"></figure>
+        <figure class="voice"><img src="/review-blind-trader.webp" alt="Member message: my subscription ran out, I tried some trades and felt like a blind trader — renewing tomorrow" loading="lazy" decoding="async"></figure>
+        <figure class="voice"><img src="/review-desk-setup.webp" alt="Member's trading desk with the ILT indicators and guide, feeling much more confident" loading="lazy" decoding="async"></figure>
+        <figure class="voice"><img src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months" loading="lazy" decoding="async"></figure>
         <figure class="voice"><img src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress" loading="lazy" decoding="async"></figure>
         <figure class="voice"><img src="/review-patient-trader.webp" alt="Member message: It keeps me patient and a better trader" loading="lazy" decoding="async"></figure>
-        <figure class="voice"><img src="/review-3-in-1.webp" alt="Member message: It shows support and resistance channels and trendlines — 3 indicators in one" loading="lazy" decoding="async"></figure>
-        <figure class="voice"><img src="/review-desk-setup.webp" alt="Member's trading desk with the ILT indicators and guide, feeling more confident" loading="lazy" decoding="async"></figure>
+        <figure class="voice"><img src="/review-recommended-friends.webp" alt="Member message: I recommended it to my friends as well" loading="lazy" decoding="async"></figure>
+        <figure class="voice"><img src="/review-3-in-1.webp" alt="Member message: support and resistance channels and trendlines — 3 indicators in one" loading="lazy" decoding="async"></figure>
         <figure class="voice"><img src="/review-edge-without-it.webp" alt="Member message: Was losing too much of an edge without it. Very enlightening" loading="lazy" decoding="async"></figure>
         <figure class="voice"><img src="/review-improved-a-lot.webp" alt="Member message: I used your first version a while ago and you improved it a lot. Great work" loading="lazy" decoding="async"></figure>
       </div>
