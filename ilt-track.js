@@ -11,7 +11,7 @@ var ILT_TRACK_CONFIG = {
   X_EVENTS: {
     trial:    'tw-omn00-ri3rd',   // "Signup Illumitrade" — free trial started (value 0)
     purchase: 'tw-omn00-ri3rd',   // "Signup Illumitrade" — paid plan (value = real amount)
-    checkout: '',   // "Checkout initiated" — fires when the on-site checkout opens
+    checkout: '',   // "Checkout initiated" — fires once per visit on the first click on any plan button
     lead:     ''    // optional "Lead"  — fires when someone opens the free-guide form (blog)
   },
   // Google Ads (kept for the day you run it; harmless otherwise)
@@ -29,6 +29,15 @@ var ILT_TRACK_CONFIG = {
       s.version = '1.1', s.queue = [], u = t.createElement(n), u.async = !0, u.src = 'https://static.ads-twitter.com/uwt.js',
       a = t.getElementsByTagName(n)[0], a.parentNode.insertBefore(u, a)); }(w, d, 'script');
     w.twq('config', C.X_PIXEL);
+  }
+
+  // ── Vercel Web Analytics (visits, pages, countries, referrers) ──
+  // Turn it on once in Vercel → project → Analytics → Enable. Until then this request is a harmless 404.
+  if (/(^|\.)illumitrade\.com$/.test(location.hostname)) {
+    w.va = w.va || function () { (w.vaq = w.vaq || []).push(arguments); };
+    var va = d.createElement('script');
+    va.defer = true; va.src = '/_vercel/insights/script.js';
+    d.head.appendChild(va);
   }
 
   // ── Umami (production domains only, so previews don't pollute the numbers) ──
@@ -60,6 +69,7 @@ var ILT_TRACK_CONFIG = {
 
   function x(key, params) {
     var id = C.X_EVENTS[key]; if (!id || !w.twq) return;
+    if (key === 'checkout') { if (w.__iltCheckoutSent) return; w.__iltCheckoutSent = 1; } // once per page view
     try { w.twq('event', id, params || {}); } catch (e) {}
   }
 
@@ -80,8 +90,8 @@ var ILT_TRACK_CONFIG = {
   d.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
     var h = a.getAttribute('href') || '';
-    if (a.hasAttribute('data-plan')) ILT.track('cta_click', { plan: a.getAttribute('data-plan'), where: where(a) });
-    else if (/buy\.stripe\.com/.test(h)) ILT.track('cta_click', { plan: 'link', where: where(a) });
+    if (a.hasAttribute('data-plan')) ILT.track('cta_click', { plan: a.getAttribute('data-plan'), where: where(a) }, 'checkout', {});
+    else if (/buy\.stripe\.com/.test(h)) ILT.track('cta_click', { plan: 'link', where: where(a) }, 'checkout', {});
     else if (/t\.me\//.test(h)) ILT.track('telegram_click', { where: where(a) });
     else if (/sibforms\.com/.test(h)) ILT.track('lead_form_open', { where: where(a) }, 'lead');
     else if (/billing\.stripe\.com/.test(h)) ILT.track('manage_click', { where: where(a) });
