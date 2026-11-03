@@ -51,6 +51,50 @@
     {
       "source": "/compare/luxalgo-alternative",
       "destination": "/compare/luxalgo-alternative.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-bitcoin",
+      "destination": "/best/tradingview-indicator-for-bitcoin.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-crypto",
+      "destination": "/best/tradingview-indicator-for-crypto.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-gold",
+      "destination": "/best/tradingview-indicator-for-gold.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-silver",
+      "destination": "/best/tradingview-indicator-for-silver.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-oil",
+      "destination": "/best/tradingview-indicator-for-oil.html"
+    },
+    {
+      "source": "/best/tradingview-indicator-for-stocks",
+      "destination": "/best/tradingview-indicator-for-stocks.html"
+    },
+    {
+      "source": "/best",
+      "destination": "/best/index.html"
+    },
+    {
+      "source": "/compare/market-cipher-alternative",
+      "destination": "/compare/market-cipher-alternative.html"
+    },
+    {
+      "source": "/compare/algoalpha-alternative",
+      "destination": "/compare/algoalpha-alternative.html"
+    },
+    {
+      "source": "/compare/chartprime-alternative",
+      "destination": "/compare/chartprime-alternative.html"
+    },
+    {
+      "source": "/compare",
+      "destination": "/compare/index.html"
     }
   ]
 }
