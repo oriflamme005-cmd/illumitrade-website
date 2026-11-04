@@ -13,8 +13,8 @@ twq('config','omn00');
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050506">
-<title>IllumiTrade® — TradingView Indicator Suite · 7 Days Free</title>
-<meta name="description" content="ILT® flags volatility compression, divergence and cycle structure on any TradingView chart. 300+ dated calls posted publicly on X. 7-day free trial.">
+<title>IllumiTrade® — Technical Analysis Indicator Suite for TradingView · 7-Day Free Trial</title>
+<meta name="description" content="ILT® is a technical analysis indicator suite for TradingView: volatility compression, divergences, support/resistance channels, trendlines and configurable alerts. 7-day free trial. Educational tool, not financial advice.">
 <meta name="robots" content="noindex, follow">
 <meta name="author" content="IllumiTrade">
 <link rel="canonical" href="https://www.illumitrade.com/lp">
@@ -26,20 +26,20 @@ twq('config','omn00');
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.illumitrade.com/lp">
-<meta property="og:title" content="IllumiTrade® — Spot the setup while it's still forming">
-<meta property="og:description" content="The ILT® indicator suite for TradingView — compression, divergence and cycle structure on any chart. 7 days free.">
-<meta property="og:image" content="https://www.illumitrade.com/proofs/6968ca195f991_G8M0JNpWEAU6X4e.webp">
-<meta property="og:image:alt" content="IllumiTrade ILT® indicator on a TradingView chart">
+<meta property="og:title" content="IllumiTrade® — Technical Analysis Indicator Suite for TradingView">
+<meta property="og:description" content="Volatility compression, divergences, channels, trendlines and alerts on any TradingView chart. 7-day free trial. Not financial advice.">
+<meta property="og:image" content="https://www.illumitrade.com/logo.png">
+<meta property="og:image:alt" content="IllumiTrade® logo">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="IllumiTrade">
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@illumi_trade">
 <meta name="twitter:creator" content="@illumi_trade">
-<meta name="twitter:title" content="IllumiTrade® — Spot the setup while it's still forming">
-<meta name="twitter:description" content="The ILT® indicator suite for TradingView — compression, divergence and cycle structure on any chart. 7 days free.">
-<meta name="twitter:image" content="https://www.illumitrade.com/proofs/6968ca195f991_G8M0JNpWEAU6X4e.webp">
+<meta name="twitter:title" content="IllumiTrade® — Technical Analysis Indicator Suite for TradingView">
+<meta name="twitter:description" content="Volatility compression, divergences, channels, trendlines and alerts on any TradingView chart. 7-day free trial. Not financial advice.">
+<meta name="twitter:image" content="https://www.illumitrade.com/logo.png">
 
 <!-- Structured Data: Product + FAQ -->
 
@@ -780,6 +780,33 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   .co-panel{max-width:none;max-height:94vh;border-radius:12px 12px 0 0;padding:24px 20px calc(18px + env(safe-area-inset-bottom));transform:translateY(40px);}
 }
 @media (prefers-reduced-motion:reduce){.co-panel,.co-bg{transition:none;}.co-sk{animation:none;}}
+
+/* ════ COMPLIANCE LAYER (ad landing page) ════ */
+/* top disclaimer bar (replaces the "latest call" bar) */
+.urgency-bar.disc-bar{cursor:default;}
+.urgency-bar.disc-bar .dot{background:var(--accent);animation:none;box-shadow:none;}
+@media (max-width:640px){.urgency-bar.disc-bar .ub-mid{display:none;}.urgency-bar.disc-bar{letter-spacing:.05em;}}
+/* disclaimer box — hero + pricing + final CTA */
+.risk-note{margin-top:22px;max-width:520px;border:1px solid var(--line-strong);border-left:2px solid var(--accent);
+  background:var(--surface);border-radius:var(--r);padding:13px 16px;font-size:12.5px;line-height:1.6;color:var(--ink-2);}
+.risk-note b{color:var(--ink);font-weight:600;}
+.risk-note.center{margin:30px auto 0;max-width:720px;text-align:left;}
+/* features grid (replaces the public-call gallery) */
+#features{border-top:1px solid var(--line-soft);}
+.ft-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.ft-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px 28px 32px;position:relative;transition:border-color .25s,transform .25s;}
+.ft-card:hover{border-color:var(--line-strong);transform:translateY(-2px);}
+.ft-card::before{content:'';position:absolute;top:0;left:28px;width:30px;height:1px;background:var(--accent);}
+.ft-k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);}
+.ft-card h3{font-size:17px;font-weight:700;letter-spacing:-.01em;margin:12px 0 10px;}
+.ft-card p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;}
+.ft-card p b{color:var(--ink-2);font-weight:600;}
+.ft-note{text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:26px;}
+@media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:640px){.ft-grid{grid-template-columns:1fr;}}
+/* hero illustration (schematic, not market data) */
+.hv-illus{display:block;width:100%;height:auto;background:#000;}
+.hv-illus text{font-family:'IBM Plex Mono',monospace;}
 </style>
 </head>
 <body>
@@ -787,15 +814,12 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <div class="arch" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
-<!-- STATUS BAR -->
-<!-- ✏️ LATEST CALL — update after each public call:
-     change the 3 texts below + data-proof (the image file name of that call in the Results gallery) -->
-<a class="urgency-bar" href="#proof" data-proof="proof-brent-breakout-2026.webp" onclick="return openLatestCall(this)">
+<!-- DISCLAIMER BAR (ad landing page: keep it — do not replace with "latest call") -->
+<div class="urgency-bar disc-bar" role="note">
   <span class="dot"></span>
-  <span class="ub-k">Latest public call</span>
-  <span class="ub-v"><b>BRENT</b> · Oct 16, 2026 · <em>breakout setup</em></span>
-  <span class="ub-go">See the chart →</span>
-</a>
+  <span class="ub-k">Charting software</span>
+  <span class="ub-v"><b>Not financial advice</b><span class="ub-mid"> · For educational purposes only</span> · <em>Trading involves substantial risk<span class="ub-mid"> of loss</span></em></span>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -804,7 +828,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <span class="wm">Illumi<span>Trade®</span></span>
   </a>
   <div class="nav-links">
-    <a href="#proof">Calls</a>
+    <a href="#features">Features</a>
     <a href="#testimonials">Reviews</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
@@ -817,7 +841,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <header class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="hero-badge"><span class="dia">◆</span> Trusted by 400+ traders since 2022</div>
+      <div class="hero-badge"><span class="dia">◆</span> Technical analysis software for TradingView</div>
       <h1>
         <span class="dia-wrap" aria-hidden="true">
           <svg class="dia-mark" viewBox="12 20 76 72" width="40" height="38">
@@ -830,38 +854,162 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
               <line x1="50" y1="22" x2="50" y2="90" stroke-width="1"/>
             </g>
           </svg>
-        </span>When the Diamond prints,
-        <span class="turn">the setup is forming.</span>
+        </span>See the chart clearly.
+        <span class="turn">Any market. Any timeframe.</span>
       </h1>
-      <p class="lede">The TradingView indicator that <b>flags the setup while it's still forming</b>. 300+ dated calls posted publicly on X — on Bitcoin, crypto, forex, stocks, gold &amp; oil. <b>Check every one.</b></p>
+      <p class="lede">ILT® is a <b>technical analysis indicator suite for TradingView</b>. It marks volatility compression, divergences, support &amp; resistance zones and trendlines, and lets you set alerts on them, so you spend less time drawing and more time <b>studying the chart and making your own decisions</b>.</p>
       <ul class="hero-checks">
-        <li>Dated &amp; verifiable calls</li>
-        <li>Every TradingView asset</li>
-        <li>Setup in minutes</li>
-        <li>No advanced charting skills needed</li>
+        <li>Volatility &amp; divergence tools</li>
+        <li>Configurable alerts</li>
+        <li>Any asset · any timeframe</li>
+        <li>Works on the free TradingView plan</li>
       </ul>
       <div class="hero-cta">
         <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
-        <a href="#proof" class="btn-line">See the public calls <span class="arr">→</span></a>
+        <a href="#features" class="btn-line">See the features <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">$0 today · Live on your charts within hours · Cancel in 1 click · <a href="#pricing">Compare all plans</a></p>
-      <div class="hero-proof reveal" aria-label="What members say">
-        <span class="hp-rating"><span class="hp-stars">★★★★★</span> Members say</span>
-        <span class="hp-pill">"Keeps me patient"</span>
-        <span class="hp-pill">"Removes all the stress"</span>
-        <span class="hp-pill">"3 indicators in one"</span>
-      </div>
-      <p class="hero-verify">Every call <b>dated &amp; public</b> on X</p>
+      <p class="hero-micro">7 days free on the monthly plan · then $80/mo · cancel anytime · <a href="#pricing">See all plans</a></p>
+      <div class="risk-note" role="note"><b>Not financial advice.</b> For educational purposes only. Trading involves substantial risk of loss. Past performance is not indicative of future results. ILT® is a charting tool; it does not predict prices or guarantee any outcome.</div>
     </div>
     <figure class="hv-proof">
       <div class="frame">
         <span class="corner tl"></span><span class="corner br"></span>
-        <img src="/proof-oil-diamond.jpg" fetchpriority="high" alt="ILT Diamond on the OIL chart, public call of Apr 8 2026">
+        <svg class="hv-illus" viewBox="0 0 640 400" role="img" aria-label="Illustrative schematic of the ILT indicator display: candles, a volatility compression zone, a support zone, a trendline, a divergence on the oscillator pane and a readout panel. Not real market data.">
+          <rect width="640" height="400" fill="#000"/>
+          <g stroke="rgba(255,255,255,.045)" stroke-width="1">
+            <line x1="0" y1="70" x2="640" y2="70"/><line x1="0" y1="120" x2="640" y2="120"/><line x1="0" y1="170" x2="640" y2="170"/><line x1="0" y1="220" x2="640" y2="220"/>
+            <line x1="120" y1="0" x2="120" y2="272"/><line x1="240" y1="0" x2="240" y2="272"/><line x1="360" y1="0" x2="360" y2="272"/><line x1="480" y1="0" x2="480" y2="272"/>
+          </g>
+          <!-- support zone -->
+          <rect x="24" y="238" width="592" height="13" fill="rgba(217,106,147,.10)"/>
+          <text x="30" y="264" font-size="8.5" letter-spacing="1.4" fill="#878d96">SUPPORT ZONE</text>
+          <!-- trendline -->
+          <line x1="34" y1="58" x2="612" y2="136" stroke="#d96a93" stroke-width="1" stroke-dasharray="4 4" opacity=".7"/>
+          <!-- compression zone -->
+          <rect x="372" y="138" width="232" height="64" fill="rgba(95,202,189,.06)" stroke="rgba(95,202,189,.45)" stroke-dasharray="3 3"/>
+          <text x="378" y="216" font-size="8.5" letter-spacing="1.4" fill="#5fcabd">VOLATILITY COMPRESSION</text>
+          <line x1="34.0" y1="90.3" x2="34.0" y2="125.9" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="30.0" y="100.1" width="8" height="2.4" fill="#d96a93" opacity=".88"/>
+<line x1="46.4" y1="72.5" x2="46.4" y2="118.2" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="42.4" y="92.7" width="8" height="9.9" fill="#5fcabd" opacity=".88"/>
+<line x1="58.8" y1="62.7" x2="58.8" y2="99.6" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="54.8" y="82.2" width="8" height="10.6" fill="#5fcabd" opacity=".88"/>
+<line x1="71.2" y1="74.5" x2="71.2" y2="98.3" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="67.2" y="82.2" width="8" height="7.8" fill="#d96a93" opacity=".88"/>
+<line x1="83.6" y1="62.0" x2="83.6" y2="106.5" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="79.6" y="90.0" width="8" height="7.4" fill="#d96a93" opacity=".88"/>
+<line x1="96.0" y1="72.2" x2="96.0" y2="128.6" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="92.0" y="94.9" width="8" height="2.5" fill="#5fcabd" opacity=".88"/>
+<line x1="108.4" y1="78.4" x2="108.4" y2="141.7" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="104.4" y="94.9" width="8" height="14.8" fill="#d96a93" opacity=".88"/>
+<line x1="120.8" y1="69.8" x2="120.8" y2="123.3" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="116.8" y="98.6" width="8" height="11.1" fill="#5fcabd" opacity=".88"/>
+<line x1="133.2" y1="83.3" x2="133.2" y2="112.7" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="129.2" y="92.3" width="8" height="6.3" fill="#5fcabd" opacity=".88"/>
+<line x1="145.6" y1="81.6" x2="145.6" y2="140.3" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="141.6" y="92.3" width="8" height="26.6" fill="#d96a93" opacity=".88"/>
+<line x1="158.0" y1="103.0" x2="158.0" y2="157.2" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="154.0" y="118.8" width="8" height="17.9" fill="#d96a93" opacity=".88"/>
+<line x1="170.4" y1="118.9" x2="170.4" y2="148.1" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="166.4" y="126.4" width="8" height="10.3" fill="#5fcabd" opacity=".88"/>
+<line x1="182.8" y1="109.1" x2="182.8" y2="160.5" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="178.8" y="126.4" width="8" height="19.9" fill="#d96a93" opacity=".88"/>
+<line x1="195.2" y1="128.3" x2="195.2" y2="175.4" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="191.2" y="146.3" width="8" height="15.3" fill="#d96a93" opacity=".88"/>
+<line x1="207.6" y1="137.0" x2="207.6" y2="181.3" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="203.6" y="161.5" width="8" height="7.4" fill="#d96a93" opacity=".88"/>
+<line x1="220.0" y1="145.7" x2="220.0" y2="198.3" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="216.0" y="165.6" width="8" height="3.4" fill="#5fcabd" opacity=".88"/>
+<line x1="232.4" y1="152.1" x2="232.4" y2="202.0" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="228.4" y="165.6" width="8" height="4.2" fill="#d96a93" opacity=".88"/>
+<line x1="244.8" y1="127.1" x2="244.8" y2="196.0" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="240.8" y="144.2" width="8" height="25.7" fill="#5fcabd" opacity=".88"/>
+<line x1="257.2" y1="101.2" x2="257.2" y2="151.0" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="253.2" y="120.1" width="8" height="24.0" fill="#5fcabd" opacity=".88"/>
+<line x1="269.6" y1="93.8" x2="269.6" y2="142.6" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="265.6" y="120.1" width="8" height="1.2" fill="#d96a93" opacity=".88"/>
+<line x1="282.0" y1="107.1" x2="282.0" y2="171.8" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="278.0" y="121.4" width="8" height="26.0" fill="#d96a93" opacity=".88"/>
+<line x1="294.4" y1="126.0" x2="294.4" y2="177.6" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="290.4" y="147.3" width="8" height="12.2" fill="#d96a93" opacity=".88"/>
+<line x1="306.8" y1="128.4" x2="306.8" y2="202.3" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="302.8" y="159.5" width="8" height="24.2" fill="#d96a93" opacity=".88"/>
+<line x1="319.2" y1="176.3" x2="319.2" y2="224.0" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="315.2" y="183.7" width="8" height="15.6" fill="#d96a93" opacity=".88"/>
+<line x1="331.6" y1="166.9" x2="331.6" y2="242.0" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="327.6" y="199.4" width="8" height="14.8" fill="#d96a93" opacity=".88"/>
+<line x1="344.0" y1="195.0" x2="344.0" y2="237.9" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="340.0" y="211.2" width="8" height="3.0" fill="#5fcabd" opacity=".88"/>
+<line x1="356.4" y1="177.2" x2="356.4" y2="221.5" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="352.4" y="195.4" width="8" height="15.8" fill="#5fcabd" opacity=".88"/>
+<line x1="368.8" y1="176.8" x2="368.8" y2="221.8" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="364.8" y="184.2" width="8" height="11.2" fill="#5fcabd" opacity=".88"/>
+<line x1="381.2" y1="170.7" x2="381.2" y2="191.8" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="377.2" y="177.6" width="8" height="6.6" fill="#5fcabd" opacity=".88"/>
+<line x1="393.6" y1="171.4" x2="393.6" y2="190.3" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="389.6" y="177.6" width="8" height="4.8" fill="#d96a93" opacity=".88"/>
+<line x1="406.0" y1="172.6" x2="406.0" y2="191.9" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="402.0" y="182.4" width="8" height="1.2" fill="#5fcabd" opacity=".88"/>
+<line x1="418.4" y1="175.3" x2="418.4" y2="194.7" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="414.4" y="182.4" width="8" height="4.7" fill="#d96a93" opacity=".88"/>
+<line x1="430.8" y1="174.3" x2="430.8" y2="197.1" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="426.8" y="184.0" width="8" height="3.0" fill="#5fcabd" opacity=".88"/>
+<line x1="443.2" y1="171.2" x2="443.2" y2="190.9" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="439.2" y="177.8" width="8" height="6.2" fill="#5fcabd" opacity=".88"/>
+<line x1="455.6" y1="164.8" x2="455.6" y2="186.2" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="451.6" y="172.8" width="8" height="5.0" fill="#5fcabd" opacity=".88"/>
+<line x1="468.0" y1="162.4" x2="468.0" y2="180.5" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="464.0" y="168.3" width="8" height="4.5" fill="#5fcabd" opacity=".88"/>
+<line x1="480.4" y1="157.1" x2="480.4" y2="178.3" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="476.4" y="165.4" width="8" height="2.9" fill="#5fcabd" opacity=".88"/>
+<line x1="492.8" y1="157.3" x2="492.8" y2="176.0" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="488.8" y="165.4" width="8" height="2.1" fill="#d96a93" opacity=".88"/>
+<line x1="505.2" y1="161.4" x2="505.2" y2="179.1" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="501.2" y="167.5" width="8" height="1.8" fill="#d96a93" opacity=".88"/>
+<line x1="517.6" y1="159.6" x2="517.6" y2="182.1" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="513.6" y="169.3" width="8" height="3.4" fill="#d96a93" opacity=".88"/>
+<line x1="530.0" y1="162.6" x2="530.0" y2="179.0" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="526.0" y="170.2" width="8" height="2.5" fill="#5fcabd" opacity=".88"/>
+<line x1="542.4" y1="164.1" x2="542.4" y2="177.5" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="538.4" y="170.2" width="8" height="1.2" fill="#d96a93" opacity=".88"/>
+<line x1="554.8" y1="159.5" x2="554.8" y2="178.7" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="550.8" y="166.0" width="8" height="5.4" fill="#5fcabd" opacity=".88"/>
+<line x1="567.2" y1="152.4" x2="567.2" y2="172.5" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="563.2" y="158.3" width="8" height="7.8" fill="#5fcabd" opacity=".88"/>
+<line x1="579.6" y1="143.8" x2="579.6" y2="164.2" stroke="#5fcabd" stroke-width="1" opacity=".75"/>
+<rect x="575.6" y="151.3" width="8" height="7.0" fill="#5fcabd" opacity=".88"/>
+<line x1="592.0" y1="142.7" x2="592.0" y2="162.6" stroke="#d96a93" stroke-width="1" opacity=".75"/>
+<rect x="588.0" y="151.3" width="8" height="4.9" fill="#d96a93" opacity=".88"/>
+<polyline fill="none" stroke="#bfe9e2" stroke-width="1.3" opacity=".5" points="34.0,102.6 46.4,99.6 58.8,94.4 71.2,93.1 83.6,94.4 96.0,94.5 108.4,99.1 120.8,99.0 133.2,97.0 145.6,103.5 158.0,113.5 170.4,117.3 182.8,126.0 195.2,136.7 207.6,146.4 220.0,152.1 232.4,157.5 244.8,153.5 257.2,143.5 269.6,136.8 282.0,140.0 294.4,145.8 306.8,157.2 319.2,169.9 331.6,183.1 344.0,191.5 356.4,192.7 368.8,190.1 381.2,186.4 393.6,185.2 406.0,184.4 418.4,185.2 430.8,184.8 443.2,182.7 455.6,179.7 468.0,176.3 480.4,173.0 492.8,171.4 505.2,170.7 517.6,171.3 530.0,171.0 542.4,171.1 554.8,169.6 567.2,166.2 579.6,161.7 592.0,160.0"/>
+<polyline fill="none" stroke="#5fcabd" stroke-width="1.4" points="34.0,318.0 46.4,319.5 58.8,323.5 71.2,328.5 83.6,332.5 96.0,334.0 108.4,335.5 120.8,339.5 133.2,344.5 145.6,348.5 158.0,350.0 170.4,350.8 182.8,353.0 195.2,356.0 207.6,359.0 220.0,361.2 232.4,362.0 244.8,354.5 257.2,339.5 269.6,332.0 282.0,327.0 294.4,322.0 306.8,328.5 319.2,341.5 331.6,348.0 344.0,344.5 356.4,337.5 368.8,334.0 381.2,332.8 393.6,330.0 406.0,327.2 418.4,326.0 430.8,326.4 443.2,327.4 455.6,328.6 468.0,329.6 480.4,330.0 492.8,329.6 505.2,328.6 517.6,327.4 530.0,326.4 542.4,326.0 554.8,326.4 567.2,327.5 579.6,328.6 592.0,329.0"/>
+          <!-- divergence -->
+          <line x1="236" y1="206" x2="336" y2="246" stroke="#d96a93" stroke-width="1.3"/>
+          <line x1="236" y1="363" x2="336" y2="352" stroke="#5fcabd" stroke-width="1.3"/>
+          <!-- marker -->
+          <polygon points="336,256 342,263 336,270 330,263" fill="none" stroke="#bfe9e2" stroke-width="1.2"/>
+          <!-- oscillator pane -->
+          <line x1="0" y1="276" x2="640" y2="276" stroke="rgba(255,255,255,.09)"/>
+          <text x="30" y="292" font-size="8.5" letter-spacing="1.4" fill="#565c64">OSCILLATOR</text>
+          <line x1="24" y1="330" x2="616" y2="330" stroke="rgba(255,255,255,.06)" stroke-dasharray="2 4"/>
+          <text x="350" y="372" font-size="8.5" letter-spacing="1.4" fill="#5fcabd">DIVERGENCE</text>
+          <!-- readout panel -->
+          <g transform="translate(410 20)">
+            <rect width="206" height="104" rx="3" fill="rgba(12,13,16,.94)" stroke="rgba(255,255,255,.16)"/>
+            <text x="12" y="19" font-size="8.5" letter-spacing="1.6" fill="#878d96">ILT® READOUT</text>
+            <line x1="12" y1="27" x2="194" y2="27" stroke="rgba(255,255,255,.08)"/>
+            <g font-size="9.5" fill="#c7ccd2">
+              <text x="12" y="45">Volatility</text><text x="194" y="45" text-anchor="end" fill="#5fcabd">Compressed</text>
+              <text x="12" y="63">Divergence</text><text x="194" y="63" text-anchor="end" fill="#f3f5f7">Bullish · 4H</text>
+              <text x="12" y="81">Trend line</text><text x="194" y="81" text-anchor="end" fill="#d96a93">Below</text>
+              <text x="12" y="99">Alerts</text><text x="194" y="99" text-anchor="end" fill="#f3f5f7">3 active</text>
+            </g>
+          </g>
+        </svg>
       </div>
       <figcaption>
-        <span class="badge-live"><span class="d"></span> Public call · Apr 8, 2026</span>
-        <div class="cap-txt">The Diamond printed on $OIL — the chart shows what followed.</div>
-        <a href="https://x.com/illumi_trade/status/2041774504414679137" target="_blank" rel="noopener">Verify the post on X →</a>
+        <span class="badge-live"><span class="d"></span> Feature overview</span>
+        <div class="cap-txt">What ILT® draws on your chart: compression zones, divergences, support &amp; resistance zones, trendlines, markers and a compact readout panel.</div>
+        <div class="cap-txt" style="margin-top:6px;font-size:11.5px;color:var(--ink-faint);">Illustrative schematic. Not real market data and not a trading result.</div>
       </figcaption>
       <svg class="hv-neon" aria-hidden="true" focusable="false">
         <defs>
@@ -890,104 +1038,78 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   </div>
 </header>
 
-<!-- TRACK RECORD STRIP
-     ✏️ Once you've counted your calls on X, change the first stat, e.g.  <b>100+</b> / Public calls on X  -->
-<div class="track reveal" aria-label="Track record">
+<!-- FEATURE STRIP (ad landing page: no track-record / performance stats here) -->
+<div class="track reveal" aria-label="At a glance">
   <div class="track-in">
-    <div class="track-i"><b>300+</b><span>Public calls live on X</span></div>
-    <div class="track-i"><b>200+</b><span>Markets covered · crypto to stocks</span></div>
-    <div class="track-i"><b>27</b><span>Documented calls on this page</span></div>
-    <div class="track-i"><b>100%</b><span>Timestamped &amp; public on X</span></div>
+    <div class="track-i"><b>3</b><span>Core indicators in one suite</span></div>
+    <div class="track-i"><b>Any</b><span>TradingView asset · crypto to stocks</span></div>
+    <div class="track-i"><b>1m→1M</b><span>Every timeframe</span></div>
+    <div class="track-i"><b>7</b><span>Day free trial · monthly plan</span></div>
   </div>
 </div>
 
-<!-- VERIFIED PROOF -->
-<section id="proof">
-  <div class="container wide">
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
     <div class="shead reveal">
-      <div class="eyebrow centered">Public Track Record</div>
-      <h2 class="section-title">Public calls. <span class="q">Dated.</span></h2>
+      <div class="eyebrow centered">What's Included</div>
+      <h2 class="section-title">The ILT<sup>®</sup> suite. <span class="q">Feature by feature.</span></h2>
     </div>
-
-    <div class="proof-tabs reveal">
-      <button class="proof-tab active" onclick="filterProof(this,'crypto')">Crypto</button>
-      <button class="proof-tab" onclick="filterProof(this,'stocks')">Stocks &amp; Commodities</button>
-      <button class="proof-tab" onclick="filterProof(this,'all')">All</button>
+    <div class="ft-grid">
+      <div class="ft-card reveal">
+        <span class="ft-k">01 · Volatility</span>
+        <h3>Compression zones</h3>
+        <p>Measures how tight volatility is compared with its own recent history and <b>highlights compression zones</b> on the chart. It describes current conditions; it does not forecast direction.</p>
+      </div>
+      <div class="ft-card reveal">
+        <span class="ft-k">02 · Momentum</span>
+        <h3>Divergence detection</h3>
+        <p>Automatically detects and labels <b>bullish and bearish divergences</b> between price and the oscillator, on any timeframe, so you don't have to scan for them by eye.</p>
+      </div>
+      <div class="ft-card reveal">
+        <span class="ft-k">03 · Structure</span>
+        <h3>Support &amp; resistance zones</h3>
+        <p>Plots <b>channels and zones</b> from recent price structure, so key levels are visible without drawing them by hand.</p>
+      </div>
+      <div class="ft-card reveal">
+        <span class="ft-k">04 · Structure</span>
+        <h3>Automatic trendlines</h3>
+        <p>Draws <b>trendlines from pivot structure</b> and updates them as new bars print, which keeps the chart tidy on every timeframe.</p>
+      </div>
+      <div class="ft-card reveal">
+        <span class="ft-k">05 · Readability</span>
+        <h3>Markers &amp; labels</h3>
+        <p>Diamond markers and <b>Bull / Bear labels</b> show when several of the suite's conditions line up, giving you a quick visual summary to review before you do your own analysis.</p>
+      </div>
+      <div class="ft-card reveal">
+        <span class="ft-k">06 · Workflow</span>
+        <h3>Dashboard &amp; alerts</h3>
+        <p>A compact dashboard shows the current readings, and native <b>TradingView alerts</b> on markers, divergences and compression levels mean you don't have to watch the screen.</p>
+      </div>
     </div>
-
-    <!-- CRYPTO -->
-    <div class="proof-grid" id="proof-crypto">
-      <div class="proof-card reveal" data-x="https://x.com/illumi_trade/status/2110264832280723871" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-btc-bottom-top-2026.webp" alt="ILT® on TradingView — BTC — Bottom &amp; top signals · Aug–Sep 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label"><span>BTC — Bottom &amp; top signals · Aug–Sep 2026</span> <span class="proof-tags"><a class="proof-x" href="https://x.com/illumi_trade/status/2110264832280723871" target="_blank" rel="noopener" onclick="event.stopPropagation()">View on X ↗</a><span class="tag tag-conf">Public call</span></span></div></div>
-      <div class="proof-card reveal" data-x="https://x.com/illumi_trade/status/2117167229183906128" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-usdt-supply-top-2026-nov.webp" alt="ILT® on TradingView — USDT SUPPLY — Diamond at the top · Oct 9, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label"><span>USDT SUPPLY — Diamond at the top · Oct 9, 2026</span> <span class="proof-tags"><a class="proof-x" href="https://x.com/illumi_trade/status/2117167229183906128" target="_blank" rel="noopener" onclick="event.stopPropagation()">View on X ↗</a><span class="tag tag-conf">Public call</span></span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-btc-diamond.webp" alt="ILT® on TradingView — BTC — Diamond signal · Feb 22, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Diamond signal · Feb 22, 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/6968ca195f991_G8M0JNpWEAU6X4e.webp" alt="ILT® on TradingView — BTC — Diamond signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Diamond signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/65a106cfdd206_6584311dc999c_INJUSDT.P_2023-12-21_13-34-24.webp" alt="ILT® on TradingView — INJ — Bullish setup · Dec 2023"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">INJ — Bullish setup · Dec 2023 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/67652773480c9_BTCUSDT.P_2024-12-20_09-13-19.webp" alt="ILT® on TradingView — BTC — Bullish signal · Dec 2024"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Bullish signal · Dec 2024 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68ee160934db8_BTCUSDT.P_2025-10-14_11-13-58.webp" alt="ILT® on TradingView — BTC — Bearish signal · Oct 2025"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Bearish signal · Oct 2025 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/65ccf007aad58_GGTiBwnWkAAeH5-.webp" alt="ILT® on TradingView — BTC — Bullish setup"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Bullish setup <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/67d93de12a62a_GmKV03IboAA37Op.webp" alt="ILT® on TradingView — BTC — Long-term cycle call"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Long-term cycle call <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/65a1061ab86d8_659556581b9db_BTCUSD_2024-01-03_13-30-11.webp" alt="ILT® on TradingView — BTC — Bearish divergence · Jan 2024"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Bearish divergence · Jan 2024 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68dfe4c62109c_BTCUSDT.P_2025-10-03_16-55-21.webp" alt="ILT® on TradingView — BTC — ILT signal · Oct 2025"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — ILT signal · Oct 2025 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/6968f45dd8659_G6BeR69XUAA7DkV.webp" alt="ILT® on TradingView — BTC — Top signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BTC — Top signal <span class="tag tag-conf">Public call</span></div></div>
-    </div>
-
-    <!-- STOCKS & COMMODITIES -->
-    <div class="proof-grid" id="proof-stocks" style="display:none;">
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-gold-top-2026.webp" alt="ILT® on TradingView — GOLD — Top signal · Aug 26, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">GOLD — Top signal · Aug 26, 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-brent-breakout-2026.webp" alt="ILT® on TradingView — BRENT — Breakout setup · Oct 16, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">BRENT — Breakout setup · Oct 16, 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68f90487a51a4_G335YG8WwAAs8li.webp" alt="ILT® on TradingView — PLTR — Bearish signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">PLTR — Bearish signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-jpm-tops-bottoms-2026.webp" alt="ILT® on TradingView — JPM — 12 months of Bull / Bear labels"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">JPM — 12 months of Bull / Bear labels <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/697c72c69859e_XAGEUR_2026-01-29_13-55-27.webp" alt="ILT® on TradingView — SILVER/EUR — Top signal · Jan 29, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">SILVER/EUR — Top signal · Jan 29, 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68fa004542d53_25329c56-87d3-4094-94bd-04571255617d.webp" alt="ILT® on TradingView — OIL — Bullish signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">OIL — Bullish signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68e3723195273_G2j35BgXAAASo1v.webp" alt="ILT® on TradingView — SILVER — Diamond signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">SILVER — Diamond signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68e373332d913_G2j30dIXAAA80Z8.webp" alt="ILT® on TradingView — SOCIÉTÉ GÉNÉRALE — Bearish signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">SOCIÉTÉ GÉNÉRALE — Bearish signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68a579c6e6e06_Gyx0Os7XAAAqd_k.webp" alt="ILT® on TradingView — PLTR — Second bearish signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">PLTR — Second bearish signal <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/691dc82dcbb76_PLATINUM_2025-11-19_14-24-32.webp" alt="ILT® on TradingView — PLATINUM — Bullish signal · Nov 2025"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">PLATINUM — Bullish signal · Nov 2025 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/6979ce0cc7e8f_HSI1_2026-01-28_09-44-26.webp" alt="ILT® on TradingView — HSI — Top signal · Jan 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">HSI — Top signal · Jan 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/697cfc520cf9c_XAGEUR_2026-01-30_19-24-28.webp" alt="ILT® on TradingView — SILVER — Top signal · Jan 30, 2026"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">SILVER — Top signal · Jan 30, 2026 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="/proof-vix-may-2025.webp" alt="ILT® on TradingView — VIX — Diamond signal · May 18, 2025"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">VIX — Diamond signal · May 18, 2025 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/6924903d0090f_VIX_2025-10-10_17-34-13.webp" alt="ILT® on TradingView — VIX — Bullish signal · Oct 10, 2025"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">VIX — Bullish signal · Oct 10, 2025 <span class="tag tag-conf">Public call</span></div></div>
-      <div class="proof-card reveal" onclick="openLightbox(this)"><div class="imgwrap"><img loading="lazy" decoding="async" src="https://www.illumitrade.com/proofs/68fb694b07e78_G4Bf0cpXQAAknj1.webp" alt="ILT® on TradingView — OIL — Bullish signal"><span class="proof-zoom">⛶ Fullscreen</span></div><div class="proof-card-label">OIL — Bullish signal <span class="tag tag-conf">Public call</span></div></div>
-    </div>
+    <p class="ft-note reveal">Indicators describe price and volatility conditions. They do not predict future prices, and no marker or label is a recommendation to buy or sell.</p>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS (ad landing page: feature / ease-of-use feedback only — no performance or profit claims) -->
 <section id="testimonials">
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">Member Feedback</div>
-      <h2 class="section-title">Real messages. <span class="q">Unedited.</span></h2>
-      <p class="shead-sub">22 screenshots straight from our DMs and X — unedited, names hidden for privacy.</p>
-    </div>
-    <div class="feat-grid">
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Tried others — came back</figcaption><img loading="lazy" decoding="async" src="/review-others-playing-catch.webp" alt="Member message: coming back to the best tool I've used. I tried some others &amp; have to say you developed a monster &amp; others are just playing catch"></figure>
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>"I feel like a blind trader" without it</figcaption><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Just renewed for 3 months</figcaption><img loading="lazy" decoding="async" src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months!"></figure>
+      <h2 class="section-title">What members say <span class="q">about using it.</span></h2>
+      <p class="shead-sub">Selected messages about the tool's features and ease of use. Names hidden for privacy.</p>
     </div>
     <div class="wall" id="wall">
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-desk-setup.webp" alt="Member photo of their trading desk with the IllumiTrade guide on screen: I'm in now and feeling much more confident thank you! And thank you for the updated guide as well as your indicator"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-edge-without-it.webp" alt="Member message after renewing: Was losing too much of an edge without it. Very enlightening, I am no longer in the dark"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trial-impressed.webp" alt="Trial user message: Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-recommended-friends.webp" alt="Member message: Sick indicator bro! I recommended it to my friends as well, they will buy too"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-patient-trader.webp" alt="Member message: Just wanted to say how great your indicator and strategies are. It keeps me patient and a better trader"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-diamonds-work.webp" alt="Member message with a TradingView chart showing ILT on a daily chart: I think ur diamonds work"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-aqua-diamonds.webp" alt="Member message: Ordinals has so many aqua diamonds on 2 and 4 hr. Love the indicator my friend"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-wizardry-suite.webp" alt="Public post on X, Oct 29 2024: Sir, I'm loving using your wizardry indicator suite once again"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trendlines-auto.webp" alt="Member message: I see the trendlines prints automatically this is amazing bro"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves. Also shows accurate support and resistance channels. Also trendlines. 3 indicator in one so I like it very much"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trendlines-auto.webp" alt="Member message: I see the trendlines prints automatically this is amazing"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-desk-setup.webp" alt="Member photo of their desk with the IllumiTrade guide on screen: thank you for the updated guide as well as your indicator"></figure>
       <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-improved-a-lot.webp" alt="Member message: I used your first version of the indicator a while ago and I must say you improved a lot my friend! Great work"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-method.webp" alt="Member message: So this is THE BEST method/indicator I have ever used"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-crazy-good.webp" alt="Member message: Dude your indicator is crazy good"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sick-amazing.webp" alt="Member message: Wow thank so much sir. Ur indicator is sick amazing"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever.webp" alt="Member message: Best indicator ever"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-patient-trader.webp" alt="Member message: Just wanted to say how great your indicator and strategies are. It keeps me patient and a better trader"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-wizardry-suite.webp" alt="Public post on X, Oct 29 2024: I'm loving using your indicator suite once again"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-recommended-friends.webp" alt="Member message: I recommended it to my friends as well"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months!"></figure>
     </div>
-    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 19 messages ↓</button>
-    <p class="disclaimer-fine">Genuine messages from IllumiTrade® members about their experience with the tool. Individual results vary. Trading involves risk of loss.</p>
+    <p class="disclaimer-fine">Testimonials reflect individual members' opinions of the software. They are not a guarantee or indication of trading results. Not financial advice. Trading involves substantial risk of loss.</p>
   </div>
 </section>
 
@@ -996,7 +1118,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">Getting Started</div>
-      <h2 class="section-title">From checkout to first signal <span class="q">in hours.</span></h2>
+      <h2 class="section-title">From checkout to your charts <span class="q">in hours.</span></h2>
     </div>
     <div class="hiw-grid reveal">
       <div class="hiw-step">
@@ -1016,8 +1138,8 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       </div>
       <div class="hiw-step">
         <span class="hiw-num">04</span>
-        <h3>Set your alerts &amp; trade</h3>
-        <p>Turn on Diamond &amp; divergence alerts once and <b>let the indicator watch the market for you</b> — on any asset, any timeframe.</p>
+        <h3>Set up your alerts</h3>
+        <p>Choose the conditions you want to be notified about (markers, divergences, compression levels) on <b>any asset and timeframe</b>. What you do with them is your call.</p>
       </div>
     </div>
     <p class="hiw-note reveal">Works with the <b>free TradingView plan</b> — no paid TradingView subscription required.</p>
@@ -1029,16 +1151,15 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">Why ILT</div>
-      <h2 class="section-title">Most indicators react. <span class="q">ILT anticipates.</span></h2>
+      <h2 class="section-title">One suite. <span class="q">A clearer chart.</span></h2>
     </div>
     <div class="cmp reveal" role="table" aria-label="ILT compared with typical indicators">
       <div class="cmp-row cmp-head" role="row"><div role="columnheader"></div><div role="columnheader">Typical indicators</div><div role="columnheader" class="cmp-ilt">ILT<sup>®</sup> suite</div></div>
-      <div class="cmp-row" role="row"><div role="rowheader">Timing</div><div role="cell">Signal after the move has started</div><div role="cell" class="cmp-ilt">Flags compression <b>before</b> the breakout</div></div>
-      <div class="cmp-row" role="row"><div role="rowheader">Proof</div><div role="cell">Backtests &amp; hand-picked screenshots</div><div role="cell" class="cmp-ilt">Every call <b>timestamped publicly on X</b></div></div>
-      <div class="cmp-row" role="row"><div role="rowheader">What you get</div><div role="cell">One line, you decode the rest</div><div role="cell" class="cmp-ilt"><b>3-in-1:</b> Diamond alerts, divergences, S/R channels &amp; trendlines</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Volatility</div><div role="cell">Raw bands you read yourself</div><div role="cell" class="cmp-ilt">Compression zones <b>measured and highlighted</b> on the chart</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">What you get</div><div role="cell">One line, you decode the rest</div><div role="cell" class="cmp-ilt"><b>3-in-1:</b> markers &amp; alerts, divergences, S/R channels &amp; trendlines</div></div>
       <div class="cmp-row" role="row"><div role="rowheader">Markets</div><div role="cell">Tuned for one market</div><div role="cell" class="cmp-ilt">Any TradingView asset, <b>any timeframe</b></div></div>
       <div class="cmp-row" role="row"><div role="rowheader">Reading it</div><div role="cell">Cluttered oscillators to interpret</div><div role="cell" class="cmp-ilt">Clear labels: <b>Bull / Bear, Diamond, zones</b></div></div>
-      <div class="cmp-row" role="row"><div role="rowheader">Commitment</div><div role="cell">Upfront payment, no trial</div><div role="cell" class="cmp-ilt"><b>7 days free</b> · cancel in 1 click</div></div>
+      <div class="cmp-row" role="row"><div role="rowheader">Commitment</div><div role="cell">Upfront payment, no trial</div><div role="cell" class="cmp-ilt"><b>7 days free</b> on monthly · cancel anytime</div></div>
     </div>
   </div>
 </section>
@@ -1051,19 +1172,20 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <h2 class="section-title">Simple, transparent <span class="q">plans.</span></h2>
     </div>
     <div class="trial-banner reveal">
-      <span><strong>Start with a 7-day free trial</strong> on the monthly plan — add your card, your access goes live within hours, cancel in 1 click before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27%.</span>
+      <span><strong>7-day free trial on the monthly plan.</strong> A card is required to start. If you cancel before day 7 you are not charged; otherwise the plan renews at $80/month until you cancel. Prepaid plans are one-time payments that save up to 27% and do not auto-renew.</span>
     </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
         <span class="price-tag trial">◆ Start here · 7 days free</span>
         <div class="price-period">1 Month</div>
         <div class="price-amount"><sup>$</sup>80<span class="mo">/mo</span></div>
-        <div class="price-billing">Free for 7 days · then $80/mo · cancel in 1 click</div>
+        <div class="price-billing">Free for 7 days · then $80/mo, billed monthly · cancel anytime</div>
         <div class="price-divider"></div>
         <ul class="price-features">
           <li>Full ILT Indicator Suite</li>
           <li>Diamond &amp; Divergence Alerts</li>
           <li>Priority Support</li>
+          <li>Quick-start guide</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start 7-day free trial →</a></div>
       </div>
@@ -1077,7 +1199,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>Full ILT Indicator Suite</li>
           <li>Diamond &amp; Divergence Alerts</li>
           <li>Priority Support</li>
-          <li>Exclusive Trade Ideas</li>
+          <li>Quick-start guide</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" data-plan="m6" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
       </div>
@@ -1091,7 +1213,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>Full ILT Indicator Suite</li>
           <li>Diamond &amp; Divergence Alerts</li>
           <li>Priority Support</li>
-          <li>Exclusive Trade Ideas</li>
+          <li>Quick-start guide</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/8x214m63H5C1e5egBO0Ba03" data-plan="y1" target="_blank" rel="noopener" class="btn-plan">Get the 1-year plan →</a></div>
       </div>
@@ -1134,6 +1256,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <p style="margin-top:10px;">After sending, <a href="mailto:illumitrade.contact@gmail.com">email us</a> or <a href="https://x.com/illumi_trade" target="_blank" rel="noopener">DM us on X</a> with your <b style="color:var(--ink-2);">transaction hash + TradingView username</b> — access is granted within 24h.</p>
         </div>
       </details>
+      <div class="risk-note center" role="note"><b>Not financial advice.</b> For educational purposes only. Trading involves substantial risk of loss. Past performance is not indicative of future results. You are buying access to charting software, not trading signals or investment advice.</div>
     </div>
   </div>
 </section>
@@ -1156,11 +1279,15 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       </details>
       <details class="faq-item">
         <summary>Which assets and timeframes does it work on?</summary>
-        <div class="faq-a"><b>Every asset TradingView offers</b> — Bitcoin and crypto, forex pairs, stocks, indices, gold, silver, oil — and every timeframe. Higher timeframes (4H, 12H, Daily) tend to produce the highest-conviction Diamond signals.</div>
+        <div class="faq-a"><b>Every asset TradingView offers</b> — Bitcoin and crypto, forex pairs, stocks, indices, gold, silver, oil — and every timeframe. Many members prefer higher timeframes (4H, 12H, Daily) for a cleaner read.</div>
       </details>
       <details class="faq-item">
         <summary>Do I need trading experience?</summary>
-        <div class="faq-a">No advanced charting skills needed. The indicator marks the zones and fires the alerts — <b>you don't have to interpret raw price action</b>. Members range from first-year traders to full-time professionals.</div>
+        <div class="faq-a">No advanced charting skills are needed to use it: the indicator labels zones and lets you set alerts, which makes the chart easier to read. It is a <b>charting and analysis tool, not a trading system</b>. You still make your own decisions, and trading carries real risk for every level of experience.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is this financial advice? Does it guarantee results?</summary>
+        <div class="faq-a">No. ILT® is <b>technical analysis software for educational purposes</b>. It does not provide investment advice or personal recommendations, it does not predict prices, and it cannot guarantee any result. Trading involves substantial risk of loss and past performance is not indicative of future results. Only trade with money you can afford to lose.</div>
       </details>
       <details class="faq-item">
         <summary>How do I cancel the free trial?</summary>
@@ -1174,11 +1301,12 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <!-- FINAL CTA -->
 <section class="final-cta">
   <div class="container reveal">
-    <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
+    <div class="eyebrow centered" style="margin-bottom:22px;">Try It</div>
     <h2>Your first 7 days <span class="q">are free.</span></h2>
-    <p>See the Diamond print on your own charts before you pay a cent. Add your card, your access goes live within hours, cancel any time before day 7 — <b>$0 today, no commitment</b>.</p>
+    <p>Try the full suite on your own charts before you pay. Add your card, your access goes live within hours, and if you cancel before day 7 you are not charged. After that it's <b>$80/month until you cancel</b>.</p>
     <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
-    <p class="hero-micro">$0 today · Live within hours · Cancel in 1 click · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+    <p class="hero-micro">$0 today · Live within hours · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+    <div class="risk-note center" role="note"><b>Not financial advice.</b> For educational purposes only. Trading involves substantial risk of loss. Past performance is not indicative of future results.</div>
   </div>
 </section>
 
@@ -1187,7 +1315,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <div class="footer-inner">
     <a href="#" class="footer-logo">Illumi<span>Trade®</span></a>
     <div class="footer-links">
-      <a href="#">Home</a>
+      <a href="/">Home</a>
       <a href="/blog">Blog</a>
       <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
       <a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Manage subscription</a>
@@ -1198,7 +1326,8 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <span class="footer-copy">© 2026 IllumiTrade® — All rights reserved.</span>
   </div>
   <div class="footer-disc">
-    <p><strong>Risk disclaimer.</strong> The information provided by IllumiTrade® is for informational and educational purposes only and does not constitute investment advice, a recommendation, or a solicitation to buy or sell any financial instrument. Trading involves a risk of loss up to the full amount of capital invested. Past performance is not indicative of future results. Examples and signals shown are real, publicly published cases and imply no guarantee of results. Every investment decision is your sole responsibility.</p>
+    <p><strong>Risk disclaimer.</strong> The information provided by IllumiTrade® is for informational and educational purposes only and does not constitute investment advice, a recommendation, or a solicitation to buy or sell any financial instrument. Trading involves a risk of loss up to the full amount of capital invested. Past performance is not indicative of future results. Indicators, markers, alerts and any illustrations on this page describe chart conditions only; they are not predictions, signals to buy or sell, or a guarantee of any result. Testimonials reflect individual opinions and are not indicative of future performance. IllumiTrade® does not provide personalized investment advice. Every trading decision is your sole responsibility.</p>
+    <p style="margin-top:10px;">TradingView is a trademark of TradingView, Inc. IllumiTrade® is an independent product and is not affiliated with or endorsed by TradingView.</p>
   </div>
 </footer>
 
@@ -1268,20 +1397,6 @@ if ('IntersectionObserver' in window) {
   }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
   reveals.forEach(el => { el.classList.add('hidden'); observer.observe(el); });
   setTimeout(() => { reveals.forEach(el => { el.classList.remove('hidden'); el.classList.add('visible'); }); }, 1600);
-}
-
-// ─── PROOF FILTER TABS ───
-function filterProof(btn, type){
-  document.querySelectorAll('.proof-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  const crypto = document.getElementById('proof-crypto');
-  const stocks = document.getElementById('proof-stocks');
-  if (type === 'crypto'){ crypto.style.display='grid'; stocks.style.display='none'; }
-  else if (type === 'stocks'){ crypto.style.display='none'; stocks.style.display='grid'; }
-  else { crypto.style.display='grid'; stocks.style.display='grid'; }
-  document.querySelectorAll('#proof-crypto .proof-card, #proof-stocks .proof-card').forEach(el => {
-    el.classList.remove('hidden'); el.classList.add('visible'); el.style.opacity='1'; el.style.transform='translateY(0)';
-  });
 }
 
 // ─── LIGHTBOX (gallery mode) ───
@@ -1376,19 +1491,6 @@ window.addEventListener('scroll', () => {
   window.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd();
 })();
 
-// ─── LATEST CALL (status bar) → open that chart in the gallery ───
-function openLatestCall(bar){
-  var file = bar.getAttribute('data-proof');
-  var img = file && document.querySelector('.proof-card img[src$="' + file + '"]');
-  if(!img) return true; // fallback: plain jump to #proof
-  var card = img.closest('.proof-card');
-  var inStocks = !!card.closest('#proof-stocks');
-  var tabs = document.querySelectorAll('.proof-tab');
-  filterProof(tabs[inStocks ? 1 : 0], inStocks ? 'stocks' : 'crypto');
-  openLightbox(card);
-  return false;
-}
-
 // ─── ENGRAVED DIAMOND — slow scroll rotation ───
 (function(){
   var d = document.querySelector('.dia-g');
@@ -1457,7 +1559,7 @@ function openLatestCall(bar){
 (function(){
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var still=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  document.querySelectorAll('.proof-card,.price-card,.price-bookend,.wall-tile,.feat,.testi-card,.hiw-step,.track-i,.cmp')
+  document.querySelectorAll('.ft-card,.price-card,.price-bookend,.wall-tile,.feat,.testi-card,.hiw-step,.track-i,.cmp')
     .forEach(function(el){ el.classList.add('fx'); });
   if(fine){
     var hero=document.querySelector('.hero'), raf=0, last=null, ev=null;
