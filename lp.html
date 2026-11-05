@@ -822,6 +822,16 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 .db-list p{font-size:13.5px;color:var(--ink-dim);line-height:1.65;}
 .db-cta{margin-top:28px;}
 @media (max-width:900px){.db-grid{grid-template-columns:1fr;gap:30px;}}
+.guar{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(95,202,189,.35);background:rgba(95,202,189,.06);padding:4px 9px;border-radius:3px;}
+.kit{max-width:900px;margin:0 auto 34px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--surface);padding:24px 26px;}
+.kit-h{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-bottom:16px;}
+.kit-h .dia{color:var(--accent);}
+.kit-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px;}
+.kit-list li{display:flex;flex-direction:column;gap:2px;padding-left:16px;position:relative;}
+.kit-list li::before{content:'◆';position:absolute;left:0;top:2px;font-size:9px;color:var(--accent);}
+.kit-list b{color:var(--ink);font-size:14.5px;font-weight:700;}
+.kit-list span{color:var(--ink-dim);font-size:13px;line-height:1.55;}
+@media (max-width:700px){.kit-list{grid-template-columns:1fr;}}
 .gal-note{text-align:center;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);max-width:720px;margin:34px auto 0;line-height:1.7;letter-spacing:.02em;}
 </style>
 </head>
@@ -852,7 +862,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <a href="#faq">FAQ</a>
     <a href="mailto:illumitrade.contact@gmail.com">Contact</a>
   </div>
-  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="nav-cta">Start Free Trial</a>
+  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="nav-cta">Start Free Week</a>
 </nav>
 
 <!-- HERO -->
@@ -872,10 +882,10 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
               <line x1="50" y1="22" x2="50" y2="90" stroke-width="1"/>
             </g>
           </svg>
-        </span>When the Diamond prints,
-        <span class="turn">volatility is coiled.</span>
+        </span>Stop staring at charts.
+        <span class="turn">Let the Diamond tell you when to look.</span>
       </h1>
-      <p class="lede">ILT® reads <b>21 timeframes at once</b> on your TradingView chart and shows you, in one color-coded dashboard, where trend, momentum and volatility agree, and where they don't. Diamonds mark extreme compression. Labels mark divergences. <b>You make the call.</b></p>
+      <p class="lede">ILT® reads <b>21 timeframes at once</b> on your TradingView chart. When volatility coils to an extreme, a <b>Diamond prints and your phone pings</b>. Until then, close the laptop. One color-coded dashboard shows where trend, momentum and volatility agree, and where they don't. <b>You make the call.</b></p>
       <ul class="hero-checks">
         <li>21 timeframes, one dashboard</li>
         <li>Diamond &amp; divergence alerts</li>
@@ -883,10 +893,10 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <li>Works on the free TradingView plan</li>
       </ul>
       <div class="hero-cta">
-        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My 7-Day Free Trial <span class="arr">→</span></a>
+        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My Free Week <span class="arr">→</span></a>
         <a href="#dashboard" class="btn-line">See the dashboard <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">$0 today · cancel in 1 click before day 7 · live on your charts within hours · <a href="#pricing">See all plans</a></p>
+      <p class="hero-micro">$0 today · the full ILT® Trader Kit · cancel in 1 click before day 7 · <a href="#pricing">What's inside</a></p>
       <div class="hero-proof" aria-label="What members say">
         <span class="hp-rating">250+ traders since 2022 · members say</span>
         <a class="hp-pill" href="#testimonials">"A monster"</a>
@@ -1157,37 +1167,53 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">Pricing</div>
-      <h2 class="section-title">Simple, transparent <span class="q">plans.</span></h2>
+      <h2 class="section-title">The ILT<sup>®</sup> Trader Kit. <span class="q">One price, everything inside.</span></h2>
+    </div>
+    <div class="kit reveal">
+      <div class="kit-h"><span class="dia">◆</span> Every plan includes the full ILT® Trader Kit</div>
+      <ul class="kit-list">
+        <li><b>4 indicators</b><span>Add-on, V1, 2.0 and 2+, the complete 2026 suite</span></li>
+        <li><b>21-timeframe dashboards</b><span>Trend, Diamonds and divergences from 15m to the month</span></li>
+        <li><b>Diamond &amp; divergence alerts</b><span>Native TradingView alerts, on your phone</span></li>
+        <li><b>Quick-start guide</b><span>From checkout to your first alert in minutes</span></li>
+        <li><b>Personal setup help</b><span>Message us on Telegram and we get your alerts running with you</span></li>
+        <li><b>Every future update</b><span>New versions land in your account at no extra cost</span></li>
+      </ul>
     </div>
     <div class="trial-banner reveal">
-      <span><strong>7-day free trial on the monthly plan.</strong> A card is required to start. If you cancel before day 7 you are not charged; otherwise the plan renews at $80/month until you cancel. Prepaid plans are one-time payments that save up to 27% and do not auto-renew.</span>
+      <span><strong>7-day free trial on the monthly plan.</strong> A card is required to start. If you cancel before day 7 you are not charged; otherwise the plan renews at $80/month until you cancel. Prepaid plans are one-time payments that save up to 27%, do not auto-renew and come with a <strong>14-day money-back guarantee</strong>, no questions asked.</span>
     </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
-        <span class="price-tag trial">◆ Start here · 7 days free</span>
+        <span class="price-tag trial">◆ Start here · first week free</span>
         <div class="price-period">1 Month</div>
         <div class="price-amount"><sup>$</sup>80<span class="mo">/mo</span></div>
         <div class="price-billing">Free for 7 days · then $80/mo, billed monthly · cancel anytime</div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>Full ILT Indicator Suite</li>
-          <li>Diamond &amp; Divergence Alerts</li>
-          <li>Priority Support</li>
+          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
+          <li>21-timeframe dashboards</li>
+          <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
+          <li>Personal setup help on Telegram</li>
+          <li>Every future update included</li>
         </ul>
-        <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start 7-day free trial →</a></div>
+        <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start my free week →</a></div>
       </div>
       <div class="price-card">
         <span class="price-tag ghost">·</span>
         <div class="price-period">6 Months <span class="best">· Save 25%</span></div>
         <div class="price-amount"><sup>$</sup>60<span class="mo">/mo</span></div>
         <div class="price-billing"><s>$480</s> <span class="now">$360 one-time</span> · <span class="save">save $120</span> · no auto-renew</div>
+        <div class="guar">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>Full ILT Indicator Suite</li>
-          <li>Diamond &amp; Divergence Alerts</li>
-          <li>Priority Support</li>
+          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
+          <li>21-timeframe dashboards</li>
+          <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
+          <li>Personal setup help on Telegram</li>
+          <li>Every future update included</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" data-plan="m6" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
       </div>
@@ -1196,12 +1222,15 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <div class="price-period">1 Year <span class="best">· Best value</span></div>
         <div class="price-amount"><sup>$</sup>58<span class="mo">/mo</span></div>
         <div class="price-billing"><s>$960</s> <span class="now">$699 one-time</span> · <span class="save">save $261</span> · no auto-renew</div>
+        <div class="guar">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
         <ul class="price-features">
-          <li>Full ILT Indicator Suite</li>
-          <li>Diamond &amp; Divergence Alerts</li>
-          <li>Priority Support</li>
+          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
+          <li>21-timeframe dashboards</li>
+          <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
+          <li>Personal setup help on Telegram</li>
+          <li>Every future update included</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/8x214m63H5C1e5egBO0Ba03" data-plan="y1" target="_blank" rel="noopener" class="btn-plan">Get the 1-year plan →</a></div>
       </div>
@@ -1211,7 +1240,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <div class="price-bookend">
         <div>
           <div class="pb-name">Prefer shorter? · 3 Months</div>
-          <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">save $30</span> · no auto-renew</div>
+          <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">save $30</span> · no auto-renew · <span class="save">14-day money-back guarantee</span></div>
         </div>
         <div class="pb-price">$70<span class="mo">/mo</span></div>
         <a href="https://buy.stripe.com/5kQdR8dw9e8x8KU2KY0Ba01" data-plan="m3" target="_blank" rel="noopener" class="pb-link">Get →</a>
@@ -1219,7 +1248,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <div class="price-bookend">
         <div>
           <div class="pb-name">All-in forever? · Lifetime</div>
-          <div class="pb-sub">One-time payment · no trial · all updates free</div>
+          <div class="pb-sub">One-time payment · all updates free · <span class="save">14-day money-back guarantee</span></div>
         </div>
         <div class="pb-price">$3,750</div>
         <a href="https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04" data-plan="lifetime" target="_blank" rel="noopener" class="pb-link">Choose →</a>
@@ -1227,7 +1256,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew · Access within hours (24h max) · Questions? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Ask us on Telegram</a></p>
+      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew, 14-day money-back guarantee · Access within hours (24h max) · Questions? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Ask us on Telegram</a></p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDT)?</summary>
         <div class="pa-body">
@@ -1281,6 +1310,10 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <summary>How do I cancel the free trial?</summary>
         <div class="faq-a">In 1 click: <a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Manage or cancel your membership →</a> — enter the email you signed up with and you'll get a secure login link. <b>Cancel any time before day 7 and you pay nothing.</b> Prepaid plans never auto-renew — they simply expire at the end of the period.</div>
       </details>
+      <details class="faq-item">
+        <summary>Is there a money-back guarantee?</summary>
+        <div class="faq-a">Yes. The monthly plan starts with <b>7 free days</b>. Every prepaid plan, lifetime included, comes with a <b>14-day money-back guarantee</b>: if ILT® isn't for you, send us one message within 14 days of your purchase and we refund you in full, no questions asked. Your TradingView access is removed when the refund is issued.</div>
+      </details>
     </div>
     <p class="faq-more reveal">Still have a question? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Message us on Telegram →</a> — we reply personally.</p>
   </div>
@@ -1290,9 +1323,9 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <section class="final-cta">
   <div class="container reveal">
     <div class="eyebrow centered" style="margin-bottom:22px;">Try It</div>
-    <h2>See all 21 timeframes <span class="q">on your own charts.</span></h2>
+    <h2>Close the laptop. <span class="q">Let the Diamond call you.</span></h2>
     <p>Seven days, the full suite, every market you trade. $0 today, access within hours, cancel in 1 click before day 7 and you pay nothing. After that it's <b>$80/month until you cancel</b>.</p>
-    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
+    <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My Free Week <span class="arr">→</span></a>
     <p class="hero-micro">$0 today · Live within hours · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
     <p class="hero-disc center">Charting software, not financial advice. Trading involves risk of loss. Full disclaimer below.</p>
   </div>
@@ -1322,7 +1355,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <!-- LIGHTBOX -->
 <!-- STICKY MOBILE CTA -->
 <div class="m-cta" id="m-cta" aria-hidden="true">
-  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn" tabindex="-1">Start 7-day free trial <span class="arr">→</span></a>
+  <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn" tabindex="-1">Start my free week <span class="arr">→</span></a>
   <span class="m-cta-sub">$0 today · cancel in 1 click</span>
 </div>
 
