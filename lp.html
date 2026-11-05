@@ -803,6 +803,25 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 .ft-note{text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--ink-faint);margin-top:26px;}
 @media (max-width:900px){.ft-grid{grid-template-columns:1fr 1fr;}}
 @media (max-width:640px){.ft-grid{grid-template-columns:1fr;}}
+/* ════ CONVERSION LAYER (Nov 2026) — persuasive, still ad-policy safe ════ */
+.hero-disc{margin-top:14px;font-size:11.5px;line-height:1.55;color:var(--ink-faint);max-width:520px;}
+.hero-disc.center{margin:18px auto 0;text-align:center;}
+#dashboard{border-top:1px solid var(--line-soft);}
+.db-grid{max-width:760px;margin:0 auto;}
+.db-cta{text-align:center;}
+.db-shot{background:#000;border:1px solid var(--line);border-radius:var(--r);padding:10px;position:relative;}
+.db-shot img{width:100%;height:auto;display:block;border-radius:2px;}
+.hv-proof img{height:auto;}
+.db-shot figcaption{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink-faint);margin-top:10px;text-align:center;}
+.db-list{list-style:none;display:flex;flex-direction:column;gap:18px;}
+.db-list li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;}
+.db-key{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;padding:6px 9px;border-radius:3px;white-space:nowrap;border:1px solid var(--line-strong);color:var(--ink-2);background:var(--surface);}
+.db-key.up{background:rgba(95,202,189,.16);border-color:rgba(95,202,189,.45);color:var(--accent);}
+.db-key.dn{background:rgba(217,106,147,.16);border-color:rgba(217,106,147,.45);color:var(--ember);}
+.db-list b{display:block;color:var(--ink);font-size:15px;font-weight:700;margin-bottom:3px;}
+.db-list p{font-size:13.5px;color:var(--ink-dim);line-height:1.65;}
+.db-cta{margin-top:28px;}
+@media (max-width:900px){.db-grid{grid-template-columns:1fr;gap:30px;}}
 .gal-note{text-align:center;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);max-width:720px;margin:34px auto 0;line-height:1.7;letter-spacing:.02em;}
 </style>
 </head>
@@ -814,8 +833,8 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <!-- DISCLAIMER BAR (ad landing page: keep it — do not replace with "latest call") -->
 <div class="urgency-bar disc-bar" role="note">
   <span class="dot"></span>
-  <span class="ub-k">Charting software</span>
-  <span class="ub-v"><b>Not financial advice</b><span class="ub-mid"> · For educational purposes only</span> · <em>Trading involves substantial risk<span class="ub-mid"> of loss</span></em></span>
+  <span class="ub-k">7 days free</span>
+  <span class="ub-v"><b>$0 today</b> · cancel in 1 click<span class="ub-mid"> · <em>charting software, not financial advice</em></span></span>
 </div>
 
 <!-- NAV -->
@@ -825,6 +844,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <span class="wm">Illumi<span>Trade®</span></span>
   </a>
   <div class="nav-links">
+    <a href="#dashboard">Dashboard</a>
     <a href="#features">Features</a>
     <a href="#proof">Charts</a>
     <a href="#testimonials">Reviews</a>
@@ -839,7 +859,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <header class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="hero-badge"><span class="dia">◆</span> Technical analysis software for TradingView</div>
+      <div class="hero-badge"><span class="dia">◆</span> The ILT® indicator suite for TradingView</div>
       <h1>
         <span class="dia-wrap" aria-hidden="true">
           <svg class="dia-mark" viewBox="12 20 76 72" width="40" height="38">
@@ -852,22 +872,29 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
               <line x1="50" y1="22" x2="50" y2="90" stroke-width="1"/>
             </g>
           </svg>
-        </span>See the chart clearly.
-        <span class="turn">Any market. Any timeframe.</span>
+        </span>When the Diamond prints,
+        <span class="turn">volatility is coiled.</span>
       </h1>
-      <p class="lede">ILT® is a <b>technical analysis indicator suite for TradingView</b>. It marks volatility compression, divergences, support &amp; resistance zones and trendlines, and lets you set alerts on them, so you spend less time drawing and more time <b>studying the chart and making your own decisions</b>.</p>
+      <p class="lede">ILT® reads <b>21 timeframes at once</b> on your TradingView chart and shows you, in one color-coded dashboard, where trend, momentum and volatility agree, and where they don't. Diamonds mark extreme compression. Labels mark divergences. <b>You make the call.</b></p>
       <ul class="hero-checks">
-        <li>Volatility &amp; divergence tools</li>
-        <li>Configurable alerts</li>
-        <li>Any asset · any timeframe</li>
+        <li>21 timeframes, one dashboard</li>
+        <li>Diamond &amp; divergence alerts</li>
+        <li>Crypto, forex, stocks, gold &amp; oil</li>
         <li>Works on the free TradingView plan</li>
       </ul>
       <div class="hero-cta">
-        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
-        <a href="#features" class="btn-line">See the features <span class="arr">→</span></a>
+        <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My 7-Day Free Trial <span class="arr">→</span></a>
+        <a href="#dashboard" class="btn-line">See the dashboard <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">7 days free on the monthly plan · then $80/mo · cancel anytime · <a href="#pricing">See all plans</a></p>
-      <div class="risk-note" role="note"><b>Not financial advice.</b> For educational purposes only. Trading involves substantial risk of loss. Past performance is not indicative of future results. ILT® is a charting tool; it does not predict prices or guarantee any outcome.</div>
+      <p class="hero-micro">$0 today · cancel in 1 click before day 7 · live on your charts within hours · <a href="#pricing">See all plans</a></p>
+      <div class="hero-proof" aria-label="What members say">
+        <span class="hp-rating">250+ traders since 2022 · members say</span>
+        <a class="hp-pill" href="#testimonials">"A monster"</a>
+        <a class="hp-pill" href="#testimonials">"Keeps me patient"</a>
+        <a class="hp-pill" href="#testimonials">"3 indicators in one"</a>
+        <a class="hp-pill" href="#testimonials">"No longer in the dark"</a>
+      </div>
+      <p class="hero-disc">Charting software, not financial advice. Trading involves risk of loss.</p>
     </div>
     <figure class="hv-proof">
       <div class="frame">
@@ -909,53 +936,113 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <!-- FEATURE STRIP (ad landing page: no track-record / performance stats here) -->
 <div class="track reveal" aria-label="At a glance">
   <div class="track-in">
-    <div class="track-i"><b>3</b><span>Core indicators in one suite</span></div>
+    <div class="track-i"><b>21</b><span>Timeframes read at once</span></div>
+    <div class="track-i"><b>250+</b><span>Traders since 2022</span></div>
     <div class="track-i"><b>Any</b><span>TradingView asset · crypto to stocks</span></div>
-    <div class="track-i"><b>1m→1M</b><span>Every timeframe</span></div>
-    <div class="track-i"><b>7</b><span>Day free trial · monthly plan</span></div>
+    <div class="track-i"><b>$0</b><span>Today · 7 days free</span></div>
   </div>
 </div>
+
+<!-- THE DASHBOARD — same visual as the X ads (message match) -->
+<section id="dashboard">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">The Dashboard</div>
+      <h2 class="section-title">21 timeframes. <span class="q">One glance.</span></h2>
+      <p class="shead-sub">Most traders check one or two timeframes. ILT® reads all of them, from 15 minutes to the month, and colors each one, so you see in a second where they agree and where they fight.</p>
+    </div>
+    <div class="db-grid">
+      <div class="reveal">
+        <ul class="db-list">
+          <li><span class="db-key up">▲ / ▼</span><div><b>Trend on every timeframe</b><p>Aqua is up, pink is down, from 15m to the monthly. When they disagree, you see it before you click.</p></div></li>
+          <li><span class="db-key">💎 GCL ≤ 8</span><div><b>Diamond: volatility coiled</b><p>Compression at an extreme on that timeframe. The chart has gone quiet, and you know where.</p></div></li>
+          <li><span class="db-key dn">◆ GCL ≥ 92</span><div><b>Pink Diamond: volatility stretched</b><p>Expansion at an extreme. The move on that timeframe is already extended.</p></div></li>
+          <li><span class="db-key">H.BULL / BIAS</span><div><b>Divergences and overall bias</b><p>Hidden divergences and the bias across all timeframes, counted for you, in plain words.</p></div></li>
+        </ul>
+        <div class="db-cta"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">See it on your charts · 7 days free <span class="arr">→</span></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">Member Feedback</div>
+      <h2 class="section-title">Real messages. <span class="q">Unedited.</span></h2>
+      <p class="shead-sub">Screenshots from our DMs and X, unedited, names hidden for privacy.</p>
+    </div>
+    <div class="feat-grid">
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Came back after trying others</figcaption><img loading="lazy" decoding="async" src="/review-others-playing-catch.webp" alt="Member message: coming back to the best tool I've used. I tried some others &amp; have to say you developed a monster &amp; others are just playing catch"></figure>
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Renewed after the subscription ended</figcaption><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
+      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Just renewed for 3 months</figcaption><img loading="lazy" decoding="async" src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months!"></figure>
+    </div>
+    <div class="wall" id="wall">
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-desk-setup.webp" alt="Member photo of their trading desk with the IllumiTrade guide on screen: I'm in now and feeling much more confident thank you! And thank you for the updated guide as well as your indicator"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-edge-without-it.webp" alt="Member message after renewing: Was losing too much of an edge without it. Very enlightening, I am no longer in the dark"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trial-impressed.webp" alt="Trial user message: Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-recommended-friends.webp" alt="Member message: Sick indicator bro! I recommended it to my friends as well, they will buy too"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-patient-trader.webp" alt="Member message: Just wanted to say how great your indicator and strategies are. It keeps me patient and a better trader"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-diamonds-work.webp" alt="Member message with a TradingView chart showing ILT on a daily chart: I think ur diamonds work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-aqua-diamonds.webp" alt="Member message: Ordinals has so many aqua diamonds on 2 and 4 hr. Love the indicator my friend"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-wizardry-suite.webp" alt="Public post on X, Oct 29 2024: Sir, I'm loving using your wizardry indicator suite once again"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trendlines-auto.webp" alt="Member message: I see the trendlines prints automatically this is amazing bro"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-improved-a-lot.webp" alt="Member message: I used your first version of the indicator a while ago and I must say you improved a lot my friend! Great work"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-method.webp" alt="Member message: So this is THE BEST method/indicator I have ever used"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-crazy-good.webp" alt="Member message: Dude your indicator is crazy good"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sick-amazing.webp" alt="Member message: Wow thank so much sir. Ur indicator is sick amazing"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever.webp" alt="Member message: Best indicator ever"></figure>
+      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
+    </div>
+    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 19 messages ↓</button>
+    <p class="disclaimer-fine">Testimonials reflect individual members' opinions of the software. They are not a guarantee or indication of trading results. Individual experiences vary. Not financial advice. Trading involves substantial risk of loss.</p>
+  </div>
+</section>
 
 <!-- FEATURES -->
 <section id="features">
   <div class="container">
     <div class="shead reveal">
       <div class="eyebrow centered">What's Included</div>
-      <h2 class="section-title">The ILT<sup>®</sup> suite. <span class="q">Feature by feature.</span></h2>
+      <h2 class="section-title">Everything on one chart. <span class="q">Nothing to draw.</span></h2>
     </div>
     <div class="ft-grid">
       <div class="ft-card reveal">
         <span class="ft-k">01 · Volatility</span>
-        <h3>Compression zones</h3>
-        <p>Measures how tight volatility is compared with its own recent history and <b>highlights compression zones</b> on the chart. It describes current conditions; it does not forecast direction.</p>
+        <h3>Compression, measured</h3>
+        <p>The GCL measures how tight volatility is against its own history, on every timeframe. When it reaches an extreme, a <b>Diamond</b> prints. Compression is the quiet phase markets often go through before they expand. ILT® makes sure you see it.</p>
       </div>
       <div class="ft-card reveal">
         <span class="ft-k">02 · Momentum</span>
-        <h3>Divergence detection</h3>
-        <p>Automatically detects and labels <b>bullish and bearish divergences</b> between price and the oscillator, on any timeframe, so you don't have to scan for them by eye.</p>
+        <h3>Divergences, labeled</h3>
+        <p>Bull, Bear, <b>hidden Bull and hidden Bear</b> divergences found and labeled automatically on any timeframe. No more squinting at oscillators.</p>
       </div>
       <div class="ft-card reveal">
         <span class="ft-k">03 · Structure</span>
-        <h3>Support &amp; resistance zones</h3>
-        <p>Plots <b>channels and zones</b> from recent price structure, so key levels are visible without drawing them by hand.</p>
+        <h3>Levels, drawn for you</h3>
+        <p>Support &amp; resistance <b>channels and zones</b> plotted from real price structure and updated with every bar. Stop redrawing the same lines.</p>
       </div>
       <div class="ft-card reveal">
         <span class="ft-k">04 · Structure</span>
-        <h3>Automatic trendlines</h3>
-        <p>Draws <b>trendlines from pivot structure</b> and updates them as new bars print, which keeps the chart tidy on every timeframe.</p>
+        <h3>Trendlines that redraw themselves</h3>
+        <p><b>Multi-timeframe trendlines</b> built from pivot structure. As new pivots form, they update on their own, and your chart stays clean.</p>
       </div>
       <div class="ft-card reveal">
         <span class="ft-k">05 · Readability</span>
-        <h3>Markers &amp; labels</h3>
-        <p>Diamond markers and <b>Bull / Bear labels</b> show when several of the suite's conditions line up, giving you a quick visual summary to review before you do your own analysis.</p>
+        <h3>21 timeframes in one table</h3>
+        <p>Trend, compression and divergences on <b>every timeframe from 15 minutes to the month</b>, side by side. The whole picture in one glance.</p>
       </div>
       <div class="ft-card reveal">
         <span class="ft-k">06 · Workflow</span>
-        <h3>Dashboard &amp; alerts</h3>
-        <p>A compact dashboard shows the current readings, and native <b>TradingView alerts</b> on markers, divergences and compression levels mean you don't have to watch the screen.</p>
+        <h3>Alerts that watch for you</h3>
+        <p>Native <b>TradingView alerts</b> on Diamonds, divergences and compression levels. Close the laptop. Your phone pings when your conditions appear.</p>
       </div>
     </div>
-    <p class="ft-note reveal">Indicators describe price and volatility conditions. They do not predict future prices, and no marker or label is a recommendation to buy or sell.</p>
+    <p class="ft-note reveal">ILT® describes what the chart is doing. It does not predict prices, and no marker is a recommendation to buy or sell.</p>
   </div>
 </section>
 
@@ -1013,43 +1100,6 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div class="container">
-    <div class="shead reveal">
-      <div class="eyebrow centered">Member Feedback</div>
-      <h2 class="section-title">Real messages. <span class="q">Unedited.</span></h2>
-      <p class="shead-sub">Screenshots from our DMs and X, unedited, names hidden for privacy.</p>
-    </div>
-    <div class="feat-grid">
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Came back after trying others</figcaption><img loading="lazy" decoding="async" src="/review-others-playing-catch.webp" alt="Member message: coming back to the best tool I've used. I tried some others &amp; have to say you developed a monster &amp; others are just playing catch"></figure>
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Renewed after the subscription ended</figcaption><img loading="lazy" decoding="async" src="/review-blind-trader.webp" alt="Member message: I've run out of subscription and I feel like a blind trader. I'm renewing it tomorrow"></figure>
-      <figure class="feat reveal"><figcaption class="feat-k"><span class="feat-d"></span>Just renewed for 3 months</figcaption><img loading="lazy" decoding="async" src="/review-renewed-3-months.webp" alt="Member message: Great! Just renewed for 3 months!"></figure>
-    </div>
-    <div class="wall" id="wall">
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-desk-setup.webp" alt="Member photo of their trading desk with the IllumiTrade guide on screen: I'm in now and feeling much more confident thank you! And thank you for the updated guide as well as your indicator"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-edge-without-it.webp" alt="Member message after renewing: Was losing too much of an edge without it. Very enlightening, I am no longer in the dark"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trial-impressed.webp" alt="Trial user message: Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-recommended-friends.webp" alt="Member message: Sick indicator bro! I recommended it to my friends as well, they will buy too"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-3-in-1.webp" alt="Member message: I really like the indicator. It also shows big moves, accurate support and resistance channels, also trendlines. 3 indicator in one"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-patient-trader.webp" alt="Member message: Just wanted to say how great your indicator and strategies are. It keeps me patient and a better trader"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-diamonds-work.webp" alt="Member message with a TradingView chart showing ILT on a daily chart: I think ur diamonds work"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-aqua-diamonds.webp" alt="Member message: Ordinals has so many aqua diamonds on 2 and 4 hr. Love the indicator my friend"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-wizardry-suite.webp" alt="Public post on X, Oct 29 2024: Sir, I'm loving using your wizardry indicator suite once again"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-trendlines-auto.webp" alt="Member message: I see the trendlines prints automatically this is amazing bro"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-improved-a-lot.webp" alt="Member message: I used your first version of the indicator a while ago and I must say you improved a lot my friend! Great work"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-monster.webp" alt="Member message: Not going to lie, that indicator you created is a monster. Absolute incredible job"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-method.webp" alt="Member message: So this is THE BEST method/indicator I have ever used"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-crazy-good.webp" alt="Member message: Dude your indicator is crazy good"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-confidence.webp" alt="Member message: Haha sir I love your indicator. Every day I look at it and it gives me so much confidence"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-sick-amazing.webp" alt="Member message: Wow thank so much sir. Ur indicator is sick amazing"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-best-ever.webp" alt="Member message: Best indicator ever"></figure>
-      <figure class="wall-tile reveal"><img loading="lazy" decoding="async" src="/review-magic.webp" alt="Member message: Works like magic"></figure>
-    </div>
-    <button class="wall-more" id="wall-more" type="button" onclick="document.getElementById('wall').classList.add('open');this.remove();">Show all 19 messages ↓</button>
-    <p class="disclaimer-fine">Testimonials reflect individual members' opinions of the software. They are not a guarantee or indication of trading results. Individual experiences vary. Not financial advice. Trading involves substantial risk of loss.</p>
-  </div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section id="how-it-works">
@@ -1240,11 +1290,11 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <section class="final-cta">
   <div class="container reveal">
     <div class="eyebrow centered" style="margin-bottom:22px;">Try It</div>
-    <h2>Your first 7 days <span class="q">are free.</span></h2>
-    <p>Try the full suite on your own charts before you pay. Add your card, your access goes live within hours, and if you cancel before day 7 you are not charged. After that it's <b>$80/month until you cancel</b>.</p>
+    <h2>See all 21 timeframes <span class="q">on your own charts.</span></h2>
+    <p>Seven days, the full suite, every market you trade. $0 today, access within hours, cancel in 1 click before day 7 and you pay nothing. After that it's <b>$80/month until you cancel</b>.</p>
     <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start 7-Day Free Trial <span class="arr">→</span></a>
     <p class="hero-micro">$0 today · Live within hours · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
-    <div class="risk-note center" role="note"><b>Not financial advice.</b> For educational purposes only. Trading involves substantial risk of loss. Past performance is not indicative of future results.</div>
+    <p class="hero-disc center">Charting software, not financial advice. Trading involves risk of loss. Full disclaimer below.</p>
   </div>
 </section>
 
