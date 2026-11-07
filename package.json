@@ -1,0 +1,8 @@
+{
+  "name": "illumitrade-website",
+  "private": true,
+  "description": "IllumiTrade static site + Vercel serverless functions (api/)",
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}
