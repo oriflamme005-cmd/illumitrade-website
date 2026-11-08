@@ -102,11 +102,16 @@ function tradingViewUsername(s) {
   return '';
 }
 
+// Blocking problems: the welcome email asks the customer for their username.
 function usernameWarning(u) {
   if (!u) return 'MISSING: ask the customer for it';
-  if (/^[0-9a-f]{20,}$/i.test(u)) return 'looks like a random code, not a username: check it';
   if (/@/.test(u)) return 'looks like an email, not a username: check it';
   if (/\s/.test(u)) return 'contains spaces: check it';
+  return '';
+}
+// Unusual but often real (auto-generated Google/Apple usernames): alert only, welcome email unchanged.
+function usernameNote(u) {
+  if (u && /^[0-9a-f]{16,}$/i.test(u)) return 'unusual (auto-generated?): search it in Manage access before granting';
   return '';
 }
 
@@ -203,7 +208,7 @@ function alertEmail({ s, email, name, username, warn, d, planLabel, welcome }) {
   const price = d.unit != null ? money(d.unit, s.currency) + (d.interval ? ' / ' + d.interval : '') : '';
   const lines = [
     `New IllumiTrade sign-up: ${kind}`, '',
-    `TradingView username:  ${username || '(none)'}${warn ? '   ⚠ ' + warn : ''}`,
+    `TradingView username:  ${username || '(none)'}${warn ? '   ⚠ ' + warn : (usernameNote(username) ? '   ℹ ' + usernameNote(username) : '')}`,
     `Plan:                  ${planLabel || d.product || '?'}${price ? '  (' + price + ')' : ''}`,
     `Email:                 ${email || '?'}`,
     `Name:                  ${name || '(not provided)'}`,
@@ -284,4 +289,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { verify, tradingViewUsername, usernameWarning, firstName, welcomeEmail, alertEmail };
+module.exports._t = { verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail };
