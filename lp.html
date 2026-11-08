@@ -273,6 +273,13 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;}
 /* la 1re preuve de chaque onglet passe pleine largeur */
 .proof-grid > .proof-card:first-child{grid-column:1 / -1;}
+/* dernière carte seule sur sa ligne : centrée, même largeur que les autres */
+.proof-grid > .proof-card:nth-child(even):last-child,
+.proof-grid > .proof-card:nth-child(even):has(+ .proof-more){grid-column:1 / -1;justify-self:center;width:calc(50% - 11px);}
+@media(max-width:1000px){
+  .proof-grid > .proof-card:nth-child(even):last-child,
+  .proof-grid > .proof-card:nth-child(even):has(+ .proof-more){width:100%;}
+}
 .proof-card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
   cursor:pointer;transition:border-color .25s,transform .25s;position:relative;

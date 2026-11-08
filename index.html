@@ -679,6 +679,13 @@ nav.scrolled{top:0;}
 .proof-grid:not(.open) > .proof-card:nth-child(n+6){display:none;}
 .proof-grid.open > .proof-more{display:none;}
 .proof-more{grid-column:1 / -1;margin-top:4px;}
+/* dernière carte seule sur sa ligne : centrée, même largeur que les autres */
+.proof-grid > .proof-card:nth-child(even):last-child,
+.proof-grid > .proof-card:nth-child(even):has(+ .proof-more){grid-column:1 / -1;justify-self:center;width:calc(50% - 11px);}
+@media(max-width:1000px){
+  .proof-grid > .proof-card:nth-child(even):last-child,
+  .proof-grid > .proof-card:nth-child(even):has(+ .proof-more){width:100%;}
+}
 /* wall: first 12 visible, the rest behind "Show all" (6 on mobile) */
 .wall:not(.open) .wall-tile:nth-child(n+13){display:none;}
 .wall-more{display:block;margin:6px auto 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
