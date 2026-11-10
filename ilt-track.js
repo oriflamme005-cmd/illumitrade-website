@@ -3,8 +3,9 @@
  *
  * ── CONFIG: the only part you ever edit ──────────────────────────────────── */
 var ILT_TRACK_CONFIG = {
-  // Umami Cloud (free, cookieless) → Settings → Websites → Add website → copy the "Website ID"
-  UMAMI_ID: '',
+  // Umami Cloud (free, cookieless). Same website as iltoracle.com (the free plan allows one):
+  // in Umami, filter by Hostname = www.illumitrade.com to see this site alone.
+  UMAMI_ID: 'c0458a3b-259b-4974-8595-a5e3e74aad15',
   UMAMI_SRC: 'https://cloud.umami.is/script.js',
   // X Ads → Tools → Events Manager → your pixel omn00 → "Add events" → copy each event ID (tw-omn00-xxxxx)
   X_PIXEL: 'omn00',
