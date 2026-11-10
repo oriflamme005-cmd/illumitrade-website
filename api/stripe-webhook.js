@@ -1,7 +1,13 @@
-// IllumiTrade® — Stripe webhook: new sign-up → (1) alert to you, (2) welcome email to the customer
+// IllumiTrade® — Stripe webhook
+//   new sign-up            → (1) alert to you, (2) welcome email to the customer
+//   trial becomes paid     → alert to you          (invoice.paid)
+//   card declined          → alert to you + the invoice link to send   (invoice.payment_failed)
+//   trial/plan cancelled   → alert to you + "remove TradingView access" (customer.subscription.deleted)
+// Every alert ends with the trial scoreboard (started / paid / cancelled, by traffic source).
+// Customers only ever receive the welcome email. Other products on the same Stripe account are ignored.
 // ---------------------------------------------------------------------------------------------
 // Stripe → Developers → Webhooks → endpoint  https://www.illumitrade.com/api/stripe-webhook
-// Event to send:  checkout.session.completed
+// Events to send:  checkout.session.completed · invoice.paid · invoice.payment_failed · customer.subscription.deleted
 //
 // Vercel Environment Variables needed:
 //   STRIPE_SECRET_KEY      sk_live_…   (already set for the on-site checkout)
@@ -161,6 +167,204 @@ async function details(s) {
   return { plan, product, unit, interval, trialEnd };
 }
 
+// ---------- which subscriptions are IllumiTrade (the Stripe account is shared) ----------
+let priceCache = null, priceCacheAt = 0;
+async function illumiPrices() {
+  if (priceCache && Date.now() - priceCacheAt < 30 * 60 * 1000) return priceCache;
+  const map = {};
+  for (const plan of Object.keys(PLAN_LABEL)) {
+    const id = process.env['PRICE_' + plan.toUpperCase()];
+    if (id) map[id] = plan;
+  }
+  let after = '';
+  for (let page = 0; page < 10; page++) {
+    const r = await stripe('/payment_links?limit=100' + (after ? '&starting_after=' + after : ''));
+    for (const l of r.data || []) {
+      const plan = PLAN_BY_LINK[l.url];
+      if (!plan) continue;
+      try {
+        const li = await stripe('/payment_links/' + l.id + '/line_items?limit=5');
+        const it = li.data && li.data[0];
+        if (it && it.price) map[it.price.id] = plan;
+      } catch (e) { console.error('[webhook] link items', e.message); }
+    }
+    if (!r.has_more || !(r.data || []).length) break;
+    after = r.data[r.data.length - 1].id;
+  }
+  priceCache = map; priceCacheAt = Date.now();
+  return map;
+}
+
+function subPriceId(sub) {
+  const it = sub.items && sub.items.data && sub.items.data[0];
+  return (it && it.price && it.price.id) || '';
+}
+function subPeriodStart(sub) {
+  const it = sub.items && sub.items.data && sub.items.data[0];
+  return sub.current_period_start || (it && it.current_period_start) || 0;
+}
+// → plan key ('monthly', …) when the subscription is IllumiTrade, '' otherwise
+function illumiPlan(sub, prices) {
+  const m = sub.metadata || {};
+  if (/^ilt_oracle/i.test(m.product || '')) return '';
+  if (m.source === 'site_checkout') return PLAN_LABEL[m.plan] ? m.plan : 'monthly';
+  return prices[subPriceId(sub)] || '';
+}
+
+function invoiceSubId(inv) {
+  const p = inv.parent && inv.parent.subscription_details;
+  const v = inv.subscription || (p && p.subscription) || '';
+  return typeof v === 'object' && v ? v.id || '' : String(v || '');
+}
+
+// What happened to a trial: 'trial' | 'cancelling' | 'paid' | 'failed' | 'cancelled' | '' (never had a trial)
+function trialOutcome(sub) {
+  if (!sub.trial_end) return '';
+  switch (sub.status) {
+    case 'trialing': return sub.cancel_at_period_end || sub.cancel_at ? 'cancelling' : 'trial';
+    case 'active': return 'paid';
+    case 'past_due': case 'unpaid': case 'incomplete': return 'failed';
+    case 'canceled':
+      // Stripe gave up after declined cards → never paid, even if it ended days after the trial
+      if (/payment_failed|payment_disputed/.test((sub.cancellation_details && sub.cancellation_details.reason) || '')) return 'failed';
+      return (sub.ended_at || sub.canceled_at || 0) > sub.trial_end + 86400 ? 'paid' : 'cancelled';
+    default: return 'cancelled';
+  }
+}
+
+function sourceLabel(meta) {
+  const m = meta || {};
+  if (m.utm_source) return m.utm_source + (m.utm_campaign ? ' · ' + m.utm_campaign : '');
+  return m.source === 'site_checkout' ? 'not recorded' : 'Stripe payment link';
+}
+function sourceDetail(meta) {
+  const m = meta || {};
+  if (!m.utm_source) return sourceLabel(m);
+  const bits = [m.utm_source];
+  if (m.utm_medium) bits.push(m.utm_medium);
+  if (m.utm_campaign) bits.push('campaign ' + m.utm_campaign);
+  if (m.utm_content) bits.push('ad ' + m.utm_content);
+  if (m.landing) bits.push('landed on ' + m.landing);
+  if (m.first_source && m.first_source !== m.utm_source) bits.push('first visit via ' + m.first_source);
+  if (m.first_visit) bits.push('first seen ' + m.first_visit);
+  return bits.join(' · ');
+}
+
+// Trial scoreboard, read live from Stripe: every monthly trial started in the last 45 days.
+const BOARD_DAYS = 45;
+function scoreboardText(subs, prices) {
+  const blank = () => ({ started: 0, paid: 0, cancelled: 0, failed: 0, trial: 0, cancelling: 0 });
+  const total = blank(), by = {};
+  for (const sub of subs) {
+    if (!illumiPlan(sub, prices)) continue;
+    const o = trialOutcome(sub);
+    if (!o) continue;
+    const key = sourceLabel(sub.metadata);
+    const row = by[key] || (by[key] = blank());
+    for (const r of [total, row]) { r.started++; r[o]++; }
+  }
+  if (!total.started) return '';
+  const line = (r) => {
+    const open = r.trial + r.cancelling;
+    return `started ${r.started} · paid ${r.paid} · cancelled ${r.cancelled}` +
+      (r.failed ? ` · card declined ${r.failed}` : '') +
+      (open ? ` · still in trial ${open}` + (r.cancelling ? ` (${r.cancelling} set to cancel)` : '') : '');
+  };
+  const decided = total.paid + total.cancelled + total.failed;
+  const out = [
+    `TRIAL SCOREBOARD · last ${BOARD_DAYS} days`,
+    line(total),
+    decided ? `Trial → paid: ${total.paid} of ${decided} finished trials (${Math.round((100 * total.paid) / decided)}%)` : 'Trial → paid: no trial has finished yet',
+  ];
+  const keys = Object.keys(by).sort((a, b) => by[b].started - by[a].started);
+  if (keys.length > 1 || (keys[0] && keys[0] !== 'not recorded')) {
+    out.push('', 'By source:');
+    for (const k of keys) out.push(`  ${k}: ${line(by[k])}`);
+  }
+  return out.join('\n');
+}
+
+async function scoreboard() {
+  const work = (async () => {
+    const prices = await illumiPrices();
+    const since = Math.floor(Date.now() / 1000) - BOARD_DAYS * 86400;
+    const subs = [];
+    let after = '';
+    for (let page = 0; page < 5; page++) {
+      const r = await stripe('/subscriptions?status=all&limit=100&created%5Bgte%5D=' + since + (after ? '&starting_after=' + after : ''));
+      subs.push(...(r.data || []));
+      if (!r.has_more || !(r.data || []).length) break;
+      after = r.data[r.data.length - 1].id;
+    }
+    return scoreboardText(subs, prices);
+  })().catch((e) => { console.error('[webhook] scoreboard', e.message); return ''; });
+  const timeout = new Promise((resolve) => setTimeout(() => resolve(''), 5000));
+  return Promise.race([work, timeout]);
+}
+
+// TradingView username + email for a subscription (metadata first, then its checkout session)
+async function subContact(sub, fallbackEmail) {
+  let username = String((sub.metadata && sub.metadata.tradingview_username) || '').trim();
+  let email = fallbackEmail || '';
+  if (!username || !email) {
+    try {
+      const r = await stripe('/checkout/sessions?limit=1&subscription=' + sub.id);
+      const cs = r.data && r.data[0];
+      if (cs) {
+        username = username || tradingViewUsername(cs);
+        email = email || (cs.customer_details && cs.customer_details.email) || cs.customer_email || '';
+      }
+    } catch (e) { console.error('[webhook] contact', e.message); }
+  }
+  return { username, email };
+}
+
+function lifecycleEmail({ type, sub, inv, plan, username, email, board }) {
+  const who = username || email || '?';
+  const dash = `https://dashboard.stripe.com/${sub.livemode === false ? 'test/' : ''}subscriptions/${sub.id}`;
+  const head = [
+    `TradingView username:  ${username || '(not found: see Stripe)'}`,
+    `Email:                 ${email || '?'}`,
+    `Plan:                  ${PLAN_LABEL[plan] || plan}`,
+    `Came from:             ${sourceDetail(sub.metadata)}`,
+  ];
+  let subject, top, action = [];
+  if (type === 'paid') {
+    subject = `💰 Trial converted: ${who} paid ${money(inv.amount_paid, inv.currency)}`;
+    top = `A free trial just became a paying customer: ${money(inv.amount_paid, inv.currency)} charged.`;
+    action = ['→ Nothing to do: access stays on.'];
+  } else if (type === 'failed') {
+    const afterTrial = sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400;
+    subject = `⚠ Card declined: ${who} · ${money(inv.amount_due, inv.currency)}${afterTrial ? ' (first payment after trial)' : ''}`;
+    top = `Stripe could not charge ${money(inv.amount_due, inv.currency)}${afterTrial ? ' at the end of the free trial' : ' for the renewal'} (attempt ${inv.attempt_count || 1}).`;
+    action = [
+      inv.next_payment_attempt ? `Stripe retries automatically on ${fmtDate(inv.next_payment_attempt)}.` : 'Stripe will not retry automatically.',
+      inv.hosted_invoice_url ? `→ Invoice link to send the customer so they can pay or validate with their bank:\n${inv.hosted_invoice_url}` : '',
+    ].filter(Boolean);
+  } else {
+    const o = trialOutcome(sub);
+    const cd = sub.cancellation_details || {};
+    const why = [cd.feedback, cd.comment].filter(Boolean).join(' · ');
+    if (o === 'cancelled') {
+      subject = `✖ Trial cancelled: ${who} (never paid)`;
+      top = 'This free trial ended without a payment.';
+    } else if (o === 'failed') {
+      subject = `✖ Trial ended, card never went through: ${who}`;
+      top = 'Stripe stopped retrying the card and closed this subscription. No payment was received.';
+    } else {
+      const from = sub.trial_end || sub.start_date || sub.created || 0;
+      const months = from ? Math.max(1, Math.round(((sub.ended_at || Date.now() / 1000) - from) / (30 * 86400))) : 0;
+      subject = `✖ Subscription ended: ${who}${months ? ` (after ~${months} month${months > 1 ? 's' : ''})` : ''}`;
+      top = 'This paying subscription has ended.';
+    }
+    if (why) head.push(`Reason given:          ${why}`);
+    action = [`→ Remove access on TradingView: Manage access → "${username || '?'}"`];
+  }
+  const lines = [top, '', ...head, '', ...action, '', `Stripe: ${dash}`];
+  if (board) lines.push('', '— — —', board);
+  return { subject, text: lines.join('\n') };
+}
+
 // ---------- emails ----------
 function welcomeEmail({ first, trialEnd, planLabel, username }) {
   const hi = first ? `Hi ${first},` : 'Hi there,';
@@ -203,7 +407,7 @@ ${block('Manage your subscription:', LINKS.portal)}
   return { subject, text, html };
 }
 
-function alertEmail({ s, email, name, username, warn, d, planLabel, welcome }) {
+function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board }) {
   const kind = d.trialEnd ? `FREE TRIAL (ends ${fmtDate(d.trialEnd)})` : `PAID ${money(s.amount_total, s.currency)}`;
   const price = d.unit != null ? money(d.unit, s.currency) + (d.interval ? ' / ' + d.interval : '') : '';
   const lines = [
@@ -213,11 +417,13 @@ function alertEmail({ s, email, name, username, warn, d, planLabel, welcome }) {
     `Email:                 ${email || '?'}`,
     `Name:                  ${name || '(not provided)'}`,
     `Country:               ${(s.customer_details && s.customer_details.address && s.customer_details.address.country) || '?'}`,
-    `Source:                ${s.metadata && s.metadata.source === 'site_checkout' ? 'checkout on illumitrade.com' : 'Stripe payment link'}`, '',
+    `Source:                ${s.metadata && s.metadata.source === 'site_checkout' ? 'checkout on illumitrade.com' : 'Stripe payment link'}`,
+    `Came from:             ${sourceDetail(s.metadata)}`, '',
     `Welcome email:         ${welcome}`, '',
     `→ Grant access on TradingView: Manage access → add "${username || '?'}"`, '',
     `Stripe: https://dashboard.stripe.com/${s.livemode ? '' : 'test/'}customers/${s.customer || ''}`,
   ];
+  if (board) lines.push('', '— — —', board);
   const subject = `💎 New ${d.trialEnd ? 'trial' : 'sale'}: ${username || email || '?'} · ${planLabel || d.product || ''}${warn ? ' ⚠' : ''}`;
   return { subject, text: lines.join('\n') };
 }
@@ -233,6 +439,47 @@ function mailer() {
   return transporter;
 }
 
+// ---------- after the sign-up: paid / card declined / cancelled (alerts to you only) ----------
+const LIFECYCLE = { 'invoice.paid': 'paid', 'invoice.payment_failed': 'failed', 'customer.subscription.deleted': 'ended' };
+
+async function lifecycle(event, res) {
+  const type = LIFECYCLE[event.type];
+  const o = event.data.object;
+  const skip = (why) => res.status(200).json({ ignored: event.type, why });
+  let sub, inv = null, plan = '';
+  try {
+    if (type === 'ended') sub = o;
+    else {
+      inv = o;
+      const id = invoiceSubId(inv);
+      if (!id) return skip('not a subscription invoice');
+      if (type === 'paid' && !(inv.amount_paid > 0)) return skip('$0 invoice');
+      sub = await stripe('/subscriptions/' + id);
+    }
+    plan = illumiPlan(sub, await illumiPrices());
+  } catch (e) {
+    console.error('[webhook] lifecycle', e.message);
+    return res.status(500).send('Stripe lookup failed'); // let Stripe retry
+  }
+  if (!plan) return skip('not an IllumiTrade subscription');
+  // Only the first payment after a free trial is news; monthly renewals stay silent.
+  if (type === 'paid' && !(sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400)) return skip('renewal');
+
+  const [{ username, email }, board] = await Promise.all([subContact(sub, inv && inv.customer_email), scoreboard()]);
+  const m = lifecycleEmail({ type, sub, inv, plan, username, email, board });
+  try {
+    await mailer().sendMail({
+      from: `"ILT 💎 IllumiTrade" <${process.env.GMAIL_USER}>`,
+      to: process.env.ALERT_EMAIL || process.env.GMAIL_USER,
+      replyTo: email || undefined, subject: m.subject, text: m.text,
+    });
+  } catch (e) {
+    console.error('[webhook] lifecycle alert', e.message);
+    return res.status(500).send('Email failed'); // let Stripe retry
+  }
+  return res.status(200).json({ ok: true, alert: type });
+}
+
 // ---------- handler ----------
 async function handler(req, res) {
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).send('Method not allowed'); }
@@ -242,6 +489,7 @@ async function handler(req, res) {
   }
   let event;
   try { event = JSON.parse(raw.toString('utf8')); } catch (e) { return res.status(400).send('Bad JSON'); }
+  if (LIFECYCLE[event.type]) return lifecycle(event, res);
   if (event.type !== 'checkout.session.completed') return res.status(200).json({ ignored: event.type });
 
   const s = event.data.object;
@@ -277,7 +525,8 @@ async function handler(req, res) {
 
   // 2) alert to you
   try {
-    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome });
+    const board = known ? await scoreboard() : '';
+    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board });
     await mailer().sendMail({ from, to: process.env.ALERT_EMAIL || process.env.GMAIL_USER, replyTo: email || undefined, subject: a.subject, text: a.text });
   } catch (e) {
     console.error('[webhook] alert', e.message);
@@ -289,4 +538,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail };
+module.exports._t = { verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId };

@@ -106,6 +106,20 @@ async function resolvePlan(plan) {
   return resolved;
 }
 
+// --- where the customer came from (cookie written by /ilt-track.js) ----------
+function attribution(req) {
+  const out = {};
+  try {
+    const m = /(?:^|;\s*)ilt_src=([^;]+)/.exec(String(req.headers.cookie || ''));
+    if (!m) return out;
+    const j = JSON.parse(decodeURIComponent(m[1]));
+    const clean = (v) => String(v == null ? '' : v).replace(/[^\w .\-\/:]/g, '').slice(0, 60);
+    const map = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit' };
+    for (const k of Object.keys(map)) { const v = clean(j[k]); if (v) out[map[k]] = v; }
+  } catch (e) {}
+  return out;
+}
+
 // --- handler ----------------------------------------------------------------
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
@@ -138,7 +152,7 @@ module.exports = async (req, res) => {
 
   try {
     const p = await resolvePlan(plan);
-    const meta = { tradingview_username: username, plan, source: 'site_checkout' };
+    const meta = { tradingview_username: username, plan, source: 'site_checkout', ...attribution(req) };
     const label = 'TradingView: ' + username;
 
     const params = {

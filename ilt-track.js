@@ -10,7 +10,7 @@ var ILT_TRACK_CONFIG = {
   X_PIXEL: 'omn00',
   X_EVENTS: {
     trial:    'tw-omn00-ri3rd',   // "Signup Illumitrade" — free trial started (value 0)
-    purchase: 'tw-omn00-ri3rd',   // "Signup Illumitrade" — paid plan (value = real amount)
+    purchase: '',   // "Purchase" — paid plan (value = real amount). Empty = counted under the trial event, as before
     checkout: '',   // "Checkout initiated" — fires once per visit on the first click on any plan button
     lead:     ''    // optional "Lead"  — fires when someone opens the free-guide form (blog)
   },
@@ -49,17 +49,35 @@ var ILT_TRACK_CONFIG = {
     d.head.appendChild(u);
   }
 
-  // ── first-touch attribution (kept 90 days, sent with the checkout) ──
+  // ── attribution: first touch + last campaign touch + landing page (kept 90 days) ──
+  // Stored in localStorage and mirrored in a first-party cookie (ilt_src) that /api/checkout reads,
+  // so every trial and sale in Stripe carries where the customer came from.
   try {
     var qs = new URLSearchParams(location.search), utm = {};
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) { if (qs.get(k)) utm[k] = qs.get(k).slice(0, 60); });
-    if (!utm.utm_source && qs.get('twclid')) utm.utm_source = 'x_ads';
+    if (qs.get('twclid')) { if (!utm.utm_source) utm.utm_source = 'x_ads'; if (!utm.utm_medium) utm.utm_medium = 'paid'; }
+    var hasUtm = Object.keys(utm).length > 0, now = Date.now(), DAYS90 = 90 * 864e5;
+    var page = location.pathname.slice(0, 60);
     var old = JSON.parse(LS.get('ilt_utm') || 'null');
-    if (Object.keys(utm).length && (!old || Date.now() - old.t > 90 * 864e5)) LS.set('ilt_utm', JSON.stringify({ t: Date.now(), v: utm }));
-    if (!old && !Object.keys(utm).length && d.referrer && d.referrer.indexOf(location.hostname) < 0) {
-      var ref = d.referrer.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-      LS.set('ilt_utm', JSON.stringify({ t: Date.now(), v: { utm_source: ref.slice(0, 60), utm_medium: 'referral' } }));
+    if (old && now - old.t > DAYS90) old = null;
+    if (!old) {
+      var first = hasUtm ? utm : null;
+      if (!first && d.referrer && d.referrer.indexOf(location.hostname) < 0) {
+        first = { utm_source: d.referrer.replace(/^https?:\/\/(www\.)?/, '').split('/')[0].slice(0, 60), utm_medium: 'referral' };
+      }
+      if (!first) first = { utm_source: 'direct' };
+      old = { t: now, v: first, p: page };
+      LS.set('ilt_utm', JSON.stringify(old));
     }
+    var last = JSON.parse(LS.get('ilt_last') || 'null');
+    if (last && now - last.t > DAYS90) last = null;
+    if (hasUtm) { last = { t: now, v: utm, p: page }; LS.set('ilt_last', JSON.stringify(last)); }
+    var use = last || old, src = {
+      s: use.v.utm_source || '', m: use.v.utm_medium || '', c: use.v.utm_campaign || '', n: use.v.utm_content || '',
+      p: use.p || old.p || '', f: old.v.utm_source || '', d: new Date(old.t).toISOString().slice(0, 10)
+    };
+    d.cookie = 'ilt_src=' + encodeURIComponent(JSON.stringify(src)) + '; path=/; max-age=' + 90 * 86400 + '; SameSite=Lax' +
+      (location.protocol === 'https:' ? '; Secure' : '');
   } catch (e) {}
 
   // ── queue until Umami is ready ──
@@ -68,7 +86,7 @@ var ILT_TRACK_CONFIG = {
   var tries = 0, timer = setInterval(function () { if (flush() || ++tries > 40) clearInterval(timer); }, 250);
 
   function x(key, params) {
-    var id = C.X_EVENTS[key]; if (!id || !w.twq) return;
+    var id = C.X_EVENTS[key] || (key === 'purchase' ? C.X_EVENTS.trial : ''); if (!id || !w.twq) return;
     if (key === 'checkout') { if (w.__iltCheckoutSent) return; w.__iltCheckoutSent = 1; } // once per page view
     try { w.twq('event', id, params || {}); } catch (e) {}
   }
@@ -80,7 +98,7 @@ var ILT_TRACK_CONFIG = {
     if (xKey) x(xKey, xParams);
     if (w.ILT_DEBUG) console.log('[ILT track]', name, data, xKey || '');
   };
-  ILT.utm = function () { try { var o = JSON.parse(LS.get('ilt_utm') || 'null'); return (o && o.v) || {}; } catch (e) { return {}; } };
+  ILT.utm = function () { try { var o = JSON.parse(LS.get('ilt_last') || LS.get('ilt_utm') || 'null'); return (o && o.v) || {}; } catch (e) { return {}; } };
 
   // ── automatic events (no page edits needed) ──
   function where(el) {
