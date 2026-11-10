@@ -11,8 +11,8 @@ var ILT_TRACK_CONFIG = {
   X_PIXEL: 'omn00',
   X_EVENTS: {
     trial:    'tw-omn00-ri3rd',   // "Signup Illumitrade" — free trial started (value 0)
-    purchase: '',   // "Purchase" — paid plan (value = real amount). Empty = counted under the trial event, as before
-    checkout: '',   // "Checkout initiated" — fires once per visit on the first click on any plan button
+    purchase: 'tw-omn00-riseo',   // "Purchase Illumitrade" — paid plan (value = real amount)
+    checkout: 'tw-omn00-risev',   // "Checkout Illumitrade" (Add to cart) — fires once per visit on the first click on any plan button
     lead:     ''    // optional "Lead"  — fires when someone opens the free-guide form (blog)
   },
   // Google Ads (kept for the day you run it; harmless otherwise)
