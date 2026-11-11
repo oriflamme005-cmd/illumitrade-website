@@ -531,7 +531,19 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
   .nav-links{display:none;}
   .container{padding:0 20px;}
   section{padding:84px 0;}
-  .hero{padding:150px 0 70px;}
+  .hero{padding:124px 0 70px;}
+  /* mobile hero order (paid X traffic): headline → the chart they saw in the ad → short checks → CTA → proof → full lede */
+  .hero .hero-grid{gap:0;}
+  .hero .hero-copy{display:contents;}
+  .hero-grid .hero-badge{order:1;justify-self:start;margin-bottom:22px;}
+  .hero-grid h1{order:2;}
+  .hero-grid>.hv-proof{order:3;margin-top:26px;}
+  .hero-grid .hero-checks{order:4;margin-top:26px;}
+  .hero-grid .hero-cta{order:5;margin-top:26px;}
+  .hero-grid .hero-micro{order:6;}
+  .hero-grid .hero-proof{order:7;}
+  .hero-grid .hero-disc{order:8;}
+  .hero-grid .lede{order:9;margin-top:24px;}
   .price-bookend{min-width:100%;}
   .hiw-grid{grid-template-columns:1fr;}
   .hiw-step{border-right:0;border-bottom:1px solid var(--line);}
@@ -875,7 +887,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <!-- HERO -->
 <header class="hero">
   <div class="container hero-grid">
-    <div>
+    <div class="hero-copy">
       <div class="hero-badge"><span class="dia">◆</span> The ILT® indicator suite for TradingView</div>
       <h1>
         <span class="dia-wrap" aria-hidden="true">
@@ -1522,7 +1534,8 @@ window.addEventListener('scroll', () => {
 // ─── STICKY MOBILE CTA: show after hero, hide over pricing / final CTA ───
 (function(){
   var bar=document.getElementById('m-cta'); if(!bar) return;
-  var hero=document.querySelector('.hero'), stops=[document.getElementById('pricing'),document.querySelector('.final-cta')];
+  // appears as soon as the main hero button has scrolled off screen
+  var hero=document.querySelector('.hero-cta')||document.querySelector('.hero'), stops=[document.getElementById('pricing'),document.querySelector('.final-cta')];
   function inView(el){ if(!el) return false; var r=el.getBoundingClientRect(); return r.top<window.innerHeight && r.bottom>0; }
   function upd(){
     var past = hero ? hero.getBoundingClientRect().bottom < 0 : window.scrollY>600;
