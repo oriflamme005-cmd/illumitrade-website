@@ -70,6 +70,11 @@ h1 .q{color:var(--ink-faint);font-weight:600;}
 .manage a:hover{border-color:var(--accent);}
 .manage span{font-size:12px;color:var(--ink-faint);}
 .res-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px;}
+.read-first{display:flex;gap:14px;align-items:flex-start;text-align:left;margin:0 0 30px;padding:16px 18px;
+  background:rgba(95,202,189,.06);border:1px solid rgba(95,202,189,.28);border-left:3px solid var(--accent);border-radius:var(--r);}
+.read-first .rf-ic{flex-shrink:0;color:var(--accent);font-size:15px;line-height:1.5;}
+.read-first p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6;}
+.read-first b{color:var(--ink);font-weight:600;}
 .res{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px;text-align:left;}
 @media(max-width:560px){.res{grid-template-columns:1fr;}}
 .res a{display:flex;align-items:center;gap:16px;padding:22px 22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;transition:border-color .25s,transform .25s;}
@@ -160,6 +165,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
     <h1 id="ty-h1">Thank <span class="q">you.</span></h1>
     <p class="lead" id="ty-lead">Your access to the <strong>ILT® indicators</strong> is being activated and will be live within the next few hours.</p>
     <p class="sub" id="ty-sub">TradingView notifies you the moment your access is live.</p>
+
+    <div class="read-first">
+      <span class="rf-ic" aria-hidden="true">◆</span>
+      <p><b>Take the time to read the guides carefully before your first trade.</b> They're the key to knowing how and when to act on the important moves, straight from day one. <b>It's worth it: 79%+ of members who took the time to understand the conditions in the guide stayed with ILT®.</b> The conditions are simple: once you understand them, they become a reflex that helps you spot quality setups at the turning points.</p>
+    </div>
 
     <div class="res-label">Your guides · in this order</div>
     <div class="guides">
