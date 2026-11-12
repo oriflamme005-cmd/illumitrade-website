@@ -375,8 +375,16 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
     ? `Your access is being activated now on the TradingView account "${username}". You'll get a TradingView notification within a few hours. Then open any chart → click Indicators → Invite-only scripts tab → select the ILT® indicators. Tip: click the ☆ next to each one to add it to your favorites, so it's one click away next time.`
     : `To switch on your indicators, I just need your TradingView username. Reply to this email with it (you'll find it by clicking your profile picture in the top-right corner of TradingView) and I'll grant access within a few hours.`;
 
+  const readFirstLead = 'Take the time to read the guides carefully before your first trade.';
+  const readFirstKey = 'They\'re the key to knowing how and when to act on the important moves, straight from day one.';
+  const readFirstStat = 'It\'s worth it: 79%+ of members who took the time to understand the conditions in the guide stayed with ILT®.';
+  const readFirstEnd = 'The conditions are simple: once you understand them, they become a reflex that helps you spot quality setups at the turning points.';
+  const readFirstRest = readFirstKey + ' ' + readFirstStat + ' ' + readFirstEnd;
+  const readFirst = readFirstLead + ' ' + readFirstRest;
+
   const text = [
     hi, '', status, '', access, '',
+    readFirst, '',
     'Everything you need to get started:', '',
     'Quick Start Guide (5 min read):', LINKS.quick, '',
     'Full Edition Guide:', LINKS.full, '',
@@ -393,6 +401,7 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
 <p>${esc(hi)}</p>
 <p>${esc(status)}</p>
 <p>${esc(access)}</p>
+<p><b>${esc(readFirstLead)}</b> ${esc(readFirstKey)} <b>${esc(readFirstStat)}</b> ${esc(readFirstEnd)}</p>
 <p>Everything you need to get started:</p>
 ${block('Quick Start Guide (5 min read):', LINKS.quick)}
 ${block('Full Edition Guide:', LINKS.full)}
