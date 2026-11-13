@@ -58,6 +58,21 @@ async function stripe(path) {
   return j;
 }
 
+async function stripePost(path, params) {
+  const body = Object.entries(params).map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v))).join('&');
+  const r = await fetch('https://api.stripe.com/v1' + path, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + process.env.STRIPE_SECRET_KEY, 'Stripe-Version': STRIPE_VERSION,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error((j.error && j.error.message) || 'Stripe HTTP ' + r.status);
+  return j;
+}
+
 function readRaw(req) {
   // Raw bytes are needed for the signature. If the platform already buffered the body, use that.
   if (req.readableEnded) {
@@ -247,7 +262,71 @@ function sourceDetail(meta) {
   if (m.landing) bits.push('landed on ' + m.landing);
   if (m.first_source && m.first_source !== m.utm_source) bits.push('first visit via ' + m.first_source);
   if (m.first_visit) bits.push('first seen ' + m.first_visit);
+  if (m.attr_via === 'email_match') bits.push('matched by email to an earlier ad visit' + (m.last_source ? ' (signed up from: ' + m.last_source + ')' : ''));
+  if (m.attr_via === 'payment_link') bits.push('paid on the Stripe payment link');
   return bits.join(' · ');
+}
+
+// ---------- where the customer came from, even when the cookie could not follow them ----------
+// (1) Stripe Payment Links: /ilt-track.js appends ?client_reference_id=ilt1__s-X__m-paid__c-… to the link.
+const REF_KEYS = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit' };
+function parseRef(ref) {
+  const out = {};
+  const parts = String(ref || '').split('__');
+  if (parts.shift() !== 'ilt1') return out;
+  for (const part of parts) {
+    const i = part.indexOf('-');
+    const key = REF_KEYS[part.slice(0, i)], v = part.slice(i + 1, i + 61);
+    if (i < 1 || !key || !v) continue;
+    out[key] = key === 'landing' ? (v === 'home' ? '/' : '/' + v) : v;
+  }
+  return out;
+}
+const ATTR_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'landing', 'first_source', 'first_visit'];
+const isAd = (m) => !!m && (m.utm_medium === 'paid' || !!m.utm_campaign);
+function sessionAttribution(cs) {
+  const m = cs.metadata || {};
+  return m.utm_source ? m : parseRef(cs.client_reference_id);
+}
+// (2) Same email seen earlier from an ad (typical: ad opened inside the X app, sign-up finished later in the
+// phone's own browser, where the cookie does not exist) → credit the ad, keep what the last visit looked like.
+const MATCH_DAYS = 30;
+function mergeAttribution(current, earlier) {
+  const cur = current || {};
+  if (isAd(cur)) return { meta: cur, changed: false };
+  const hit = (earlier || []).find(isAd);
+  if (!hit) return { meta: cur, changed: false };
+  const meta = { ...cur };
+  for (const k of ATTR_KEYS) { if (hit[k]) meta[k] = hit[k]; else delete meta[k]; }
+  meta.attr_via = 'email_match';
+  if (cur.utm_source) meta.last_source = cur.utm_source;
+  return { meta, changed: true };
+}
+// Returns the session metadata completed with its source, and saves it on the subscription / payment
+// so the scoreboard and Stripe itself show it. Never throws: a sign-up alert must always go out.
+async function attribute(s, email) {
+  let meta = { ...(s.metadata || {}) }, changed = false;
+  try {
+    if (!meta.utm_source) {
+      const fromRef = parseRef(s.client_reference_id);
+      if (fromRef.utm_source) { meta = { ...meta, ...fromRef, attr_via: 'payment_link' }; changed = true; }
+    }
+    if (!isAd(meta) && email) {
+      const since = Math.floor(Date.now() / 1000) - MATCH_DAYS * 86400;
+      const r = await stripe('/checkout/sessions?limit=30&created%5Bgte%5D=' + since +
+        '&customer_details%5Bemail%5D=' + encodeURIComponent(email));
+      const earlier = (r.data || []).filter((cs) => cs.id !== s.id).map(sessionAttribution);
+      const m = mergeAttribution(meta, earlier);
+      if (m.changed) { meta = m.meta; changed = true; }
+    }
+    if (changed) {
+      const params = {};
+      for (const k of [...ATTR_KEYS, 'attr_via', 'last_source']) if (meta[k]) params['metadata[' + k + ']'] = meta[k];
+      if (s.subscription) await stripePost('/subscriptions/' + s.subscription, params);
+      else if (s.payment_intent) await stripePost('/payment_intents/' + s.payment_intent, params);
+    }
+  } catch (e) { console.error('[webhook] attribution', e.message); }
+  return meta;
 }
 
 // Trial scoreboard, read live from Stripe: every monthly trial started in the last 45 days.
@@ -507,6 +586,7 @@ async function handler(req, res) {
   const name = (s.customer_details && s.customer_details.name) || '';
   const username = tradingViewUsername(s);
   const warn = usernameWarning(username);
+  if (isIllumi) s.metadata = await attribute(s, email);   // before the alert + scoreboard, so both show the source
 
   let d = { plan: '', product: '', unit: null, interval: '', trialEnd: null };
   try { d = await details(s); } catch (e) { console.error('[webhook] details', e.message); }
@@ -547,4 +627,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId };
+module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId };
