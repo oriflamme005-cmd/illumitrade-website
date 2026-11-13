@@ -96,5 +96,11 @@
       "source": "/compare",
       "destination": "/compare/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/trial-bonus",
+      "schedule": "0 8 * * *"
+    }
   ]
 }
