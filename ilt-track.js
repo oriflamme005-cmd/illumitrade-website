@@ -50,6 +50,7 @@ var ILT_TRACK_CONFIG = {
     d.head.appendChild(u);
   }
 
+  var refId = '';
   // ── attribution: first touch + last campaign touch + landing page (kept 90 days) ──
   // Stored in localStorage and mirrored in a first-party cookie (ilt_src) that /api/checkout reads,
   // so every trial and sale in Stripe carries where the customer came from.
@@ -79,6 +80,13 @@ var ILT_TRACK_CONFIG = {
     };
     d.cookie = 'ilt_src=' + encodeURIComponent(JSON.stringify(src)) + '; path=/; max-age=' + 90 * 86400 + '; SameSite=Lax' +
       (location.protocol === 'https:' ? '; Secure' : '');
+    // Same attribution, packed for Stripe Payment Links (?client_reference_id=…): letters, digits, - and _ only.
+    // Read back by /api/stripe-webhook.js, so a sale that goes through a plain Stripe link still carries its source.
+    var enc = function (v) { return String(v || '').replace(/^\/+/, '').replace(/[^A-Za-z0-9_-]+/g, '-').replace(/_{2,}/g, '_').replace(/^[-_]+|[-_]+$/g, '').slice(0, 40); };
+    var parts = ['ilt1'];
+    [['s', src.s], ['m', src.m], ['c', src.c], ['n', src.n], ['p', src.p === '/' ? 'home' : src.p], ['f', src.f], ['d', src.d]]
+      .forEach(function (kv) { var v = enc(kv[1]); if (v) parts.push(kv[0] + '-' + v); });
+    refId = parts.join('__').slice(0, 200);
   } catch (e) {}
 
   // ── queue until Umami is ready ──
@@ -99,6 +107,15 @@ var ILT_TRACK_CONFIG = {
     if (xKey) x(xKey, xParams);
     if (w.ILT_DEBUG) console.log('[ILT track]', name, data, xKey || '');
   };
+  ILT.ref = function () { return refId; };
+  // Adds the visitor's source to a Stripe Payment Link (never touches a link that already has one).
+  function tagStripeLink(a) {
+    try {
+      var h = a.getAttribute('href') || '';
+      if (!refId || !/^https:\/\/buy\.stripe\.com\//.test(h) || /[?&]client_reference_id=/.test(h)) return;
+      a.setAttribute('href', h + (h.indexOf('?') < 0 ? '?' : '&') + 'client_reference_id=' + encodeURIComponent(refId));
+    } catch (e) {}
+  }
   ILT.utm = function () { try { var o = JSON.parse(LS.get('ilt_last') || LS.get('ilt_utm') || 'null'); return (o && o.v) || {}; } catch (e) { return {}; } };
 
   // ── automatic events (no page edits needed) ──
@@ -109,6 +126,7 @@ var ILT_TRACK_CONFIG = {
   d.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
     var h = a.getAttribute('href') || '';
+    if (/buy\.stripe\.com/.test(h)) tagStripeLink(a);   // runs before the on-site checkout reads the link as its fallback
     if (a.hasAttribute('data-plan')) ILT.track('cta_click', { plan: a.getAttribute('data-plan'), where: where(a) }, 'checkout', {});
     else if (/buy\.stripe\.com/.test(h)) ILT.track('cta_click', { plan: 'link', where: where(a) }, 'checkout', {});
     else if (/t\.me\//.test(h)) ILT.track('telegram_click', { where: where(a) });
@@ -119,6 +137,12 @@ var ILT_TRACK_CONFIG = {
     else if (/iltoracle\.com/.test(h)) ILT.track('oracle_click', { where: where(a) });
     else if (/#pricing$/.test(h)) ILT.track('pricing_link', { where: where(a) });
   }, true);
+
+  ['auxclick', 'contextmenu', 'touchstart'].forEach(function (ev) {
+    d.addEventListener(ev, function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="buy.stripe.com"]'); if (a) tagStripeLink(a);
+    }, { capture: true, passive: true });
+  });
 
   // section views, once per page load
   function watch() {
