@@ -23,6 +23,21 @@ const PLANS = {
   lifetime: 'https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04',
 };
 
+// --- Black Friday 2026: the 1-year plan includes 3 extra months (15 for the price of 12) ---
+// The server decides (never the browser): outside these dates the offer simply does not exist.
+// Early access for past customers = same offer from `earlyFrom`, through the link  /lp?bf=early
+const BF = {
+  promo: 'bf2026',
+  earlyFrom: Date.parse('2026-11-22T09:00:00+01:00'),
+  from:      Date.parse('2026-11-24T00:00:00+01:00'),
+  until:     Date.parse('2026-12-01T23:59:59+01:00'),
+};
+function bfOn(early, now) {
+  now = now || Date.now();
+  if (now > BF.until) return false;
+  return now >= BF.from || (!!early && now >= BF.earlyFrom);
+}
+
 const ALLOWED_HOSTS = /(^|\.)illumitrade\.com$|\.vercel\.app$|^localhost(:\d+)?$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const USERNAME_RE = /^[A-Za-z0-9_.\-]{2,40}$/;
@@ -126,7 +141,9 @@ module.exports = async (req, res) => {
   const configured = !!(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_PUBLISHABLE_KEY);
 
   if (req.method === 'GET') {
-    return res.status(200).json({ ready: configured });
+    let early = false;
+    try { early = new URL(req.url, 'http://x').searchParams.get('early') === '1'; } catch (e) {}
+    return res.status(200).json({ ready: configured, bf: bfOn(early) ? { on: true, until: new Date(BF.until).toISOString() } : { on: false } });
   }
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'GET, POST');
@@ -140,6 +157,8 @@ module.exports = async (req, res) => {
   const plan = String(body.plan || '');
   const email = String(body.email || '').trim().slice(0, 200);
   const username = String(body.username || '').trim().replace(/^@/, '').slice(0, 40);
+  const earlyFlag = body.early === true || body.early === '1' || body.early === 1;
+  const bf = plan === 'y1' && body.bf === true && bfOn(earlyFlag);
 
   if (!PLANS[plan]) return res.status(400).json({ error: 'Unknown plan' });
   if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'Please enter a valid email.', field: 'email' });
@@ -153,7 +172,8 @@ module.exports = async (req, res) => {
   try {
     const p = await resolvePlan(plan);
     const meta = { tradingview_username: username, plan, source: 'site_checkout', ...attribution(req) };
-    const label = 'TradingView: ' + username;
+    if (bf) { meta.promo = BF.promo; meta.bonus_months = '3'; }
+    const label = 'TradingView: ' + username + (bf ? ' · 15 months (Black Friday)' : '');
 
     const params = {
       ui_mode: 'elements',
@@ -178,6 +198,7 @@ module.exports = async (req, res) => {
       publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
       mode: p.mode,
       trialDays: p.trialDays,
+      bf,
     });
   } catch (err) {
     console.error('[checkout]', plan, err.message);

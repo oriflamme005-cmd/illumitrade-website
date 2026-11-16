@@ -270,7 +270,7 @@ function sourceDetail(meta) {
 
 // ---------- where the customer came from, even when the cookie could not follow them ----------
 // (1) Stripe Payment Links: /ilt-track.js appends ?client_reference_id=ilt1__s-X__m-paid__c-… to the link.
-const REF_KEYS = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit' };
+const REF_KEYS = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit', b: 'promo' };
 function parseRef(ref) {
   const out = {};
   const parts = String(ref || '').split('__');
@@ -445,12 +445,33 @@ function lifecycleEmail({ type, sub, inv, plan, username, email, board }) {
   return { subject, text: lines.join('\n') };
 }
 
+// ---------- Black Friday 2026: the 1-year plan is 15 months for the price of 12 ----------
+const BF_PROMO = 'bf2026', BF_MONTHS = 15;
+function addMonthsUTC(date, n) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + n, 1));
+  const last = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+  d.setUTCDate(Math.min(date.getUTCDate(), last));
+  return d;
+}
+function fmtFull(d) {
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+// → the end date (Date) of the 15-month access when this sale is a Black Friday 1-year plan, otherwise null.
+// The flag comes from the on-site checkout (metadata.promo) or from the Payment Link fallback (client_reference_id …__b-bf2026).
+function bfEnd(s, plan) {
+  const promo = (s.metadata && s.metadata.promo) || parseRef(s.client_reference_id).promo || '';
+  if (promo !== BF_PROMO || plan !== 'y1') return null;
+  return addMonthsUTC(new Date(((s && s.created) || Date.now() / 1000) * 1000), BF_MONTHS);
+}
+
 // ---------- emails ----------
-function welcomeEmail({ first, trialEnd, planLabel, username }) {
+function welcomeEmail({ first, trialEnd, planLabel, username, bfUntil }) {
   const hi = first ? `Hi ${first},` : 'Hi there,';
   const status = trialEnd
     ? `Welcome to IllumiTrade. Your free week is active: $0 today, and you can cancel in 1 click any time before ${fmtDate(trialEnd)}.`
-    : `Welcome to IllumiTrade. Your payment is confirmed${planLabel ? ` and your ${planLabel} plan is active` : ''}. Thank you for your trust.`;
+    : bfUntil
+      ? `Welcome to IllumiTrade. Your payment is confirmed and your 1 year plan is active. As a Black Friday bonus you get 3 extra months: your access runs for 15 months, until ${bfUntil}. Thank you for your trust.`
+      : `Welcome to IllumiTrade. Your payment is confirmed${planLabel ? ` and your ${planLabel} plan is active` : ''}. Thank you for your trust.`;
   const access = username
     ? `Your access is being activated now on the TradingView account "${username}". You'll get a TradingView notification within a few hours. As soon as it arrives, take these 5 minutes:`
     : `To switch on your indicators, I just need your TradingView username. Reply to this email with it (you'll find it by clicking your profile picture in the top-right corner of TradingView) and I'll grant access within a few hours. As soon as it's on, take these 5 minutes:`;
@@ -526,24 +547,25 @@ ${block('Manage your subscription:', LINKS.portal)}
   return { subject, text, html };
 }
 
-function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board }) {
+function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil }) {
   const kind = d.trialEnd ? `FREE TRIAL (ends ${fmtDate(d.trialEnd)})` : `PAID ${money(s.amount_total, s.currency)}`;
   const price = d.unit != null ? money(d.unit, s.currency) + (d.interval ? ' / ' + d.interval : '') : '';
   const lines = [
     `New IllumiTrade sign-up: ${kind}`, '',
     `TradingView username:  ${username || '(none)'}${warn ? '   ⚠ ' + warn : (usernameNote(username) ? '   ℹ ' + usernameNote(username) : '')}`,
     `Plan:                  ${planLabel || d.product || '?'}${price ? '  (' + price + ')' : ''}`,
+    ...(bfUntil ? [`🎁 BLACK FRIDAY:       15 MONTHS (12 paid + 3 free) → set the TradingView expiration to ${bfUntil}`] : []),
     `Email:                 ${email || '?'}`,
     `Name:                  ${name || '(not provided)'}`,
     `Country:               ${(s.customer_details && s.customer_details.address && s.customer_details.address.country) || '?'}`,
     `Source:                ${s.metadata && s.metadata.source === 'site_checkout' ? 'checkout on illumitrade.com' : 'Stripe payment link'}`,
     `Came from:             ${sourceDetail(s.metadata)}`, '',
     `Welcome email:         ${welcome}`, '',
-    `→ Grant access on TradingView: Manage access → add "${username || '?'}"`, '',
+    `→ Grant access on TradingView: Manage access → add "${username || '?'}"${bfUntil ? ' · expires ' + bfUntil : ''}`, '',
     `Stripe: https://dashboard.stripe.com/${s.livemode ? '' : 'test/'}customers/${s.customer || ''}`,
   ];
   if (board) lines.push('', '— — —', board);
-  const subject = `💎 New ${d.trialEnd ? 'trial' : 'sale'}: ${username || email || '?'} · ${planLabel || d.product || ''}${warn ? ' ⚠' : ''}`;
+  const subject = `💎 New ${d.trialEnd ? 'trial' : 'sale'}: ${username || email || '?'} · ${planLabel || d.product || ''}${bfUntil ? ' 🎁 15 MONTHS' : ''}${warn ? ' ⚠' : ''}`;
   return { subject, text: lines.join('\n') };
 }
 
@@ -622,6 +644,8 @@ async function handler(req, res) {
   let d = { plan: '', product: '', unit: null, interval: '', trialEnd: null };
   try { d = await details(s); } catch (e) { console.error('[webhook] details', e.message); }
   const planLabel = PLAN_LABEL[d.plan] || '';
+  const bfDate = isIllumi ? bfEnd(s, d.plan) : null;
+  const bfUntil = bfDate ? fmtFull(bfDate) : '';
   const from = `"ILT 💎 IllumiTrade" <${process.env.GMAIL_USER}>`;
 
   // 1) welcome email to the customer
@@ -634,7 +658,7 @@ async function handler(req, res) {
   else if (!known) welcome = 'not sent: not one of the 5 IllumiTrade plans (alert only)';
   else {
     try {
-      const w = welcomeEmail({ first: firstName(name), trialEnd: d.trialEnd, planLabel, username: warn ? '' : username });
+      const w = welcomeEmail({ first: firstName(name), trialEnd: d.trialEnd, planLabel, username: warn ? '' : username, bfUntil });
       await mailer().sendMail({ from, to: email, replyTo: process.env.GMAIL_USER, subject: w.subject, text: w.text, html: w.html });
       welcome = warn ? 'sent (asks the customer for the username)' : 'sent';
     } catch (e) {
@@ -646,7 +670,7 @@ async function handler(req, res) {
   // 2) alert to you
   try {
     const board = known ? await scoreboard() : '';
-    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board });
+    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil });
     await mailer().sendMail({ from, to: process.env.ALERT_EMAIL || process.env.GMAIL_USER, replyTo: email || undefined, subject: a.subject, text: a.text });
   } catch (e) {
     console.error('[webhook] alert', e.message);
