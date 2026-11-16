@@ -344,6 +344,14 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
   border:1px solid var(--line);border-radius:var(--r);text-align:center;}
 .trial-banner span{color:var(--ink-2);font-size:14px;}
 .trial-banner strong{color:var(--ink);font-weight:600;}
+.bf-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;
+  max-width:760px;margin:-14px auto 36px;padding:16px 24px;background:var(--surface);
+  border:1px solid var(--accent);border-radius:var(--r);text-align:center;}
+.bf-banner[hidden]{display:none;}
+.bf-banner .bf-tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid var(--accent);padding:4px 10px;border-radius:2px;}
+.bf-banner span.bf-txt{color:var(--ink-2);font-size:14px;}
+.bf-banner strong{color:var(--ink);font-weight:600;}
 .pricing-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;max-width:1000px;margin:0 auto;}
 .price-card{
   flex:1 1 290px;max-width:320px;display:flex;flex-direction:column;
@@ -1208,6 +1216,10 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <div class="trial-banner reveal">
       <span><strong>7-day free trial on the monthly plan.</strong> A card is required to start. If you cancel before day 7 you are not charged; otherwise the plan renews at $80/month until you cancel. Prepaid plans are one-time payments that save up to 27%, do not auto-renew and come with a <strong>14-day money-back guarantee</strong>, no questions asked.</span>
     </div>
+    <div class="bf-banner" id="bf-banner" hidden>
+      <span class="bf-tag">◆ Black Friday</span>
+      <span class="bf-txt"><strong>1-year plan: 15 months for the price of 12.</strong> Pay once ($699) and get 3 extra months of access. Offer ends <b id="bf-end">December 1</b>. Same 14-day money-back guarantee.</span>
+    </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
         <span class="price-tag trial">◆ Start here · first week free</span>
@@ -1244,11 +1256,11 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" data-plan="m6" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
       </div>
-      <div class="price-card">
-        <span class="price-tag ghost">·</span>
-        <div class="price-period">1 Year <span class="best">· Best value</span></div>
-        <div class="price-amount"><sup>$</sup>58<span class="mo">/mo</span></div>
-        <div class="price-billing"><s>$960</s> <span class="now">$699 one-time</span> · <span class="save">save $261</span> · no auto-renew</div>
+      <div class="price-card" id="card-y1">
+        <span class="price-tag ghost" data-y1="tag">·</span>
+        <div class="price-period" data-y1="period">1 Year <span class="best">· Best value</span></div>
+        <div class="price-amount" data-y1="amount"><sup>$</sup>58<span class="mo">/mo</span></div>
+        <div class="price-billing" data-y1="billing"><s>$960</s> <span class="now">$699 one-time</span> · <span class="save">save $261</span> · no auto-renew</div>
         <div class="guar">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
         <ul class="price-features">
@@ -1285,10 +1297,11 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <div class="checkout-reassure reveal">
       <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew, 14-day money-back guarantee · Access within hours (24h max) · Questions? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Ask us on Telegram</a></p>
       <details class="pay-alt">
-        <summary>Prefer to pay with crypto (USDT)?</summary>
+        <summary>Prefer to pay with crypto (USDC / USDT)?</summary>
         <div class="pa-body">
-          <p style="margin-bottom:10px;">We accept <b style="color:var(--ink-2);">USDT on BNB Smart Chain (BEP-20)</b> for any plan:</p>
+          <p style="margin-bottom:10px;">We accept <b style="color:var(--ink-2);">USDC or USDT on BNB Smart Chain (BEP-20)</b> for any plan:</p>
           <p class="pa-amounts">1 Month $80 · 3 Months $210 · 6 Months $360 · 1 Year $699 · Lifetime $3,750</p>
+          <p class="pa-bf" id="pa-bf" hidden style="margin-bottom:10px;color:var(--accent);">Black Friday: the 1 Year plan includes 3 extra months (15 months for $699). Mention it in your message.</p>
           <div class="pa-address">
             <div>
               <span class="pa-net">BNB Smart Chain (BEP-20)</span>
@@ -1689,8 +1702,42 @@ window.addEventListener('scroll', () => {
   var ready=false, plan=null, fallbackUrl=null, stripeP=null, checkout=null, actionsP=null, lastFocus=null, busy=false;
 
   // is checkout configured on the server? (until then: normal Stripe links)
-  fetch(API,{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
-    .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); })
+  // Black Friday 2026 — the server says whether the offer is on (dates are decided server-side, in /api/checkout)
+  var early=false;
+  try{
+    if(/[?&]bf=early(&|$)/.test(location.search)) sessionStorage.setItem('ilt_bf_early','1');
+    early=sessionStorage.getItem('ilt_bf_early')==='1';
+  }catch(e){}
+  var bfOn=false;
+  function applyBf(bf){
+    try{
+      bfOn=true;
+      PLANS.y1={name:'1 Year + 3 months free', sub:'One-time $699 · 15 months of access (Black Friday) · no auto-renew', cta:'Pay & get 15 months', then:'One-time payment · 15 months of access · no auto-renew', trust:'One-time payment'};
+      var until=bf&&bf.until?new Date(bf.until):null;
+      var endTxt=until?until.toLocaleDateString('en-US',{month:'long',day:'numeric',timeZone:'Europe/Paris'}):'December 1';
+      var b=$('bf-banner'); if(b){ var e=$('bf-end'); if(e) e.textContent=endTxt; b.hidden=false; }
+      var card=$('card-y1');
+      if(card){
+        var q=function(k){return card.querySelector('[data-y1="'+k+'"]');};
+        var t=q('tag'); if(t){ t.textContent='◆ Black Friday'; t.className='price-tag trial'; }
+        var pe=q('period'); if(pe) pe.innerHTML='15 Months <span class="best">· Pay for 12</span>';
+        var am=q('amount'); if(am) am.innerHTML='<sup>$</sup>47<span class="mo">/mo</span>';
+        var bl=q('billing'); if(bl) bl.innerHTML='<s>$1,200</s> <span class="now">$699 one-time</span> · <span class="save">save $501</span> · 15 months · no auto-renew';
+        var link=card.querySelector('a[data-plan="y1"]');
+        if(link){
+          link.textContent='Get 15 months for $699 →';
+          // fallback (Payment Link): carry the Black Friday flag to Stripe, next to the usual source tag
+          try{ var base=(link.getAttribute('href')||'').split('?')[0]; var ref=((window.ILT&&ILT.ref&&ILT.ref())||'ilt1').split('__b-')[0]+'__b-bf2026';
+            link.setAttribute('href', base+'?client_reference_id='+encodeURIComponent(ref)); }catch(e){}
+        }
+      }
+      var pa=$('pa-bf'); if(pa) pa.hidden=false;
+      window.ILT&&ILT.track('bf_offer_view',{early:early?1:0});
+    }catch(e){}
+  }
+
+  fetch(API+(early?'?early=1':''),{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
+    .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); if(ready && j.bf && j.bf.on) applyBf(j.bf); })
     .catch(function(){ ready=false; });
 
   function loadStripe(){
@@ -1725,7 +1772,7 @@ window.addEventListener('scroll', () => {
     $('co-trust').innerHTML='🔒 Secured by <b>Stripe</b> · '+c.trust;
     $('co-err1').textContent=''; $('co-err2').textContent='';
     step(1); loadStripe().catch(function(){});
-    window.ILT&&ILT.track('checkout_open',{plan:p},'checkout',{});
+    window.ILT&&ILT.track('checkout_open',{plan:p,bf:(bfOn&&p==='y1')?1:0},'checkout',{});
     co.hidden=false; document.body.classList.add('co-lock');
     requestAnimationFrame(function(){ co.classList.add('open'); });
     setTimeout(function(){ ($('co-email').value?$('co-user'):$('co-email')).focus(); }, 60);
@@ -1767,7 +1814,7 @@ window.addEventListener('scroll', () => {
     step(2);
 
     var sessionP=fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({plan:plan,email:email,username:user})})
+      body:JSON.stringify({plan:plan,email:email,username:user,bf:(bfOn&&plan==='y1'),early:early})})
       .then(function(r){ return r.json().then(function(j){ j._status=r.status; return j; }); });
 
     Promise.all([sessionP, loadStripe()]).then(function(v){
@@ -1775,6 +1822,7 @@ window.addEventListener('scroll', () => {
       if(j._status===400){ step(1); err.textContent=j.error||'Please check your details.';
         if(j.field){ var f=j.field==='email'?em:us; f.setAttribute('aria-invalid','true'); f.focus(); } throw 'handled'; }
       if(!j.clientSecret || !j.publishableKey) throw new Error(j.error||'no session');
+      if(plan==='y1' && bfOn && !j.bf){ $('co-plan-sub').textContent='One-time $699 · 12 months · the Black Friday offer has just ended'; $('co-then').textContent='One-time payment · 12 months · no auto-renew'; }
       mount(j);
     }).catch(function(x){ if(x!=='handled') goFallback(); })
       .then(function(){ busy=false; nb.disabled=false; });
