@@ -470,8 +470,9 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
     ['Direction', 'Colored Line Aqua → long. Fuchsia → short.'],
     ['Exit', 'the Colored Line flips colour, or Fuchsia Diamonds appear (exhaustion).'],
   ];
-  const step3Title = 'STEP 3 · Check the market you trade (1 min)';
+  const step3Title = 'STEP 3 · Find a market where a setup is loading (1 min)';
   const step3 = 'Open your favourite chart and look at the V1 dashboard on the right: one column per timeframe. A setup loading on several timeframes at once is the strongest one. Trade in the direction of the higher-timeframe trend.';
+  const step3Patience = 'Important: a clean setup does not appear every day. On a single market, a clean multi-timeframe setup can take several weeks to form, and that is exactly what makes it worth waiting for. If your market shows nothing clean today, don\'t force a trade: check other tickers (BTC, ETH, gold, silver, oil, indices, major stocks…) until you find one where the setup is loading.';
   const guideLine = 'When you have 15 more minutes: the Quick Start Guide walks you through a full trade, step by step. 79%+ of members who took the time to understand these conditions stayed with ILT®.';
 
   const text = [
@@ -480,6 +481,7 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
     step2Title, ...rules.map(([k, v]) => '• ' + k + ': ' + v),
     'What it looks like on a real chart: ' + LINKS.chart, '',
     step3Title, step3, '',
+    step3Patience, '',
     guideLine, '',
     'Quick Start Guide:', LINKS.quick, '',
     'Full Edition Guide:', LINKS.full, '',
@@ -508,7 +510,8 @@ ${rules.map(([k, v]) => `<li style="margin:0 0 6px"><b>${esc(k)}:</b> ${esc(v)}<
 <p style="margin:0 0 6px"><a href="${LINKS.quick}"><img src="${LINKS.chart}" width="560" alt="ILT V1 on a real chart: GCL, Colored Line, Cross Line, Aqua Diamonds (setup loading), Fuchsia Diamonds (exhaustion)" style="display:block;width:100%;max-width:560px;height:auto;border:0;border-radius:6px"></a></p>
 <p style="margin:0 0 4px;font-size:13px;color:#666">ILT® V1 on a real chart: Aqua Diamonds = setup loading · Fuchsia Diamonds = exhaustion.</p>
 ${h(step3Title)}
-<p style="margin:0">${esc(step3)}</p>
+<p style="margin:0 0 10px">${esc(step3)}</p>
+<p style="margin:0;padding:10px 12px;background:#eef8f7;border-left:3px solid #0b7f75">${esc(step3Patience)}</p>
 <p style="margin:22px 0 14px">${esc(guideLine)}</p>
 ${block('Quick Start Guide:', LINKS.quick)}
 ${block('Full Edition Guide:', LINKS.full)}
