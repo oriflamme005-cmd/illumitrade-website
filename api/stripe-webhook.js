@@ -46,6 +46,7 @@ const LINKS = {
   portal: 'https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00',
   site: 'https://www.illumitrade.com',
   x: 'https://x.com/illumi_trade',
+  chart: 'https://www.illumitrade.com/ilt-v1-first-signal.jpg',
 };
 
 // ---------- Stripe helpers ----------
@@ -451,21 +452,36 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
     ? `Welcome to IllumiTrade. Your free week is active: $0 today, and you can cancel in 1 click any time before ${fmtDate(trialEnd)}.`
     : `Welcome to IllumiTrade. Your payment is confirmed${planLabel ? ` and your ${planLabel} plan is active` : ''}. Thank you for your trust.`;
   const access = username
-    ? `Your access is being activated now on the TradingView account "${username}". You'll get a TradingView notification within a few hours. Then open any chart → click Indicators → Invite-only scripts tab → select the ILT® indicators. Tip: click the ☆ next to each one to add it to your favorites, so it's one click away next time.`
-    : `To switch on your indicators, I just need your TradingView username. Reply to this email with it (you'll find it by clicking your profile picture in the top-right corner of TradingView) and I'll grant access within a few hours.`;
+    ? `Your access is being activated now on the TradingView account "${username}". You'll get a TradingView notification within a few hours. As soon as it arrives, take these 5 minutes:`
+    : `To switch on your indicators, I just need your TradingView username. Reply to this email with it (you'll find it by clicking your profile picture in the top-right corner of TradingView) and I'll grant access within a few hours. As soon as it's on, take these 5 minutes:`;
 
-  const readFirstLead = 'Take the time to read the guides carefully before your first trade.';
-  const readFirstKey = 'They\'re the key to knowing how and when to act on the important moves, straight from day one.';
-  const readFirstStat = 'It\'s worth it: 79%+ of members who took the time to understand the conditions in the guide stayed with ILT®.';
-  const readFirstEnd = 'The conditions are simple: once you understand them, they become a reflex that helps you spot quality setups at the turning points.';
-  const readFirstRest = readFirstKey + ' ' + readFirstStat + ' ' + readFirstEnd;
-  const readFirst = readFirstLead + ' ' + readFirstRest;
+  // ---- "First setup in 5 minutes" quickstart (same rules as the Quick Start Guide, pages 4-8) ----
+  const step1Title = 'STEP 1 · Add the 3 indicators (2 min)';
+  const step1 = [
+    'Open any chart → Indicators (fx) → Invite-only scripts tab → add:',
+    'ILT® V1 2026 · ILT® 2.0 2026 · ILT® Add-on 2026',
+    'Then toolbar → Save indicator template (name it "ILT"): all 3 load in one click on any chart.',
+  ];
+  const step2Title = 'STEP 2 · Learn the one setup to watch, on ILT® V1 (2 min)';
+  const rules = [
+    ['GCL sloping down', 'sideways market. No trade, just wait.'],
+    ['Aqua Diamonds on a low GCL', 'a move is loading. Get ready, don\'t act yet.'],
+    ['Trigger', 'the GCL turns up and crosses above the Cross Line (the dots).'],
+    ['Direction', 'Colored Line Aqua → long. Fuchsia → short.'],
+    ['Exit', 'the Colored Line flips colour, or Fuchsia Diamonds appear (exhaustion).'],
+  ];
+  const step3Title = 'STEP 3 · Check the market you trade (1 min)';
+  const step3 = 'Open your favourite chart and look at the V1 dashboard on the right: one column per timeframe. A setup loading on several timeframes at once is the strongest one. Trade in the direction of the higher-timeframe trend.';
+  const guideLine = 'When you have 15 more minutes: the Quick Start Guide walks you through a full trade, step by step. 79%+ of members who took the time to understand these conditions stayed with ILT®.';
 
   const text = [
     hi, '', status, '', access, '',
-    readFirst, '',
-    'Everything you need to get started:', '',
-    'Quick Start Guide (5 min read):', LINKS.quick, '',
+    step1Title, ...step1, '',
+    step2Title, ...rules.map(([k, v]) => '• ' + k + ': ' + v),
+    'What it looks like on a real chart: ' + LINKS.chart, '',
+    step3Title, step3, '',
+    guideLine, '',
+    'Quick Start Guide:', LINKS.quick, '',
     'Full Edition Guide:', LINKS.full, '',
     'Private Telegram community:', LINKS.telegram, '',
     'Manage your subscription:', LINKS.portal, '',
@@ -476,13 +492,25 @@ function welcomeEmail({ first, trialEnd, planLabel, username }) {
   const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const a = (u) => `<a href="${u}">${u}</a>`;
   const block = (label, u) => `<p style="margin:0 0 14px"><b>${label}</b><br>${a(u)}</p>`;
-  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#222">
+  const h = (t) => `<p style="margin:22px 0 8px;font-weight:bold;color:#0b7f75">${esc(t)}</p>`;
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#222;max-width:600px">
 <p>${esc(hi)}</p>
 <p>${esc(status)}</p>
 <p>${esc(access)}</p>
-<p><b>${esc(readFirstLead)}</b> ${esc(readFirstKey)} <b>${esc(readFirstStat)}</b> ${esc(readFirstEnd)}</p>
-<p>Everything you need to get started:</p>
-${block('Quick Start Guide (5 min read):', LINKS.quick)}
+${h(step1Title)}
+<p style="margin:0 0 6px">${esc(step1[0])}</p>
+<p style="margin:0 0 6px"><b>${esc(step1[1])}</b></p>
+<p style="margin:0">${esc(step1[2])}</p>
+${h(step2Title)}
+<ul style="margin:0 0 12px;padding-left:20px">
+${rules.map(([k, v]) => `<li style="margin:0 0 6px"><b>${esc(k)}:</b> ${esc(v)}</li>`).join('\n')}
+</ul>
+<p style="margin:0 0 6px"><a href="${LINKS.quick}"><img src="${LINKS.chart}" width="560" alt="ILT V1 on a real chart: GCL, Colored Line, Cross Line, Aqua Diamonds (setup loading), Fuchsia Diamonds (exhaustion)" style="display:block;width:100%;max-width:560px;height:auto;border:0;border-radius:6px"></a></p>
+<p style="margin:0 0 4px;font-size:13px;color:#666">ILT® V1 on a real chart: Aqua Diamonds = setup loading · Fuchsia Diamonds = exhaustion.</p>
+${h(step3Title)}
+<p style="margin:0">${esc(step3)}</p>
+<p style="margin:22px 0 14px">${esc(guideLine)}</p>
+${block('Quick Start Guide:', LINKS.quick)}
 ${block('Full Edition Guide:', LINKS.full)}
 ${block('Private Telegram community:', LINKS.telegram)}
 ${block('Manage your subscription:', LINKS.portal)}
@@ -491,7 +519,7 @@ ${block('Manage your subscription:', LINKS.portal)}
 <p>ILT 💎<br><a href="${LINKS.site}">www.illumitrade.com</a><br><a href="${LINKS.x}">${LINKS.x}</a></p>
 </div>`;
 
-  const subject = first ? `Your ILT® Trader Kit is ready, ${first}` : 'Your ILT® Trader Kit is ready';
+  const subject = first ? `Your ILT® Trader Kit is ready, ${first}: first setup in 5 minutes` : 'Your ILT® Trader Kit is ready: first setup in 5 minutes';
   return { subject, text, html };
 }
 
