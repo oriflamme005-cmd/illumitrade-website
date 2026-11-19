@@ -783,27 +783,65 @@ nav.scrolled::after{opacity:1;}
 .lightbox-x{display:inline-block;margin-top:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--accent);text-decoration:none;border:1px solid rgba(95,202,189,.4);border-radius:3px;padding:6px 12px;}
 .lightbox-x:hover{border-color:var(--accent);color:var(--ink);}
-/* ── Telegram quick contact ── */
+/* ── Chat quick contact (looks like a chat, arrives as an email) ── */
 .faq-more{text-align:center;margin-top:26px;font-size:14px;color:var(--ink-dim);}
 .faq-more a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.35);}
 .faq-more a:hover{border-color:var(--accent);}
-.tg-fab{position:fixed;right:22px;bottom:22px;z-index:140;display:inline-flex;align-items:center;gap:9px;
+.chat-fab{position:fixed;right:22px;bottom:22px;z-index:140;display:inline-flex;align-items:center;gap:9px;cursor:pointer;
   padding:11px 16px 11px 13px;border-radius:30px;text-decoration:none;
   background:rgba(12,13,16,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   border:1px solid var(--line-strong);color:var(--ink-2);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
   box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;transform:translateY(12px);pointer-events:none;
   transition:opacity .3s,transform .3s,border-color .2s,color .2s;}
-.tg-fab svg{color:var(--accent);flex-shrink:0;}
-.tg-fab b{color:var(--ink);font-weight:500;}
-.tg-fab.show{opacity:1;transform:none;pointer-events:auto;}
-.tg-fab:hover{border-color:var(--accent);color:var(--ink);}
-body.co-lock .tg-fab{opacity:0;pointer-events:none;}
+.chat-fab svg{color:var(--accent);flex-shrink:0;}
+.chat-fab b{color:var(--ink);font-weight:500;}
+.chat-fab.show{opacity:1;transform:none;pointer-events:auto;}
+.chat-fab:hover,.chat-fab[aria-expanded="true"]{border-color:var(--accent);color:var(--ink);}
+body.co-lock .chat-fab,body.co-lock .chat{opacity:0;pointer-events:none;}
+.chat{position:fixed;right:22px;bottom:80px;z-index:1100;width:340px;max-width:calc(100vw - 28px);
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;
+  box-shadow:0 30px 90px rgba(0,0,0,.65),0 0 0 1px rgba(95,202,189,.06);
+  opacity:0;transform:translateY(12px) scale(.98);transform-origin:bottom right;transition:opacity .22s ease,transform .22s cubic-bezier(.2,.7,.2,1);}
+.chat[hidden]{display:none;}
+.chat.open{opacity:1;transform:none;}
+.chat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+.chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 14px 12px 16px;border-bottom:1px solid var(--line);}
+.chat-id{display:flex;align-items:center;gap:11px;}
+.chat-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--accent);
+  background:rgba(95,202,189,.08);border:1px solid rgba(95,202,189,.35);}
+.chat-id b{display:block;color:var(--ink);font-size:14px;font-weight:700;}
+.chat-id small{display:flex;align-items:center;gap:6px;margin-top:2px;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);}
+.chat-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.chat-x{width:30px;height:30px;border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--ink-dim);font-size:13px;cursor:pointer;}
+.chat-x:hover{color:var(--ink);border-color:var(--line-strong);}
+.chat-body{padding:16px 16px 4px;display:flex;flex-direction:column;gap:10px;max-height:240px;overflow:auto;}
+.chat-msg{align-self:flex-start;max-width:88%;padding:10px 13px;border-radius:12px 12px 12px 3px;background:var(--surface-3);
+  border:1px solid var(--line);color:var(--ink-2);font-size:13.5px;line-height:1.5;}
+.chat-msg.me{align-self:flex-end;border-radius:12px 12px 3px 12px;background:rgba(95,202,189,.1);border-color:rgba(95,202,189,.3);color:var(--ink);white-space:pre-wrap;word-break:break-word;}
+.chat-msg b{color:var(--ink);}
+.chat-msg a{color:var(--accent);}
+.chat-form{padding:10px 16px 16px;display:flex;flex-direction:column;gap:8px;}
+.chat-form[hidden]{display:none;}
+.chat-form textarea,.chat-form input{width:100%;background:var(--surface-2);border:1px solid var(--line-strong);border-radius:var(--r);
+  color:var(--ink);font:inherit;font-size:14px;padding:10px 12px;resize:none;outline:none;transition:border-color .2s;}
+.chat-form textarea:focus,.chat-form input:focus{border-color:var(--accent);}
+.chat-form [aria-invalid="true"]{border-color:#d96a93;}
+.chat-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;}
+.chat-err{min-height:0;font-size:12.5px;color:#d96a93;line-height:1.45;}
+.chat-err:empty{display:none;}
+.chat-err a{color:var(--accent);}
+.chat-send{margin-top:2px;padding:11px 14px;border:0;border-radius:var(--r);background:var(--ink);color:var(--void,#050506);cursor:pointer;
+  font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;transition:opacity .2s;}
+.chat-send:disabled{opacity:.55;cursor:default;}
+.chat-note{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);text-align:center;}
 @media (max-width:768px){
-  .tg-fab{right:14px;bottom:calc(98px + env(safe-area-inset-bottom));padding:12px;border-radius:50%;}
-  .tg-fab span{display:none;}
-  .tg-fab svg{width:19px;height:19px;}
+  .chat-fab{right:14px;bottom:calc(98px + env(safe-area-inset-bottom));padding:12px;border-radius:50%;}
+  .chat-fab span{display:none;}
+  .chat-fab svg{width:19px;height:19px;}
+  .chat{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:auto;max-width:none;}
+  .chat-form textarea,.chat-form input{font-size:16px;}
 }
-@media (prefers-reduced-motion:reduce){.tg-fab{transition:none;}}
+@media (prefers-reduced-motion:reduce){.chat-fab,.chat{transition:none;}}
 .guar{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(95,202,189,.35);background:rgba(95,202,189,.06);padding:4px 9px;border-radius:3px;}
 /* ════ ILT® TRADER KIT (offer stack) ════ */
 .kit{max-width:900px;margin:0 auto 34px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--surface);padding:24px 26px;}
@@ -1172,7 +1210,6 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <li><b>21-timeframe dashboards</b><span>Trend, Diamonds and divergences from 15m to the month</span></li>
         <li><b>Diamond &amp; divergence alerts</b><span>Native TradingView alerts, on your phone</span></li>
         <li><b>Quick-start guide</b><span>From checkout to your first alert in minutes</span></li>
-        <li><b>Personal setup help</b><span>Message us on Telegram and we get your alerts running with you</span></li>
         <li><b>Every future update</b><span>New versions land in your account at no extra cost</span></li>
       </ul>
     </div>
@@ -1192,7 +1229,6 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>21-timeframe dashboards</li>
           <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
-          <li>Personal setup help on Telegram</li>
           <li>Every future update included</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start my free week →</a></div>
@@ -1210,7 +1246,6 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>21-timeframe dashboards</li>
           <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
-          <li>Personal setup help on Telegram</li>
           <li>Every future update included</li>
           <li>Exclusive Trade Ideas</li>
         </ul>
@@ -1229,7 +1264,6 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>21-timeframe dashboards</li>
           <li>Diamond &amp; divergence alerts</li>
           <li>Quick-start guide</li>
-          <li>Personal setup help on Telegram</li>
           <li>Every future update included</li>
           <li>Exclusive Trade Ideas</li>
         </ul>
@@ -1249,7 +1283,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <div class="price-bookend">
         <div>
           <div class="pb-name">All-in forever? · Lifetime</div>
-          <div class="pb-sub">One-time · all updates free · <span class="save">14-day money-back guarantee</span> · <b style="color:var(--ink-2);">or 4 × $990</b> or USDT — <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>ask on Telegram</a></div>
+          <div class="pb-sub">One-time · all updates free · <span class="save">14-day money-back guarantee</span> · <b style="color:var(--ink-2);">or 4 × $990</b> or USDT — <a href="mailto:illumitrade.contact@gmail.com?subject=Lifetime%20plan" data-chat-open="Hi, I'm interested in the Lifetime plan (4 × $990 or USDT).">email us</a></div>
         </div>
         <div class="pb-price">$3,750</div>
         <a href="https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04" data-plan="lifetime" target="_blank" rel="noopener" class="pb-link">Choose →</a>
@@ -1257,7 +1291,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew, 14-day money-back guarantee · Access within hours (24h max) · Questions? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Ask us on Telegram</a></p>
+      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew, 14-day money-back guarantee · Access within hours (24h max) · Questions? <a href="mailto:illumitrade.contact@gmail.com" data-chat-open>Email us</a></p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDC / USDT)?</summary>
         <div class="pa-body">
@@ -1311,7 +1345,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <div class="faq-a">Yes. The monthly plan starts with <b>7 free days</b>. Every prepaid plan, lifetime included, comes with a <b>14-day money-back guarantee</b>: if ILT® isn't for you, send us one message within 14 days of your purchase and we refund you in full, no questions asked. Your TradingView access is removed when the refund is issued.</div>
       </details>
     </div>
-    <p class="faq-more reveal">Still have a question? <a href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg>Message us on Telegram →</a> — we reply personally.</p>
+    <p class="faq-more reveal">Still have a question? <a href="mailto:illumitrade.contact@gmail.com" data-chat-open>Email us →</a> — we reply personally.</p>
   </div>
 </section>
 
@@ -1374,11 +1408,28 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <span class="m-cta-sub">$0 today · cancel in 1 click</span>
 </div>
 
-<!-- TELEGRAM QUICK CONTACT -->
-<a class="tg-fab" id="tg-fab" href="https://t.me/ILTIndicator" target="_blank" rel="noopener" data-tg aria-label="Questions? Chat with us on Telegram">
-  <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M21.94 4.3 18.7 19.6c-.24 1.08-.88 1.35-1.79.84l-4.94-3.64-2.38 2.29c-.26.26-.49.49-1 .49l.36-5.03 9.16-8.28c.4-.36-.09-.55-.62-.2L6.16 13.2l-4.88-1.52c-1.06-.33-1.08-1.06.22-1.57L20.6 2.8c.88-.33 1.65.2 1.34 1.5z"/></svg>
-  <span>Questions? <b>Telegram</b></span>
-</a>
+<!-- CHAT QUICK CONTACT (looks like a chat, arrives in Gmail via /api/contact) -->
+<button type="button" class="chat-fab" id="chat-fab" aria-controls="chat" aria-expanded="false" aria-label="Questions? Chat with us">
+  <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M4 3h16a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H9.4l-4.7 3.6A1 1 0 0 1 3 20.8V5a2 2 0 0 1 1-2zm3 6.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zm5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zm5 0a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/></svg>
+  <span>Questions? <b>Chat with us</b></span>
+</button>
+<div class="chat" id="chat" hidden role="dialog" aria-labelledby="chat-title">
+  <div class="chat-head">
+    <div class="chat-id"><span class="chat-av" aria-hidden="true">◆</span><div><b id="chat-title">IllumiTrade</b><small><i class="chat-dot"></i>We reply personally</small></div></div>
+    <button type="button" class="chat-x" data-chat-close aria-label="Close">✕</button>
+  </div>
+  <div class="chat-body" id="chat-body" aria-live="polite">
+    <div class="chat-msg">Hi 👋 Questions about ILT®, the plans or TradingView? Ask here, we reply <b>personally to your email</b>.</div>
+  </div>
+  <form class="chat-form" id="chat-form" novalidate>
+    <textarea id="chat-text" rows="3" maxlength="4000" placeholder="Type your question…" aria-label="Your question" required></textarea>
+    <input id="chat-email" type="email" inputmode="email" autocomplete="email" placeholder="Your email, for our reply" aria-label="Your email" required>
+    <input type="text" id="chat-hp" class="chat-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="chat-err" id="chat-err" role="alert"></p>
+    <button type="submit" class="chat-send" id="chat-send">Send →</button>
+    <p class="chat-note">Or email illumitrade.contact@gmail.com</p>
+  </form>
+</div>
 
 <!-- ON-SITE CHECKOUT -->
 <div class="co" id="co" hidden role="dialog" aria-modal="true" aria-labelledby="co-plan-name">
@@ -1657,14 +1708,68 @@ function openLatestCall(bar){
 </script>
 
 <script>
-// ─── TELEGRAM quick contact: appears once the visitor scrolls past the hero ───
+// ─── CHAT quick contact: bubble appears once the visitor scrolls past the hero; messages go to Gmail via /api/contact ───
 (function(){
-  var fab=document.getElementById('tg-fab'), hero=document.querySelector('.hero'), lb=document.getElementById('lightbox');
-  if(!fab) return;
+  var MAIL='illumitrade.contact@gmail.com';
+  var fab=document.getElementById('chat-fab'), box=document.getElementById('chat'), hero=document.querySelector('.hero'), lb=document.getElementById('lightbox');
+  if(!fab||!box) return;
+  var form=document.getElementById('chat-form'), txt=document.getElementById('chat-text'), em=document.getElementById('chat-email'),
+      hp=document.getElementById('chat-hp'), err=document.getElementById('chat-err'), btn=document.getElementById('chat-send'), body=document.getElementById('chat-body');
+  var isOpen=false, openedAt=0, sending=false;
+  function track(n,p){ try{ window.ILT&&ILT.track(n,p||{}); }catch(e){} }
   function upd(){
     var past = hero ? hero.getBoundingClientRect().bottom < 80 : window.scrollY > 600;
-    fab.classList.toggle('show', past && !(lb && lb.classList.contains('open')));
+    fab.classList.toggle('show', (past||isOpen) && !(lb && lb.classList.contains('open')));
   }
+  function open(prefill, where){
+    if(!isOpen){
+      box.hidden=false; isOpen=true; openedAt=Date.now();
+      requestAnimationFrame(function(){ box.classList.add('open'); });
+      fab.setAttribute('aria-expanded','true'); upd();
+      track('chat_open',{where:where||'bubble'});
+    }
+    if(prefill && !txt.value) txt.value=prefill;
+    if(!form.hidden) setTimeout(function(){ try{ txt.focus({preventScroll:true}); }catch(e){ txt.focus(); } },80);
+  }
+  function close(){
+    box.classList.remove('open'); isOpen=false; fab.setAttribute('aria-expanded','false');
+    setTimeout(function(){ if(!isOpen) box.hidden=true; },230); upd();
+  }
+  fab.addEventListener('click',function(){ isOpen?close():open('','bubble'); });
+  box.querySelector('[data-chat-close]').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&isOpen) close(); });
+  // any link with data-chat-open opens the chat instead of the mail app (the mailto: href stays as a no-JS fallback)
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-chat-open]'); if(!a) return;
+    e.preventDefault();
+    var s=a.closest('section[id],header,footer'); open(a.getAttribute('data-chat-open')||'', s?(s.id||s.tagName.toLowerCase()):'page');
+  });
+  function bubble(html, me){ var d=document.createElement('div'); d.className='chat-msg'+(me?' me':''); if(me) d.textContent=html; else d.innerHTML=html; body.appendChild(d); body.scrollTop=body.scrollHeight; }
+  function fail(msg, field){
+    err.innerHTML=msg; btn.disabled=false; btn.textContent='Send →'; sending=false;
+    if(field==='email'){ em.setAttribute('aria-invalid','true'); em.focus(); }
+    if(field==='message'){ txt.setAttribute('aria-invalid','true'); txt.focus(); }
+  }
+  [txt,em].forEach(function(el){ el.addEventListener('input',function(){ el.removeAttribute('aria-invalid'); err.textContent=''; }); });
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); if(sending) return;
+    var message=txt.value.trim(), email=em.value.trim();
+    if(message.length<2) return fail('Please type your question.','message');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('Please enter your email so we can reply.','email');
+    sending=true; btn.disabled=true; btn.textContent='Sending…'; err.textContent='';
+    var ref=''; try{ ref=(window.ILT&&ILT.ref&&ILT.ref())||''; }catch(x){}
+    fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:message,email:email,website:hp.value,elapsed:Date.now()-openedAt,page:location.pathname,ref:ref})})
+      .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ return {ok:r.ok,j:j}; }); })
+      .then(function(x){
+        if(!x.ok||!x.j.ok){ var j=x.j||{}; if(j.field) return fail(j.error, j.field); throw 0; }
+        bubble(message,true);
+        var safe=email.replace(/[<>&"]/g,'');
+        bubble('Thanks! Your message is in. We\'ll reply personally to <b>'+safe+'</b>. Check your spam folder if you don\'t see it.');
+        form.hidden=true; sending=false; track('chat_sent');
+      })
+      .catch(function(){ fail('Couldn\'t send right now. Email us directly at <a href="mailto:'+MAIL+'">'+MAIL+'</a>.'); track('chat_error'); });
+  });
   window.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd();
 })();
 </script>
