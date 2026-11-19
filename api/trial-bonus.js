@@ -4,6 +4,7 @@
 // still active (not cancelled) and not already extended, it:
 //   1) extends the trial by TRIAL_BONUS_DAYS (default 3) in Stripe,
 //   2) emails the customer: "3 extra free days, your trial now ends on <date>",
+//      (the email also points to the prepaid plans, from $58/month)
 //   3) tags the subscription (metadata.trial_bonus = 1) so it can never be extended twice.
 // Nothing is charged earlier than announced: the customer only ever gets MORE time, and the email
 // states the new date of the first $80 charge.
@@ -36,6 +37,7 @@ const LINKS = {
   portal: 'https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00',
   site: 'https://www.illumitrade.com',
   x: 'https://x.com/illumi_trade',
+  prepaid: 'https://www.illumitrade.com/lp?utm_source=email&utm_medium=trial_email&utm_campaign=prepaid#pricing',
 };
 
 // ---------- Stripe helpers ----------
@@ -109,6 +111,7 @@ function bonusEmail({ first, newEnd, days }) {
   const intro = `Quick update on your ILT® free trial: I've just added ${days} extra free days, so you have more time to read the guide and test the indicator on your own charts.`;
   const when = `Your trial now runs until ${date} (same time of day you started). Nothing is charged before then, and you can cancel in 1 click any time before it ends.`;
   const how = 'Where to start (about 10 minutes):';
+  const prepaid = 'Prefer to pay less per month? Prepaid plans start at $58/month: pay once, no auto-renew, with a 14-day money-back guarantee. If you switch, your free trial closes automatically, so you are never charged twice:';
 
   const text = [
     hi, '', intro, '', when, '',
@@ -116,6 +119,7 @@ function bonusEmail({ first, newEnd, days }) {
     '1. Quick Start Guide (5 min read): ' + LINKS.quick,
     '2. Full Edition Guide, for the details: ' + LINKS.full,
     '3. Stuck on the setup? Reply to this email, or ask in the private Telegram: ' + LINKS.telegram, '',
+    prepaid + ' ' + LINKS.prepaid, '',
     'Manage or cancel your subscription: ' + LINKS.portal, '',
     'Best regards,', '', 'ILT 💎', 'www.illumitrade.com', LINKS.x,
   ].join('\n');
@@ -132,6 +136,7 @@ function bonusEmail({ first, newEnd, days }) {
 <li>Full Edition Guide, for the details: ${a(LINKS.full)}</li>
 <li>Stuck on the setup? Reply to this email, or ask in the private Telegram: ${a(LINKS.telegram)}</li>
 </ol>
+<p>${esc(prepaid)} <a href="${LINKS.prepaid}">See the prepaid plans</a></p>
 <p>Manage or cancel your subscription: ${a(LINKS.portal)}</p>
 <p>Best regards,</p>
 <p>ILT 💎<br><a href="${LINKS.site}">www.illumitrade.com</a><br><a href="${LINKS.x}">${LINKS.x}</a></p>

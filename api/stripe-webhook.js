@@ -7,6 +7,7 @@
 // Customers only ever receive the welcome email. Other products on the same Stripe account are ignored.
 // ---------------------------------------------------------------------------------------------
 // Stripe → Developers → Webhooks → endpoint  https://www.illumitrade.com/api/stripe-webhook
+// Prepaid sale while a monthly free trial is open on the same email → that trial is closed automatically (no $80 charge).
 // Events to send:  checkout.session.completed · invoice.paid · invoice.payment_failed · customer.subscription.deleted
 //
 // Vercel Environment Variables needed:
@@ -68,6 +69,17 @@ async function stripePost(path, params) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body,
+  });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error((j.error && j.error.message) || 'Stripe HTTP ' + r.status);
+  return j;
+}
+
+async function stripeDelete(path, params) {
+  const body = Object.entries(params || {}).map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v))).join('&');
+  const r = await fetch('https://api.stripe.com/v1' + path + (body ? '?' + body : ''), {
+    method: 'DELETE',
+    headers: { Authorization: 'Bearer ' + process.env.STRIPE_SECRET_KEY, 'Stripe-Version': STRIPE_VERSION },
   });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error((j.error && j.error.message) || 'Stripe HTTP ' + r.status);
@@ -225,6 +237,37 @@ function illumiPlan(sub, prices) {
   if (/^ilt_oracle/i.test(m.product || '')) return '';
   if (m.source === 'site_checkout') return PLAN_LABEL[m.plan] ? m.plan : 'monthly';
   return prices[subPriceId(sub)] || '';
+}
+
+// ---------- a customer on a monthly free trial buys a prepaid plan → close the trial, so the $80 is never charged ----------
+// Looks up every Stripe customer with the same email (the prepaid checkout often creates a new customer).
+// Trials are cancelled immediately (no charge); a monthly plan that is already PAID is never touched, only reported.
+// Returns one line for your alert email, or '' when there was nothing to do.
+async function closeOpenTrials(email, newPlan) {
+  if (!email) return '';
+  const prices = await illumiPrices();
+  const custs = await stripe('/customers?limit=20&email=' + encodeURIComponent(email));
+  const closed = [], paid = [];
+  for (const c of custs.data || []) {
+    for (const status of ['trialing', 'active', 'past_due']) {
+      const subs = await stripe('/subscriptions?limit=20&status=' + status + '&customer=' + c.id);
+      for (const sub of subs.data || []) {
+        if (illumiPlan(sub, prices) !== 'monthly') continue;
+        if (status === 'trialing') {
+          // tag first, so the "subscription deleted" alert knows it is NOT a lost customer
+          await stripePost('/subscriptions/' + sub.id, { 'metadata[replaced_by]': newPlan });
+          await stripeDelete('/subscriptions/' + sub.id, { 'cancellation_details[comment]': 'Auto: replaced by prepaid plan ' + newPlan + ' (no charge)' });
+          closed.push(sub.id);
+        } else if (!sub.cancel_at_period_end && !sub.cancel_at) {
+          paid.push(sub.id);
+        }
+      }
+    }
+  }
+  const out = [];
+  if (closed.length) out.push(`closed automatically (${closed.join(', ')}), so the $80 will never be charged. Nothing to do.`);
+  if (paid.length) out.push(`⚠ this customer ALSO has a PAID monthly subscription still renewing (${paid.join(', ')}). Cancel it in Stripe if they are switching.`);
+  return out.join(' ');
 }
 
 function invoiceSubId(inv) {
@@ -547,7 +590,7 @@ ${block('Manage your subscription:', LINKS.portal)}
   return { subject, text, html };
 }
 
-function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil }) {
+function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote }) {
   const kind = d.trialEnd ? `FREE TRIAL (ends ${fmtDate(d.trialEnd)})` : `PAID ${money(s.amount_total, s.currency)}`;
   const price = d.unit != null ? money(d.unit, s.currency) + (d.interval ? ' / ' + d.interval : '') : '';
   const lines = [
@@ -561,11 +604,12 @@ function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, boa
     `Source:                ${s.metadata && s.metadata.source === 'site_checkout' ? 'checkout on illumitrade.com' : 'Stripe payment link'}`,
     `Came from:             ${sourceDetail(s.metadata)}`, '',
     `Welcome email:         ${welcome}`, '',
+    ...(trialNote ? [`Open monthly trial:    ${trialNote}`, ''] : []),
     `→ Grant access on TradingView: Manage access → add "${username || '?'}"${bfUntil ? ' · expires ' + bfUntil : ''}`, '',
     `Stripe: https://dashboard.stripe.com/${s.livemode ? '' : 'test/'}customers/${s.customer || ''}`,
   ];
   if (board) lines.push('', '— — —', board);
-  const subject = `💎 New ${d.trialEnd ? 'trial' : 'sale'}: ${username || email || '?'} · ${planLabel || d.product || ''}${bfUntil ? ' 🎁 15 MONTHS' : ''}${warn ? ' ⚠' : ''}`;
+  const subject = `💎 New ${d.trialEnd ? 'trial' : 'sale'}: ${username || email || '?'} · ${planLabel || d.product || ''}${bfUntil ? ' 🎁 15 MONTHS' : ''}${/closed automatically/.test(trialNote || '') ? ' (trial closed)' : ''}${/ALSO has a PAID|could not check/.test(trialNote || '') ? ' ⚠ check monthly' : ''}${warn ? ' ⚠' : ''}`;
   return { subject, text: lines.join('\n') };
 }
 
@@ -603,6 +647,7 @@ async function lifecycle(event, res) {
     return res.status(500).send('Stripe lookup failed'); // let Stripe retry
   }
   if (!plan) return skip('not an IllumiTrade subscription');
+  if (type === 'ended' && sub.metadata && sub.metadata.replaced_by) return skip('trial replaced by a prepaid plan (customer kept)');
   // Only the first payment after a free trial is news; monthly renewals stay silent.
   if (type === 'paid' && !(sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400)) return skip('renewal');
 
@@ -667,10 +712,20 @@ async function handler(req, res) {
     }
   }
 
-  // 2) alert to you
+  // 2) a prepaid plan replaces any monthly free trial still open on the same email
+  let trialNote = '';
+  if (known && d.plan !== 'monthly' && email) {
+    try { trialNote = await closeOpenTrials(email, d.plan); }
+    catch (e) {
+      console.error('[webhook] closeOpenTrials', e.message);
+      trialNote = '⚠ could not check for an open monthly trial (' + e.message + '). Check this email in Stripe → Subscriptions and cancel any trial by hand.';
+    }
+  }
+
+  // 3) alert to you
   try {
     const board = known ? await scoreboard() : '';
-    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil });
+    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote });
     await mailer().sendMail({ from, to: process.env.ALERT_EMAIL || process.env.GMAIL_USER, replyTo: email || undefined, subject: a.subject, text: a.text });
   } catch (e) {
     console.error('[webhook] alert', e.message);
@@ -682,4 +737,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId };
+module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId, closeOpenTrials };
