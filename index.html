@@ -886,6 +886,8 @@ body.co-lock .chat-fab,body.co-lock .chat{opacity:0;pointer-events:none;}
 .co-f input:focus{border-color:var(--accent);box-shadow:0 0 0 1px rgba(95,202,189,.35);}
 .co-f input[aria-invalid="true"]{border-color:var(--ember);}
 .co-f small{display:block;margin-top:7px;font-size:12px;color:var(--ink-faint);line-height:1.5;}
+.co-note{margin:2px 0 14px;font-size:12px;line-height:1.5;color:var(--ink-faint);}
+.co-note[hidden]{display:none;}
 .co-btn{width:100%;justify-content:center;margin-top:6px;padding:15px 20px;}
 .co-btn[disabled]{opacity:.55;cursor:not-allowed;transform:none!important;}
 .co-who{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);
@@ -1452,6 +1454,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <label class="co-f"><span>TradingView username</span>
         <input id="co-user" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. trader_123" required>
         <small>We grant your invite-only access to this username. <b>A free TradingView account works</b>, no paid plan needed. Find your username top-right in TradingView, under your profile.</small></label>
+      <p class="co-note" id="co-note" hidden></p>
       <button type="submit" class="btn co-btn" id="co-next">Continue to payment <span class="arr">→</span></button>
       <p class="co-err" id="co-err1" role="alert"></p>
     </form>
@@ -1795,6 +1798,8 @@ function openLatestCall(bar){
   };
   var $=function(id){return document.getElementById(id);};
   var co=$('co'); if(!co || !window.fetch || !window.Promise) return;
+  // plain reminder, monthly free trial only (no checkbox, no extra click)
+  var NOTE_MONTHLY='I understand my free week turns into $80/month unless I cancel (1 click) before it ends.';
   var ready=false, plan=null, fallbackUrl=null, stripeP=null, checkout=null, actionsP=null, lastFocus=null, busy=false;
 
   // is checkout configured on the server? (until then: normal Stripe links)
@@ -1833,6 +1838,7 @@ function openLatestCall(bar){
     $('co-plan-name').textContent=c.name; $('co-plan-sub').textContent=c.sub;
     $('co-trust').innerHTML='🔒 Secured by <b>Stripe</b> · '+c.trust;
     $('co-err1').textContent=''; $('co-err2').textContent='';
+    var nt=$('co-note'); nt.textContent=NOTE_MONTHLY; nt.hidden=(p!=='monthly');
     step(1); loadStripe().catch(function(){});
     window.ILT&&ILT.track('checkout_open',{plan:p},'checkout',{});
     co.hidden=false; document.body.classList.add('co-lock');
