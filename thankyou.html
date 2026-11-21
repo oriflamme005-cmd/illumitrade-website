@@ -75,6 +75,18 @@ h1 .q{color:var(--ink-faint);font-weight:600;}
 .read-first .rf-ic{flex-shrink:0;color:var(--accent);font-size:15px;line-height:1.5;}
 .read-first p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6;}
 .read-first b{color:var(--ink);font-weight:600;}
+.rf-proof{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:-14px 0 30px;text-align:left;align-items:start;}
+.rf-proof .rp{margin:0;background:#000;border:1px solid var(--line-strong);border-radius:var(--r);overflow:hidden;}
+.rf-proof .rp figcaption{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.02em;line-height:1.4;color:var(--ink-2);}
+.rf-proof .rp figcaption::before{content:'';width:5px;height:5px;flex-shrink:0;background:var(--accent);transform:rotate(45deg);}
+.rf-proof .rp img{display:block;width:100%;height:auto;}
+.rf-proof .rp-col{display:flex;flex-direction:column;gap:12px;}
+.rf-proof .rp-wide{grid-column:1 / -1;}
+.rf-proof:not(.open) .rp-more{display:none;}
+.rf-more{display:block;margin:-18px auto 30px;padding:11px 22px;background:transparent;border:1px solid rgba(95,202,189,.45);border-radius:var(--r);color:var(--ink-2);font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.rf-more:hover{border-color:var(--accent);color:var(--accent);background:rgba(95,202,189,.06);}
+@media(max-width:560px){.rf-proof{grid-template-columns:1fr;}}
 .res{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:44px;text-align:left;}
 @media(max-width:560px){.res{grid-template-columns:1fr;}}
 .res a{display:flex;align-items:center;gap:16px;padding:22px 22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);text-decoration:none;transition:border-color .25s,transform .25s;}
@@ -187,6 +199,20 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:32px
       <p><b>Take the time to read the guides carefully before your first trade.</b> They're the key to knowing how and when to act on the important moves, straight from day one. <b>It's worth it: 79%+ of members who took the time to understand the conditions in the guide stayed with ILT®.</b> The conditions are simple: once you understand them, they become a reflex that helps you spot quality setups at the turning points.</p>
     </div>
 
+    <div class="rf-proof" aria-label="Messages from members">
+      <figure class="rp rp-wide"><figcaption>Renewed: "trading without your indicator is like walking in the dark"</figcaption><img loading="lazy" decoding="async" width="1800" height="602" src="/review-bought-again-dark.webp" alt="Member messages: Just bought the Dark again. Was losing too much of an edge without it. Very enlightening, I am no longer in the dark. And, Jul 28 2022: I have run out of subscription on your indicator, try some trades and feel like a blind trader, I am renewing it tomorrow; honestly trading without your indicator is like walking in the dark"></figure>
+      <figure class="rp"><figcaption>With the guide on screen: "feeling much more confident"</figcaption><img loading="lazy" decoding="async" width="669" height="642" src="/review-desk-setup.webp" alt="Member photo of their trading desk with the IllumiTrade guide on screen: I'm in now and feeling much more confident thank you! And thank you for the updated guide as well as your indicator"></figure>
+      <div class="rp-col">
+      <figure class="rp"><figcaption>Public post on X: "predicted this dump in advance"</figcaption><img loading="lazy" decoding="async" width="496" height="165" src="/review-predicted-dump.webp" alt="Public post on X replying to Trader_XO: There is only one indicator worth using, works like a charm and predicted this dump in advance. Cant recommend enough"></figure>
+      <figure class="rp"><figcaption>Experienced trader: "the system is starting to make sense to me"</figcaption><img loading="lazy" decoding="async" width="830" height="360" src="/review-experienced-trader.webp" alt="Member message: Interesting. Thank you! I have been trading for a long time and the system is starting to make sense to me, I think it is very good. Just need some more time with it. But it is exciting, cheers"></figure>
+      </div>
+      <figure class="rp rp-more"><figcaption>The best: "your indicator is the best I had ever used"</figcaption><img loading="lazy" decoding="async" width="1023" height="396" src="/review-slowly-mastering.webp" alt="Member message: Sir your indicator is the best I had ever used. I'm very thankful for your wisdom. Slowly mastering it, keep it going mate"></figure>
+      <figure class="rp rp-more"><figcaption>On accuracy: "very accurate of predicting the next moves"</figcaption><img loading="lazy" decoding="async" width="690" height="255" src="/review-v1-v2-cl2.webp" alt="Member message: working with both coloured line on ILT V1.0 with the confirmation of the CL2 on ILT V2.0 can be very accurate of predicting the next moves. Amazing work behind this indicator"></figure>
+      <figure class="rp rp-more"><figcaption>Access restored: "Just glad to have access back"</figcaption><img loading="lazy" decoding="async" width="332" height="98" src="/review-access-back.webp" alt="Member message: Just glad to have access back. Being able to stay updated on telegram saved me! This set of indicators is amazing. Ty"></figure>
+      <figure class="rp rp-more"><figcaption>On stress: "The indicators remove all the stress"</figcaption><img loading="lazy" decoding="async" width="606" height="210" src="/review-no-stress.webp" alt="Member message: The indicators remove all the stress"></figure>
+    </div>
+
+    <button type="button" class="rf-more" aria-expanded="false" onclick="var g=document.querySelector('.rf-proof');var o=g.classList.toggle('open');this.setAttribute('aria-expanded',o);this.textContent=o?'Show fewer messages':'See more messages (4)';">See more messages (4)</button>
     <div class="res-label">Your guides · in this order</div>
     <div class="guides">
       <div class="guide">
