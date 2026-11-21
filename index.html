@@ -316,6 +316,17 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .pq-foot{text-align:center;margin-top:12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
 .pq-foot a{color:var(--accent);text-decoration:none;}
 @media (max-width:700px){.pq-grid{grid-template-columns:1fr;}}
+.price-plus{font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;gap:10px;margin-bottom:26px;}
+.price-plus::before{content:'';width:5px;height:5px;background:var(--accent);transform:rotate(45deg);flex-shrink:0;}
+.price-plus.ghost{visibility:hidden;}
+.price-card .price-divider{margin:20px 0;}
+.price-bookend .pb-sub a{color:var(--accent);text-decoration:none;}
+@media (max-width:700px){.price-tag.ghost{display:none;}.price-card .guar[aria-hidden="true"]{display:none;}}
+.near-proof{margin:16px 0 0;padding:12px 14px;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:var(--r);background:rgba(95,202,189,.04);text-align:left;}
+.near-proof q{display:block;font-size:13px;line-height:1.55;color:var(--ink-2);quotes:none;}
+.near-proof .np-by{display:block;margin-top:6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+.near-proof .np-by a{color:var(--accent);text-decoration:none;}
+.final-cta .near-proof{max-width:520px;margin:26px auto 0;}
 .near-trust a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.4);}
 .near-trust{margin-top:10px;text-align:center;font-family:var(--font-mono);font-size:10.5px;line-height:1.6;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);}
 
@@ -1239,10 +1250,8 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <li><b>Diamond &amp; divergence alerts</b><span>Native TradingView alerts, on your phone</span></li>
         <li><b>Quick-start guide</b><span>From checkout to your first alert in minutes</span></li>
         <li><b>Every future update</b><span>New versions land in your account at no extra cost</span></li>
+        <li><b>Free TradingView plan is enough</b><span>No paid TradingView subscription needed</span></li>
       </ul>
-    </div>
-    <div class="trial-banner reveal">
-      <span><strong>Start risk-free with a 7-day free trial</strong> on the monthly plan — add your card, your access goes live within hours, cancel in 1 click before day 7 and pay nothing. Prefer to commit? Prepaid plans save you up to 27% and come with a <strong>14-day money-back guarantee</strong>, no questions asked.</span>
     </div>
     <div class="pq reveal" aria-label="What members say">
       <div class="pq-h"><span class="dia">◆</span> In members' own words</div>
@@ -1258,18 +1267,12 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <span class="price-tag trial">◆ Start here · first week free</span>
         <div class="price-period">1 Month</div>
         <div class="price-amount"><sup>$</sup>80<span class="mo">/mo</span></div>
-        <div class="price-billing">Free for 7 days · then $80/mo · cancel in 1 click</div>
+        <div class="price-billing">7 days free, then $80/mo until you cancel</div>
+        <div class="guar" style="visibility:hidden" aria-hidden="true">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
-        <ul class="price-features">
-          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
-          <li>Works on the free TradingView plan</li>
-          <li>21-timeframe dashboards</li>
-          <li>Diamond &amp; divergence alerts</li>
-          <li>Quick-start guide</li>
-          <li>Every future update included</li>
-        </ul>
+        <div class="price-plus">Full Trader Kit from day one</div>
         <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start my free week →</a></div>
-        <div class="near-trust">$0 today · card required<br>$80/mo starts after 7 days<br><a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Cancel in 1 click</a> before then and pay nothing</div>
+        <div class="near-trust">$0 today · card required<br><a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Cancel in 1 click</a> before day 7 and pay nothing</div>
       </div>
       <div class="price-card">
         <span class="price-tag ghost">·</span>
@@ -1278,15 +1281,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <div class="price-billing"><s>$480</s> <span class="now">$360 one-time</span> · <span class="save">save $120</span> · no auto-renew</div>
         <div class="guar">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
-        <ul class="price-features">
-          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
-          <li>Works on the free TradingView plan</li>
-          <li>21-timeframe dashboards</li>
-          <li>Diamond &amp; divergence alerts</li>
-          <li>Quick-start guide</li>
-          <li>Every future update included</li>
-          <li>Exclusive Trade Ideas</li>
-        </ul>
+        <div class="price-plus">+ Exclusive Trade Ideas</div>
         <div class="pay"><a href="https://buy.stripe.com/cNi28qeAd9She5e0CQ0Ba02" data-plan="m6" target="_blank" rel="noopener" class="btn-plan">Get the 6-month plan →</a></div>
       </div>
       <div class="price-card">
@@ -1296,15 +1291,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <div class="price-billing"><s>$960</s> <span class="now">$699 one-time</span> · <span class="save">save $261</span> · no auto-renew</div>
         <div class="guar">◆ 14-day money-back guarantee</div>
         <div class="price-divider"></div>
-        <ul class="price-features">
-          <li>4 indicators: Add-on, V1, 2.0, 2+</li>
-          <li>Works on the free TradingView plan</li>
-          <li>21-timeframe dashboards</li>
-          <li>Diamond &amp; divergence alerts</li>
-          <li>Quick-start guide</li>
-          <li>Every future update included</li>
-          <li>Exclusive Trade Ideas</li>
-        </ul>
+        <div class="price-plus">+ Exclusive Trade Ideas</div>
         <div class="pay"><a href="https://buy.stripe.com/8x214m63H5C1e5egBO0Ba03" data-plan="y1" target="_blank" rel="noopener" class="btn-plan">Get the 1-year plan →</a></div>
       </div>
     </div>
@@ -1312,16 +1299,16 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <div class="price-bookends reveal">
       <div class="price-bookend">
         <div>
-          <div class="pb-name">Prefer shorter? · 3 Months</div>
-          <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">save $30</span> · no auto-renew · <span class="save">14-day money-back guarantee</span></div>
+          <div class="pb-name">3 Months</div>
+          <div class="pb-sub"><s>$240</s> <span class="now">$210 one-time</span> · <span class="save">14-day guarantee</span></div>
         </div>
         <div class="pb-price">$70<span class="mo">/mo</span></div>
         <a href="https://buy.stripe.com/5kQdR8dw9e8x8KU2KY0Ba01" data-plan="m3" target="_blank" rel="noopener" class="pb-link">Get →</a>
       </div>
       <div class="price-bookend">
         <div>
-          <div class="pb-name">All-in forever? · Lifetime</div>
-          <div class="pb-sub">One-time · all updates free · <span class="save">14-day money-back guarantee</span> · <b style="color:var(--ink-2);">or 4 × $990</b> or USDT — <a href="mailto:illumitrade.contact@gmail.com?subject=Lifetime%20plan" data-chat-open="Hi, I'm interested in the Lifetime plan (4 × $990 or USDT).">email us</a></div>
+          <div class="pb-name">Lifetime</div>
+          <div class="pb-sub">One-time · <span class="save">14-day guarantee</span> · <a href="mailto:illumitrade.contact@gmail.com?subject=Lifetime%20plan" data-chat-open="Hi, I'm interested in the Lifetime plan (4 × $990 or USDT).">or 4 × $990</a></div>
         </div>
         <div class="pb-price">$3,750</div>
         <a href="https://buy.stripe.com/dRm4gyeAd7K95yIcly0Ba04" data-plan="lifetime" target="_blank" rel="noopener" class="pb-link">Choose →</a>
@@ -1329,7 +1316,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     </div>
 
     <div class="checkout-reassure reveal">
-      <p>Monthly: free for 7 days, cancel in 1 click · Prepaid plans: pay once, no auto-renew, 14-day money-back guarantee · Access within hours (24h max) · Questions? <a href="mailto:illumitrade.contact@gmail.com" data-chat-open>Email us</a></p>
+      <p>Access within hours (24h max) · Questions? <a href="mailto:illumitrade.contact@gmail.com" data-chat-open>Email us</a></p>
       <details class="pay-alt">
         <summary>Prefer to pay with crypto (USDC / USDT)?</summary>
         <div class="pa-body">
@@ -1392,9 +1379,10 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   <div class="container reveal">
     <div class="eyebrow centered" style="margin-bottom:22px;">Last Call</div>
     <h2>Your first 7 days <span class="q">are free.</span></h2>
-    <p>See the Diamond print on your own charts before you pay a cent. Add your card, your access goes live within hours, cancel any time before day 7 — <b>zero risk, zero commitment</b>.</p>
+    <p>See the Diamond print on your own charts before you pay a cent. <b>Zero risk, zero commitment.</b></p>
     <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My Free Week <span class="arr">→</span></a>
     <p class="hero-micro">$0 today · then $80/mo after 7 days · cancel in 1 click before then · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+    <div class="near-proof"><q>so this is the THE BEST method/indicator i have ever used</q><span class="np-by">Member · unedited message · <a href="#testimonials">Read more ↓</a></span></div>
   </div>
 </section>
 
