@@ -492,11 +492,15 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .faq-item .faq-a a:hover{text-decoration:underline;}
 
 /* USDT accordion in checkout reassure */
-.pay-alt{max-width:560px;margin:14px auto 0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-align:left;}
+.pay-alt{max-width:560px;margin:14px auto 0;border:1px solid rgba(95,202,189,.30);border-radius:var(--r);background:linear-gradient(180deg,rgba(95,202,189,.07),rgba(95,202,189,.02));text-align:left;transition:border-color .2s,background .2s;}
+.pay-alt:hover,.pay-alt[open]{border-color:rgba(95,202,189,.55);}
 .pay-alt summary{list-style:none;cursor:pointer;padding:13px 18px;font-family:var(--font-mono);font-size:11px;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);display:flex;justify-content:space-between;align-items:center;}
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.pay-alt summary::before{content:'';flex:0 0 auto;width:20px;height:20px;margin-right:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235fcabd' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='10.2'/%3E%3Cpath d='M7.5 8h9M12 8v9'/%3E%3Cellipse cx='12' cy='12.2' rx='4.3' ry='1.5' stroke-width='1.4'/%3E%3C/svg%3E") center/contain no-repeat;}
+.pay-alt summary{justify-content:flex-start;}
+.pay-alt summary::after{margin-left:auto;}
 .pay-alt summary::-webkit-details-marker{display:none;}
-.pay-alt summary::after{content:'+';font-size:14px;color:var(--ink-faint);}
+.pay-alt summary::after{content:'+';font-size:16px;line-height:1;color:var(--accent);}
 .pay-alt[open] summary::after{content:'−';color:var(--accent);}
 .pay-alt .pa-body{padding:0 18px 16px;font-size:13px;color:var(--ink-dim);line-height:1.7;}
 .pay-alt .pa-body a{color:var(--accent);text-decoration:none;}
