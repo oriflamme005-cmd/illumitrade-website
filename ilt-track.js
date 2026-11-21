@@ -3,9 +3,8 @@
  *
  * ── CONFIG: the only part you ever edit ──────────────────────────────────── */
 var ILT_TRACK_CONFIG = {
-  // Umami Cloud (free, cookieless). Same website as iltoracle.com (the free plan allows one):
-  // in Umami, filter by Hostname = www.illumitrade.com to see this site alone.
-  UMAMI_ID: 'c0458a3b-259b-4974-8595-a5e3e74aad15',
+  // Umami: switched OFF (measurement is Vercel Web Analytics only). To re-enable, put the website ID back here.
+  UMAMI_ID: '',  // was 'c0458a3b-259b-4974-8595-a5e3e74aad15'
   UMAMI_SRC: 'https://cloud.umami.is/script.js',
   // X Ads → Tools → Events Manager → your pixel omn00 → "Add events" → copy each event ID (tw-omn00-xxxxx)
   X_PIXEL: 'omn00',
@@ -104,6 +103,7 @@ var ILT_TRACK_CONFIG = {
   ILT.track = function (name, data, xKey, xParams) {
     data = data || {};
     if (C.UMAMI_ID) { q.push([name, data]); flush(); }
+    try { if (w.va && /(^|\.)illumitrade\.com$/.test(location.hostname)) w.va('event', { name: name, data: data }); } catch (e) {}  // Vercel custom events (recorded on plans that support them)
     if (xKey) x(xKey, xParams);
     if (w.ILT_DEBUG) console.log('[ILT track]', name, data, xKey || '');
   };
