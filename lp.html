@@ -231,6 +231,21 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .hero-proof .hp-pill:hover{border-color:var(--line-strong);color:var(--ink-2);}
 .hero-verify{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);margin-top:13px;text-transform:uppercase;}
 .hero-verify b{color:var(--accent);font-weight:400;}
+.hero-quote{margin:18px 0 0;padding:12px 14px;border:1px solid var(--line);border-left:2px solid var(--accent);border-radius:var(--r);background:rgba(95,202,189,.04);max-width:560px;}
+.hero-quote q{display:block;quotes:none;font-size:15px;line-height:1.5;color:var(--ink);font-weight:500;}
+.hero-quote cite{display:block;margin-top:7px;font-style:normal;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+.hero-quote cite a{color:var(--accent);text-decoration:none;}
+.pq{max-width:900px;margin:0 auto 26px;}
+.pq-h{text-align:center;margin-bottom:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);}
+.pq-h .dia{color:var(--accent);}
+.pq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.pq-card{margin:0;padding:18px 18px 15px;border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:var(--r);background:var(--surface);display:flex;flex-direction:column;gap:12px;}
+.pq-card q{quotes:none;font-size:15.5px;line-height:1.5;color:var(--ink);font-weight:500;}
+.pq-card figcaption{margin-top:auto;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+.pq-foot{text-align:center;margin-top:12px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+.pq-foot a{color:var(--accent);text-decoration:none;}
+@media (max-width:700px){.pq-grid{grid-template-columns:1fr;}}
+.near-trust a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(95,202,189,.4);}
 
 /* engraved diamond mark */
 .dia-wrap{display:inline-block;vertical-align:-2px;margin-right:16px;perspective:520px;}
@@ -554,6 +569,7 @@ footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32
   .hero-grid .hero-cta{order:5;margin-top:26px;}
   .hero-grid .hero-micro{order:6;}
   .hero-grid .hero-proof{order:7;}
+  .hero-grid .hero-quote{order:7;}
   .hero-grid .hero-disc{order:8;}
   .hero-grid .lede{order:9;margin-top:24px;}
   .price-bookend{min-width:100%;}
@@ -973,7 +989,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My Free Week <span class="arr">→</span></a>
         <a href="#dashboard" class="btn-line">See the dashboard <span class="arr">→</span></a>
       </div>
-      <p class="hero-micro">$0 today · the full ILT® Trader Kit · cancel in 1 click before day 7 · <a href="#pricing">What's inside</a></p>
+      <p class="hero-micro">$0 today · then $80/mo after 7 days · cancel in 1 click before then · <a href="#pricing">What's inside</a></p>
       <div class="hero-proof" aria-label="What members say">
         <span class="hp-rating">430+ traders since 2022 · members say</span>
         <a class="hp-pill" href="#testimonials">"A monster"</a>
@@ -981,6 +997,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <a class="hp-pill" href="#testimonials">"3 indicators in one"</a>
         <a class="hp-pill" href="#testimonials">"No longer in the dark"</a>
       </div>
+      <blockquote class="hero-quote"><q>The indicators remove all the stress.</q><cite>Member message · unedited</cite></blockquote>
       <p class="hero-disc">Charting software, not financial advice. Trading involves risk of loss.</p>
     </div>
     <figure class="hv-proof">
@@ -1264,6 +1281,15 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <span class="bf-tag">◆ Black Friday</span>
       <span class="bf-txt"><strong>1-year plan: 15 months for the price of 12.</strong> Pay once ($699) and get 3 extra months of access. Offer ends <b id="bf-end">December 1</b>. Same 14-day money-back guarantee.</span>
     </div>
+    <div class="pq reveal" aria-label="What members say">
+      <div class="pq-h"><span class="dia">◆</span> In members' own words</div>
+      <div class="pq-grid">
+        <figure class="pq-card"><q>Sir your indicator is the best I had ever used.</q><figcaption>Member · unedited message</figcaption></figure>
+        <figure class="pq-card"><q>Just bought the Dark again. Was losing too much of an edge without it.</q><figcaption>Renewing member · unedited message</figcaption></figure>
+        <figure class="pq-card"><q>Very enlightening, I am no longer in the dark.</q><figcaption>Member · unedited message</figcaption></figure>
+      </div>
+      <div class="pq-foot">Real screenshots · <a href="#testimonials">See them all ↓</a></div>
+    </div>
     <div class="pricing-grid reveal">
       <div class="price-card featured">
         <span class="price-tag trial">◆ Start here · first week free</span>
@@ -1280,7 +1306,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
           <li>Every future update included</li>
         </ul>
         <div class="pay"><a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn-plan">Start my free week →</a></div>
-        <div class="near-trust">$0 today · cancel in 1 click before day 7</div>
+        <div class="near-trust">$0 today · card required<br>$80/mo starts after 7 days<br><a href="https://billing.stripe.com/p/login/cNidR877L6G56CM85i0Ba00" target="_blank" rel="noopener">Cancel in 1 click</a> before then and pay nothing</div>
         <div class="near-proof"><q>Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires.</q><span class="np-by">Trial member · <a href="#testimonials">Read more member messages ↓</a></span></div>
       </div>
       <div class="price-card">
@@ -1410,7 +1436,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <h2>Close the laptop. <span class="q">Let the Diamond call you.</span></h2>
     <p>Seven days, the full suite, every market you trade. $0 today, access within hours, cancel in 1 click before day 7 and you pay nothing. After that it's <b>$80/month until you cancel</b>.</p>
     <a href="https://buy.stripe.com/bJe7sK0Jnd4t4uEfxK0Ba0b" data-plan="monthly" target="_blank" rel="noopener" class="btn">Start My Free Week <span class="arr">→</span></a>
-    <p class="hero-micro">$0 today · Live within hours · Cancel anytime · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
+    <p class="hero-micro">$0 today · then $80/mo after 7 days · cancel in 1 click before then · <a href="#pricing" style="color:var(--ink-dim);">Compare plans ↑</a></p>
     <div class="near-proof"><q>Well I must say I'm impressed. Only used it on smaller time frames but it works well, I'll send payment tomorrow once this trial expires.</q><span class="np-by">Trial member · <a href="#testimonials">Read more member messages ↓</a></span></div>
     <p class="hero-disc center">Charting software, not financial advice. Trading involves risk of loss. Full disclaimer below.</p>
   </div>
