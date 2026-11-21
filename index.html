@@ -564,6 +564,17 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .oracle-stat .num{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.02em;color:var(--ink);}
 .oracle-stat .label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:6px;}
 .oracle-cta p{font-size:14.5px;color:var(--ink-2);margin-bottom:30px;line-height:1.75;max-width:600px;margin-left:auto;margin-right:auto;}
+.oracle-cta-section.oracle-side{padding:44px 0;}
+.oracle-note{max-width:720px;border:1px dashed var(--line-strong);border-radius:var(--r);padding:26px 30px;text-align:left;background:transparent;}
+.oracle-note .eyebrow{margin-bottom:12px;text-align:left;justify-content:flex-start;}
+.oracle-note p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;max-width:none;margin:0 0 16px;}
+.oracle-note p strong{color:var(--ink-2);font-weight:600;}
+.oracle-note .on-mark{font-family:var(--font-mono);font-weight:700;font-size:17px;letter-spacing:.16em;color:var(--ink);margin:0 0 12px;}
+.oracle-note .on-mark span{color:var(--ink-dim);}
+.oracle-note .on-mark sup{color:var(--accent);font-size:9px;letter-spacing:0;margin-left:3px;vertical-align:super;}
+.oracle-note .on-links{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:flex;flex-wrap:wrap;gap:8px 22px;}
+.oracle-note .on-links a{color:var(--ink-2);border-bottom:1px solid var(--line-strong);padding-bottom:2px;}
+.oracle-note .on-links a:hover{color:var(--accent);border-color:var(--accent);}
 
 /* ── FOOTER ── */
 footer{background:var(--void);border-top:1px solid var(--line);padding:48px 0 32px;}
@@ -1383,20 +1394,17 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
   </div>
 </section>
 
-<!-- ORACLE CTA -->
-<div class="oracle-cta-section">
+<!-- ORACLE (separate creator project, deliberately low-key) -->
+<div class="oracle-cta-section oracle-side">
   <div class="container">
-    <div class="oracle-cta reveal">
-      <div class="eyebrow centered">Next Level</div>
-      <h2>The full power of <span class="ac">ILT Oracle™</span></h2>
-      <div class="oracle-stats">
-        <div class="oracle-stat"><div class="num">32</div><div class="label">Markets read daily</div></div>
-        <div class="oracle-stat"><div class="num">1</div><div class="label">Plain-words desk report</div></div>
-        <div class="oracle-stat"><div class="num">Free</div><div class="label">Daily forecasts</div></div>
+    <div class="oracle-cta oracle-note reveal">
+      <div class="eyebrow">Also by the creator · separate project</div>
+      <div class="on-mark" aria-label="ILT Oracle">ILT <span>ORACLE</span><sup>®</sup></div>
+      <p>A different tool, on its own website. It reads where gold, silver, oil, bitcoin, indices and rates lean over the next month, in plain words, recomputed after every close. Its daily forecasts are free to read.</p>
+      <div class="on-links">
+        <a href="https://www.iltoracle.com/markets" target="_blank" rel="noopener">See today's free forecasts ↗</a>
+        <a href="https://www.iltoracle.com/" target="_blank" rel="noopener">iltoracle.com ↗</a>
       </div>
-      <p>IllumiTrade times the entry. ILT Oracle reads the macro: where gold, silver, oil, bitcoin, indices and rates lean over the next month — in plain words, recomputed after every close.</p>
-      <a href="https://www.iltoracle.com/markets" class="btn-line" target="_blank" rel="noopener" style="margin-right:10px;">See today's free forecasts <span class="arr">→</span></a>
-      <a href="https://www.iltoracle.com/" class="btn" target="_blank" rel="noopener">Explore ILT Oracle™ <span class="arr">→</span></a>
     </div>
   </div>
 </div>
