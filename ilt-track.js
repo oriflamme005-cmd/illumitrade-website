@@ -15,7 +15,11 @@ var ILT_TRACK_CONFIG = {
     lead:     ''    // optional "Lead"  — fires when someone opens the free-guide form (blog)
   },
   // Google Ads (kept for the day you run it; harmless otherwise)
-  AW_CONVERSION: 'AW-11355613809/Ad_7CLP5qcwcEPHU46Yq'
+  AW_CONVERSION: 'AW-11355613809/Ad_7CLP5qcwcEPHU46Yq',
+  // Google Analytics 4 — paste the Measurement ID of the IllumiTrade property (G-XXXXXXXXXX). Empty = GA4 off.
+  GA4_ID: 'G-V0H194GPVJ',
+  // Only the live site reports: previews (*.vercel.app) and localhost never pollute the numbers.
+  GA4_HOSTS: /(^|\.)illumitrade\.com$/
 };
 /* ─────────────────────────────────────────────────────────────────────────── */
 (function () {
@@ -38,6 +42,74 @@ var ILT_TRACK_CONFIG = {
     var va = d.createElement('script');
     va.defer = true; va.src = '/_vercel/insights/script.js';
     d.head.appendChild(va);
+  }
+
+  // ── Google Analytics 4 (consent-aware) ──
+  // Visitors whose browser time zone is in Europe (UK included) get a small Accept / Decline notice and GA4 loads
+  // only after "Accept". Everyone else is measured straight away. We never use Google's advertising features.
+  var GA = { on: false };
+  function gt() { (w.dataLayer = w.dataLayer || []).push(arguments); }   // own helper: window.gtag stays undefined, so the Google Ads line further down stays inert
+  function inEurope() {
+    try { return /^(Europe\/|Atlantic\/(Canary|Madeira|Azores|Faroe|Reykjavik))/.test(Intl.DateTimeFormat().resolvedOptions().timeZone || ''); } catch (e) { return false; }
+  }
+  function consentState() {
+    var v = LS.get('ilt_consent'); if (!v) return '';
+    var p = v.split('|');
+    return (Date.now() - Number(p[1] || 0) > 365 * 864e5) ? '' : p[0];   // the choice is asked again after a year
+  }
+  function loadGA() {
+    if (GA.on) return; GA.on = true;
+    gt('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    gt('js', new Date());
+    var cfg = { cookie_flags: 'SameSite=Lax;Secure', allow_google_signals: false, allow_ad_personalization_signals: false };
+    if (/[?&]ga_debug=1/.test(location.search)) cfg.debug_mode = true;   // add ?ga_debug=1 to a link to watch it live in GA4 → Admin → DebugView
+    gt('config', C.GA4_ID, cfg);
+    var s = d.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(C.GA4_ID);
+    d.head.appendChild(s);
+    // The visitor's GA4 id is kept in a first-party cookie, so /api/checkout can store it in Stripe and
+    // the webhook can report "paid after trial" / "cancelled" to the SAME visitor (and therefore the same source).
+    var cid = '', sid = '';
+    function save() {
+      if (!cid) return;
+      d.cookie = 'ilt_ga=' + encodeURIComponent(cid + '~' + sid) + '; path=/; max-age=' + 90 * 86400 + '; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+    }
+    try {
+      gt('get', C.GA4_ID, 'client_id', function (v) { cid = String(v || ''); save(); });
+      gt('get', C.GA4_ID, 'session_id', function (v) { sid = String(v || ''); save(); });
+    } catch (e) {}
+  }
+  function askConsent() {
+    function build() {
+      if (d.getElementById('ilt-consent')) return;
+      var b = d.createElement('div');
+      b.id = 'ilt-consent'; b.setAttribute('role', 'dialog'); b.setAttribute('aria-label', 'Cookie notice');
+      b.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-width:560px;margin:0 auto;background:#0c0c10;color:#c7ccd2;' +
+        'border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:12px 14px;font:13px/1.45 "Hanken Grotesk",system-ui,sans-serif;' +
+        'display:flex;gap:12px;align-items:center;flex-wrap:wrap;box-shadow:0 8px 30px rgba(0,0,0,.5)';
+      var t = d.createElement('span'); t.style.cssText = 'flex:1 1 220px';
+      t.textContent = 'We use analytics cookies to see which pages help visitors. No ads, nothing sold.';
+      b.appendChild(t);
+      function btn(label, grant) {
+        var e = d.createElement('button'); e.type = 'button'; e.textContent = label;
+        e.style.cssText = 'cursor:pointer;font:600 12px "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:3px;' +
+          (grant ? 'background:#f4f5f6;color:#050506;border:1px solid #f4f5f6' : 'background:transparent;color:#c7ccd2;border:1px solid rgba(255,255,255,.28)');
+        e.addEventListener('click', function () {
+          LS.set('ilt_consent', (grant ? 'granted' : 'denied') + '|' + Date.now());
+          if (b.parentNode) b.parentNode.removeChild(b);
+          if (grant) loadGA();
+        });
+        return e;
+      }
+      b.appendChild(btn('Decline', false)); b.appendChild(btn('Accept', true));
+      d.body.appendChild(b);
+    }
+    if (d.body) build(); else d.addEventListener('DOMContentLoaded', build);
+  }
+  if (C.GA4_ID && C.GA4_HOSTS && C.GA4_HOSTS.test(location.hostname)) {
+    var cs = consentState();
+    if (!inEurope() || cs === 'granted') loadGA();
+    else if (!cs) askConsent();
   }
 
   // ── Umami (production domains only, so previews don't pollute the numbers) ──
@@ -104,10 +176,18 @@ var ILT_TRACK_CONFIG = {
     data = data || {};
     if (C.UMAMI_ID) { q.push([name, data]); flush(); }
     try { if (w.va && /(^|\.)illumitrade\.com$/.test(location.hostname)) w.va('event', { name: name, data: data }); } catch (e) {}  // Vercel custom events (recorded on plans that support them)
+    if (GA.on) {
+      try {
+        var gp = {}; Object.keys(data).forEach(function (k) { if (data[k] !== undefined && data[k] !== null) gp[k] = typeof data[k] === 'string' ? data[k].slice(0, 100) : data[k]; });
+        gt('event', name, gp);
+        if (xKey === 'checkout' && !w.__iltGaCheckout) { w.__iltGaCheckout = 1; gt('event', 'begin_checkout', { currency: 'USD', plan: gp.plan || '' }); }  // once per page view, like the X event
+      } catch (e) {}
+    }
     if (xKey) x(xKey, xParams);
     if (w.ILT_DEBUG) console.log('[ILT track]', name, data, xKey || '');
   };
   ILT.ref = function () { return refId; };
+  ILT.consent = function () { LS.set('ilt_consent', ''); if (C.GA4_ID && !GA.on) askConsent(); };   // re-opens the cookie notice
   // Adds the visitor's source to a Stripe Payment Link (never touches a link that already has one).
   function tagStripeLink(a) {
     try {
@@ -127,6 +207,10 @@ var ILT_TRACK_CONFIG = {
     var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
     var h = a.getAttribute('href') || '';
     if (/buy\.stripe\.com/.test(h)) tagStripeLink(a);   // runs before the on-site checkout reads the link as its fallback
+    if (/^https?:\/\/(www\.)?iltoracle\.com/.test(h) && !/[?&]utm_source=/.test(h)) {   // IllumiTrade → ILT Oracle keeps its source
+      var hi = h.indexOf('#'), base = hi < 0 ? h : h.slice(0, hi), hash = hi < 0 ? '' : h.slice(hi);
+      a.setAttribute('href', base + (base.indexOf('?') < 0 ? '?' : '&') + 'utm_source=illumitrade&utm_medium=site&utm_campaign=crosslink&utm_content=' + encodeURIComponent(where(a)) + hash);
+    }
     if (a.hasAttribute('data-plan')) ILT.track('cta_click', { plan: a.getAttribute('data-plan'), where: where(a) }, 'checkout', {});
     else if (/buy\.stripe\.com/.test(h)) ILT.track('cta_click', { plan: 'link', where: where(a) }, 'checkout', {});
     else if (/t\.me\//.test(h)) ILT.track('telegram_click', { where: where(a) });
@@ -135,6 +219,8 @@ var ILT_TRACK_CONFIG = {
     else if (/\.pdf($|\?)/i.test(h)) ILT.track('guide_download', { file: h.split('/').pop().slice(0, 60) });
     else if (/x\.com\/illumi_trade\/status/.test(h)) ILT.track('proof_x_click', { where: where(a) });
     else if (/iltoracle\.com/.test(h)) ILT.track('oracle_click', { where: where(a) });
+    else if (/(x|twitter)\.com\/illumi_trade\/?($|[?#])/i.test(h)) ILT.track('x_profile_click', { where: where(a) });
+    else if (/tradingview\.com\/(u|script)\//.test(h)) ILT.track('tradingview_click', { where: where(a) });
     else if (/#pricing$/.test(h)) ILT.track('pricing_link', { where: where(a) });
   }, true);
 
@@ -172,7 +258,7 @@ var ILT_TRACK_CONFIG = {
       var kind = info.kind || 'unknown', value = Number(info.value || 0), cur = info.currency || 'USD';
       var params = kind === 'unknown' ? { conversion_id: sid || undefined } : { value: value, currency: cur, conversion_id: sid || undefined };
       var name = kind === 'trial' ? 'trial_started' : kind === 'purchase' ? 'purchase' : 'checkout_complete';
-      ILT.track(name, { plan: info.plan || 'unknown', value: value }, kind === 'purchase' ? 'purchase' : 'trial', params);
+      ILT.track(name, { plan: info.plan || 'unknown', value: value, currency: cur, transaction_id: sid || undefined }, kind === 'purchase' ? 'purchase' : 'trial', params);
       if (w.gtag && C.AW_CONVERSION) {
         try { w.gtag('event', 'conversion', { send_to: C.AW_CONVERSION, value: value, currency: cur, transaction_id: sid || '' }); } catch (e) {}
       }
