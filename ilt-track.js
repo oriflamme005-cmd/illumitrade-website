@@ -3,9 +3,6 @@
  *
  * ── CONFIG: the only part you ever edit ──────────────────────────────────── */
 var ILT_TRACK_CONFIG = {
-  // Umami: switched OFF (measurement is Vercel Web Analytics only). To re-enable, put the website ID back here.
-  UMAMI_ID: '',  // was 'c0458a3b-259b-4974-8595-a5e3e74aad15'
-  UMAMI_SRC: 'https://cloud.umami.is/script.js',
   // X Ads → Tools → Events Manager → your pixel omn00 → "Add events" → copy each event ID (tw-omn00-xxxxx)
   X_PIXEL: 'omn00',
   X_EVENTS: {
@@ -19,7 +16,10 @@ var ILT_TRACK_CONFIG = {
   // Google Analytics 4 — paste the Measurement ID of the IllumiTrade property (G-XXXXXXXXXX). Empty = GA4 off.
   GA4_ID: 'G-V0H194GPVJ',
   // Only the live site reports: previews (*.vercel.app) and localhost never pollute the numbers.
-  GA4_HOSTS: /(^|\.)illumitrade\.com$/
+  GA4_HOSTS: /(^|\.)illumitrade\.com$/,
+  // Microsoft Clarity (free session recordings + heatmaps). Paste the project ID (short code from clarity.microsoft.com → Settings). Empty = off.
+  // Loads only where GA4 loads, i.e. after "Accept" for visitors in Europe, and never on /members or /thankyou.
+  CLARITY_ID: ''
 };
 /* ─────────────────────────────────────────────────────────────────────────── */
 (function () {
@@ -57,8 +57,30 @@ var ILT_TRACK_CONFIG = {
     var p = v.split('|');
     return (Date.now() - Number(p[1] || 0) > 365 * 864e5) ? '' : p[0];   // the choice is asked again after a year
   }
+  function loadClarity() {
+    if (!C.CLARITY_ID || w.clarity || /^\/(members|thankyou)/.test(location.pathname)) return;
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(w, d, 'clarity', 'script', C.CLARITY_ID);
+    // Clarity requires an explicit consent signal for EEA / UK / CH visitors. We only get here after "Accept" (or outside Europe).
+    try { w.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' }); } catch (e) {}
+    // Tag every recording with the visitor's source, so recordings can be filtered by "X ad bf1" vs "profile" etc.
+    setTimeout(function () {
+      try {
+        var u = (w.ILT && w.ILT.utm && w.ILT.utm()) || {};
+        w.clarity('set', 'source', u.utm_source || 'direct');
+        w.clarity('set', 'medium', u.utm_medium || '');
+        w.clarity('set', 'campaign', u.utm_campaign || '');
+        w.clarity('set', 'content', u.utm_content || '');
+        w.clarity('set', 'page', location.pathname.slice(0, 40));
+      } catch (e) {}
+    }, 800);
+  }
   function loadGA() {
     if (GA.on) return; GA.on = true;
+    loadClarity();
     gt('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
     gt('js', new Date());
     var cfg = { cookie_flags: 'SameSite=Lax;Secure', allow_google_signals: false, allow_ad_personalization_signals: false };
@@ -112,15 +134,6 @@ var ILT_TRACK_CONFIG = {
     else if (!cs) askConsent();
   }
 
-  // ── Umami (production domains only, so previews don't pollute the numbers) ──
-  if (C.UMAMI_ID) {
-    var u = d.createElement('script');
-    u.defer = true; u.src = C.UMAMI_SRC;
-    u.setAttribute('data-website-id', C.UMAMI_ID);
-    u.setAttribute('data-domains', 'illumitrade.com,www.illumitrade.com');
-    d.head.appendChild(u);
-  }
-
   var refId = '';
   // ── attribution: first touch + last campaign touch + landing page (kept 90 days) ──
   // Stored in localStorage and mirrored in a first-party cookie (ilt_src) that /api/checkout reads,
@@ -160,11 +173,6 @@ var ILT_TRACK_CONFIG = {
     refId = parts.join('__').slice(0, 200);
   } catch (e) {}
 
-  // ── queue until Umami is ready ──
-  var q = [];
-  function flush() { if (w.umami && w.umami.track) { while (q.length) { var a = q.shift(); try { w.umami.track(a[0], a[1]); } catch (e) {} } return true; } return false; }
-  var tries = 0, timer = setInterval(function () { if (flush() || ++tries > 40) clearInterval(timer); }, 250);
-
   function x(key, params) {
     var id = C.X_EVENTS[key] || (key === 'purchase' ? C.X_EVENTS.trial : ''); if (!id || !w.twq) return;
     if (key === 'checkout') { if (w.__iltCheckoutSent) return; w.__iltCheckoutSent = 1; } // once per page view
@@ -174,7 +182,6 @@ var ILT_TRACK_CONFIG = {
   var ILT = w.ILT = w.ILT || {};
   ILT.track = function (name, data, xKey, xParams) {
     data = data || {};
-    if (C.UMAMI_ID) { q.push([name, data]); flush(); }
     try { if (w.va && /(^|\.)illumitrade\.com$/.test(location.hostname)) w.va('event', { name: name, data: data }); } catch (e) {}  // Vercel custom events (recorded on plans that support them)
     if (GA.on) {
       try {
@@ -243,6 +250,29 @@ var ILT_TRACK_CONFIG = {
     ['proof', 'testimonials', 'how-it-works', 'pricing', 'faq'].forEach(function (id) { var el = d.getElementById(id); if (el) io.observe(el); });
   }
 
+  // scroll depth + real reading time, sent to GA4 only (named events, so they show up in Events and funnels with no extra setup)
+  function engagement() {
+    if (/^\/(members|thankyou|api)/.test(location.pathname)) return;
+    var sent = {};
+    function once(name) { if (sent[name] || !GA.on) return; sent[name] = 1; gt('event', name, {}); }
+    var tick = 0;
+    function onScroll() {
+      if (tick) return; tick = 1;
+      setTimeout(function () {
+        tick = 0;
+        var el = d.documentElement, h = Math.max(el.scrollHeight - w.innerHeight, 1), p = (w.pageYOffset || el.scrollTop || 0) / h * 100;
+        [25, 50, 75, 90].forEach(function (m) { if (p >= m) once('scroll_' + m); });
+      }, 200);
+    }
+    w.addEventListener('scroll', onScroll, { passive: true });
+    var secs = 0;
+    var iv = setInterval(function () {
+      if (d.visibilityState !== 'visible') return;
+      secs++;
+      if (secs === 30) once('time_30s'); else if (secs === 60) once('time_60s'); else if (secs === 120) { once('time_120s'); clearInterval(iv); }
+    }, 1000);
+  }
+
   // ── conversion on /thankyou ──
   // Counts ONLY a real checkout: the page must come from a Stripe redirect.
   // A bookmarked/revisited thank-you page (or /members) never counts.
@@ -277,6 +307,6 @@ var ILT_TRACK_CONFIG = {
       .catch(function () { fire(unknown); });
   }
 
-  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', function () { watch(); conversion(); });
-  else { watch(); conversion(); }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', function () { watch(); engagement(); conversion(); });
+  else { watch(); engagement(); conversion(); }
 })();
