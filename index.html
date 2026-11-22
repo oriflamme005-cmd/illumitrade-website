@@ -517,6 +517,21 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
 .faq-item .faq-a b{color:var(--ink-2);font-weight:600;}
 .faq-item .faq-a a{color:var(--accent);text-decoration:none;}
 .faq-item .faq-a a:hover{text-decoration:underline;}
+/* ── FIT CHECK ── */
+#fit{padding:0 0 120px;}
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin:0 auto;}
+.fit-card{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:28px 28px 16px;}
+.fit-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-bottom:18px;}
+.fit-h sup{font-size:.7em;}
+.fit-card ul{list-style:none;margin:0;padding:0;}
+.fit-card li{position:relative;padding:0 0 0 26px;margin:0 0 14px;font-size:14px;line-height:1.7;color:var(--ink-dim);}
+.fit-card li b{color:var(--ink-2);font-weight:600;}
+.fit-card li::before{position:absolute;left:0;top:0;font-family:var(--font-mono);font-size:13px;}
+.fit-yes li::before{content:'\2713';color:var(--accent);}
+.fit-no li::before{content:'\2715';color:var(--ink-faint);}
+@media(max-width:760px){.fit-grid{grid-template-columns:1fr;}}
+@media(max-width:640px){#fit{padding:0 0 84px;}.fit-card{padding:24px 22px 12px;}}
+
 
 /* USDT accordion in checkout reassure */
 .pay-alt{max-width:560px;margin:14px auto 0;border:1px solid rgba(95,202,189,.30);border-radius:var(--r);background:linear-gradient(180deg,rgba(95,202,189,.07),rgba(95,202,189,.02));text-align:left;transition:border-color .2s,background .2s;}
@@ -1242,6 +1257,34 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
       <div class="cmp-row" role="row"><div role="rowheader">Markets</div><div role="cell">Tuned for one market</div><div role="cell" class="cmp-ilt">Any TradingView asset, <b>any timeframe</b></div></div>
       <div class="cmp-row" role="row"><div role="rowheader">Reading it</div><div role="cell">Cluttered oscillators to interpret</div><div role="cell" class="cmp-ilt">Clear labels: <b>Bull / Bear, Diamond, zones</b></div></div>
       <div class="cmp-row" role="row"><div role="rowheader">Commitment</div><div role="cell">Upfront payment, no trial</div><div role="cell" class="cmp-ilt"><b>7 days free</b> · cancel in 1 click</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FIT CHECK -->
+<section id="fit">
+  <div class="container">
+    <div class="shead reveal">
+      <div class="eyebrow centered">Fit check</div>
+      <h2 class="section-title">Built for some traders. <span class="q">Not for everyone.</span></h2>
+    </div>
+    <div class="fit-grid reveal">
+      <div class="fit-card fit-yes">
+        <div class="fit-h">ILT<sup>®</sup> is for you if</div>
+        <ul>
+          <li>You already trade on TradingView and want a <b>clearer read</b> of trend, momentum and volatility.</li>
+          <li>You want <b>alerts</b> to watch the chart for you while you step away.</li>
+          <li>You are fine paying for a tool and <b>making your own decisions</b>.</li>
+        </ul>
+      </div>
+      <div class="fit-card fit-no">
+        <div class="fit-h">ILT<sup>®</sup> is not for you if</div>
+        <ul>
+          <li>You are looking for a <b>free or open-source</b> indicator. ILT® is a paid, invite-only script.</li>
+          <li>You want signals to copy blindly or a <b>promise of profit</b>. It is charting software, not advice, and nothing here guarantees a result.</li>
+          <li>You expect it to replace <b>risk management</b>. You still decide every trade, and losses happen.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
