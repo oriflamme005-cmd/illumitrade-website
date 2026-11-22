@@ -124,13 +124,25 @@ async function resolvePlan(plan) {
 // --- where the customer came from (cookie written by /ilt-track.js) ----------
 function attribution(req) {
   const out = {};
+  const cookie = String(req.headers.cookie || '');
   try {
-    const m = /(?:^|;\s*)ilt_src=([^;]+)/.exec(String(req.headers.cookie || ''));
-    if (!m) return out;
-    const j = JSON.parse(decodeURIComponent(m[1]));
-    const clean = (v) => String(v == null ? '' : v).replace(/[^\w .\-\/:]/g, '').slice(0, 60);
-    const map = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit' };
-    for (const k of Object.keys(map)) { const v = clean(j[k]); if (v) out[map[k]] = v; }
+    const m = /(?:^|;\s*)ilt_src=([^;]+)/.exec(cookie);
+    if (m) {
+      const j = JSON.parse(decodeURIComponent(m[1]));
+      const clean = (v) => String(v == null ? '' : v).replace(/[^\w .\-\/:]/g, '').slice(0, 60);
+      const map = { s: 'utm_source', m: 'utm_medium', c: 'utm_campaign', n: 'utm_content', p: 'landing', f: 'first_source', d: 'first_visit' };
+      for (const k of Object.keys(map)) { const v = clean(j[k]); if (v) out[map[k]] = v; }
+    }
+  } catch (e) {}
+  // Google Analytics 4 visitor id (cookie written by /ilt-track.js once GA4 is on and consented):
+  // lets the webhook report "paid after trial" / "cancelled" to the same visitor, hence the same source.
+  try {
+    const g = /(?:^|;\s*)ilt_ga=([^;]+)/.exec(cookie);
+    if (g) {
+      const [cid, sid] = decodeURIComponent(g[1]).split('~');
+      if (/^[\w.\-]{3,60}$/.test(cid || '')) out.ga_cid = cid;
+      if (/^\d{5,15}$/.test(sid || '')) out.ga_sid = sid;
+    }
   } catch (e) {}
   return out;
 }

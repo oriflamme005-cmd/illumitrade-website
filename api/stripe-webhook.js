@@ -327,7 +327,9 @@ function parseRef(ref) {
   return out;
 }
 const ATTR_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'landing', 'first_source', 'first_visit'];
-const isAd = (m) => !!m && (m.utm_medium === 'paid' || !!m.utm_campaign);
+// An ad = a paid medium, or any campaign link that is not one of our own organic tags (bio link, posts, e-mails, site cross-links…)
+const ORGANIC_MEDIUM = /^(social|organic|profile|script|email|site|referral|direct)$/i;
+const isAd = (m) => !!m && (/^(paid|cpc|ppc)/i.test(m.utm_medium || '') || (!!m.utm_campaign && !ORGANIC_MEDIUM.test(m.utm_medium || '')));
 function sessionAttribution(cs) {
   const m = cs.metadata || {};
   return m.utm_source ? m : parseRef(cs.client_reference_id);
@@ -627,6 +629,45 @@ function mailer() {
   return transporter;
 }
 
+// ---------- Google Analytics 4: the money events the browser never sees (Measurement Protocol) ----------
+// The browser reports visits, clicks, the free trial and prepaid purchases (see /ilt-track.js). Only the server knows
+// when a trial really becomes a payment, when a renewal is paid and when someone cancels, so it reports those,
+// tagged with the same source the customer arrived from (stored in the Stripe metadata at sign-up).
+// Needs GA4_MEASUREMENT_ID + GA4_API_SECRET in Vercel; without them this does nothing.
+// GA4_DEBUG=1 → events go to Google's validator and its verdict is written to the Vercel logs.
+function ga4Params(meta) {
+  const m = meta || {}, out = {};
+  const map = { ilt_source: 'utm_source', ilt_medium: 'utm_medium', ilt_campaign: 'utm_campaign', ilt_content: 'utm_content', ilt_first_source: 'first_source', ilt_landing: 'landing' };
+  for (const k of Object.keys(map)) if (m[map[k]]) out[k] = String(m[map[k]]).slice(0, 100);
+  return out;
+}
+async function ga4(name, params, meta, fallbackId) {
+  const id = process.env.GA4_MEASUREMENT_ID, secret = process.env.GA4_API_SECRET;
+  if (!id || !secret) return 'off';
+  try {
+    const m = meta || {};
+    const cid = m.ga_cid || ('stripe.' + String(fallbackId || 'unknown').replace(/[^\w]/g, '').slice(0, 50));
+    const body = { client_id: cid, events: [{ name, params: { engagement_time_msec: 1, ...ga4Params(m), ...params } }] };
+    const debug = process.env.GA4_DEBUG === '1';
+    const url = (debug ? 'https://www.google-analytics.com/debug/mp/collect' : 'https://www.google-analytics.com/mp/collect') +
+      '?measurement_id=' + encodeURIComponent(id) + '&api_secret=' + encodeURIComponent(secret);
+    const r = await fetch(url, { method: 'POST', body: JSON.stringify(body), signal: AbortSignal.timeout(4000) });
+    if (debug) console.log('[webhook] ga4 debug', name, r.status, await r.text());
+    return r.ok ? 'sent' : 'http ' + r.status;
+  } catch (e) { console.error('[webhook] ga4', e.message); return 'error'; }   // never blocks the alert email
+}
+function ga4Lifecycle(type, sub, inv, plan) {
+  const trialPaid = !!(sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400);
+  if (type === 'paid') {
+    if (inv.billing_reason === 'subscription_create') return null;   // first invoice of a non-trial plan: the browser already reported that purchase
+    const value = (inv.amount_paid || 0) / 100;
+    return { name: 'purchase', params: { transaction_id: inv.id, value, currency: String(inv.currency || 'usd').toUpperCase(), ilt_plan: plan,
+      ilt_kind: trialPaid ? 'after_trial' : 'renewal', items: [{ item_id: plan, item_name: plan, price: value, quantity: 1 }] } };
+  }
+  if (type === 'failed') return { name: 'payment_failed', params: { ilt_plan: plan, value: (inv.amount_due || 0) / 100, currency: String(inv.currency || 'usd').toUpperCase() } };
+  return { name: trialOutcome(sub) === 'cancelled' ? 'trial_cancelled' : 'subscription_cancelled', params: { ilt_plan: plan } };
+}
+
 // ---------- after the sign-up: paid / card declined / cancelled (alerts to you only) ----------
 const LIFECYCLE = { 'invoice.paid': 'paid', 'invoice.payment_failed': 'failed', 'customer.subscription.deleted': 'ended' };
 
@@ -651,6 +692,10 @@ async function lifecycle(event, res) {
   }
   if (!plan) return skip('not an IllumiTrade subscription');
   if (type === 'ended' && sub.metadata && sub.metadata.replaced_by) return skip('trial replaced by a prepaid plan (customer kept)');
+  try {   // Google Analytics 4 (before the renewal skip below: renewals are revenue too)
+    const g = ga4Lifecycle(type, sub, inv, plan);
+    if (g) await ga4(g.name, g.params, sub.metadata, sub.customer || (inv && inv.customer));
+  } catch (e) { console.error('[webhook] ga4 lifecycle', e.message); }
   // Only the first payment after a free trial is news; monthly renewals stay silent.
   if (type === 'paid' && !(sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400)) return skip('renewal');
 
@@ -740,4 +785,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId, closeOpenTrials };
+module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId, closeOpenTrials, ga4, ga4Params, ga4Lifecycle };
