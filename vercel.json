@@ -1,4 +1,31 @@
 {
+  "redirects": [
+    {
+      "source": "/x",
+      "destination": "/?utm_source=x&utm_medium=social&utm_campaign=bio",
+      "permanent": false
+    },
+    {
+      "source": "/ig",
+      "destination": "/?utm_source=instagram&utm_medium=social&utm_campaign=bio",
+      "permanent": false
+    },
+    {
+      "source": "/pin",
+      "destination": "/?utm_source=pinterest&utm_medium=social&utm_campaign=profile",
+      "permanent": false
+    },
+    {
+      "source": "/tv",
+      "destination": "/?utm_source=tradingview&utm_medium=profile&utm_campaign=ilt",
+      "permanent": false
+    },
+    {
+      "source": "/tg",
+      "destination": "/?utm_source=telegram&utm_medium=social&utm_campaign=channel",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/thankyou",
