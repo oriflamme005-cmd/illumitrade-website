@@ -144,6 +144,20 @@ function attribution(req) {
       if (/^\d{5,15}$/.test(sid || '')) out.ga_sid = sid;
     }
   } catch (e) {}
+  // X Ads: click id (cookie written by /ilt-track.js from ?twclid=…, else the X pixel's own _twclid cookie),
+  // plus IP and browser. The webhook sends them with the trial / sale to X (Conversion API) so X can match the ad click.
+  try {
+    const t = /(?:^|;\s*)ilt_tw=([^;]+)/.exec(cookie) || /(?:^|;\s*)_twclid=([^;]+)/.exec(cookie);
+    if (t) {
+      let v = decodeURIComponent(t[1]);
+      try { const j = JSON.parse(v); if (j && j.twclid) v = String(j.twclid); } catch (e) {}
+      if (/^[\w\-]{5,120}$/.test(v)) out.x_twclid = v;
+    }
+  } catch (e) {}
+  const ip = String(req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || '').split(',')[0].trim();
+  if (/^[0-9a-fA-F:.]{3,45}$/.test(ip)) out.x_ip = ip;
+  const ua = String(req.headers['user-agent'] || '').replace(/[\r\n]/g, ' ').slice(0, 400);
+  if (ua) out.x_ua = ua;
   return out;
 }
 

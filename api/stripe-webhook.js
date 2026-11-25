@@ -18,6 +18,9 @@
 // Optional:
 //   ALERT_EMAIL            where the alert goes (default: GMAIL_USER)
 //   WELCOME_EMAIL_OFF=1    pause the customer welcome email (alerts keep working)
+//   X_PIXEL_TOKEN          X Ads → Events Manager → Install Pixel → Manual → Conversion API → Generate access token
+//                          → every trial, prepaid sale and trial-turned-paid is also sent to X from the server
+//   X_CAPI_DEBUG=1         write X's answer to the Vercel logs for every conversion sent
 // ---------------------------------------------------------------------------------------------
 
 const crypto = require('crypto');
@@ -444,7 +447,7 @@ async function subContact(sub, fallbackEmail) {
   return { username, email };
 }
 
-function lifecycleEmail({ type, sub, inv, plan, username, email, board }) {
+function lifecycleEmail({ type, sub, inv, plan, username, email, board, xcapi }) {
   const who = username || email || '?';
   const dash = `https://dashboard.stripe.com/${sub.livemode === false ? 'test/' : ''}subscriptions/${sub.id}`;
   const head = [
@@ -452,6 +455,7 @@ function lifecycleEmail({ type, sub, inv, plan, username, email, board }) {
     `Email:                 ${email || '?'}`,
     `Plan:                  ${PLAN_LABEL[plan] || plan}`,
     `Came from:             ${sourceDetail(sub.metadata)}`,
+    ...(xcapi ? [`X Ads (server):        ${xcapi}`] : []),
   ];
   let subject, top, action = [];
   if (type === 'paid') {
@@ -595,7 +599,7 @@ ${block('Manage your subscription:', LINKS.portal)}
   return { subject, text, html };
 }
 
-function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote }) {
+function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote, xcapi }) {
   const kind = d.trialEnd ? `FREE TRIAL (ends ${fmtDate(d.trialEnd)})` : `PAID ${money(s.amount_total, s.currency)}`;
   const price = d.unit != null ? money(d.unit, s.currency) + (d.interval ? ' / ' + d.interval : '') : '';
   const lines = [
@@ -608,7 +612,8 @@ function alertEmail({ s, email, name, username, warn, d, planLabel, welcome, boa
     `Country:               ${(s.customer_details && s.customer_details.address && s.customer_details.address.country) || '?'}`,
     `Source:                ${s.metadata && s.metadata.source === 'site_checkout' ? 'checkout on illumitrade.com' : 'Stripe payment link'}`,
     `Came from:             ${sourceDetail(s.metadata)}`, '',
-    `Welcome email:         ${welcome}`, '',
+    `Welcome email:         ${welcome}`,
+    ...(xcapi ? [`X Ads (server):        ${xcapi}`] : []), '',
     ...(trialNote ? [`Open monthly trial:    ${trialNote}`, ''] : []),
     `→ Grant access on TradingView: Manage access → add "${username || '?'}"${bfUntil ? ' · expires ' + bfUntil : ''}`, '',
     `Stripe: https://dashboard.stripe.com/${s.livemode ? '' : 'test/'}customers/${s.customer || ''}`,
@@ -668,6 +673,66 @@ function ga4Lifecycle(type, sub, inv, plan) {
   return { name: trialOutcome(sub) === 'cancelled' ? 'trial_cancelled' : 'subscription_cancelled', params: { ilt_plan: plan } };
 }
 
+// ---------- X Ads Conversion API: trials and sales sent by the server ----------
+// The browser pixel (/thankyou) misses ad blockers, the X in-app browser and every trial that becomes paid 7-10 days later.
+// The server sends the same events with the same conversion_id (Stripe session id), so X counts each one once.
+// Needs X_PIXEL_TOKEN in Vercel; without it this does nothing. Never blocks an email.
+const X_CAPI = { pixel: 'omn00', trial: 'tw-omn00-ri3rd', purchase: 'tw-omn00-riseo' };   // same IDs as /ilt-track.js
+const EMAIL_OK = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function sha256(v) { return crypto.createHash('sha256').update(String(v)).digest('hex'); }
+function xIdentifiers(meta, email) {
+  const m = meta || {}, id = {};
+  if (/^[\w\-]{5,120}$/.test(m.x_twclid || '')) id.twclid = m.x_twclid;
+  const e = String(email || '').trim().toLowerCase();
+  if (EMAIL_OK.test(e)) id.hashed_email = sha256(e);
+  // X accepts IP + browser only together with another identifier
+  if ((id.twclid || id.hashed_email) && m.x_ip && m.x_ua) { id.ip_address = String(m.x_ip); id.user_agent = String(m.x_ua); }
+  return Object.keys(id).length ? [id] : [];
+}
+function xConversionBody(kind, { conversionId, time, value, currency, meta, email, plan }) {
+  const identifiers = xIdentifiers(meta, email);
+  if (!identifiers.length) return null;
+  const m = meta || {};
+  const conv = {
+    conversion_time: new Date((Number(time) || Date.now() / 1000) * 1000).toISOString(),
+    event_id: (kind === 'trial' ? process.env.X_EVENT_TRIAL : process.env.X_EVENT_PURCHASE) || X_CAPI[kind],
+    conversion_id: String(conversionId || ''),
+    identifiers,
+    number_items: 1,
+    description: ('IllumiTrade ' + (PLAN_LABEL[plan] || plan || '') + (kind === 'trial' ? ' free trial' : '')).trim(),
+  };
+  if (!conv.conversion_id) delete conv.conversion_id;
+  if (value != null && !isNaN(Number(value))) { conv.value = Number(value).toFixed(2); conv.price_currency = String(currency || 'usd').toUpperCase(); }
+  if (m.landing) conv.event_source_url = 'https://www.illumitrade.com' + (String(m.landing).startsWith('/') ? m.landing : '/' + m.landing);
+  return { conversions: [conv] };
+}
+// → short status for the alert email: 'sent (trial)' · 'off (…)' · 'http 400: …' · 'error: …'
+async function xConversion(kind, info) {
+  const token = process.env.X_PIXEL_TOKEN;
+  if (!token) return 'off (X_PIXEL_TOKEN not set in Vercel)';
+  const body = xConversionBody(kind, info);
+  if (!body) return 'skipped (no email or click id)';
+  const pixel = process.env.X_PIXEL_ID || X_CAPI.pixel;
+  try {
+    const r = await fetch('https://ads-api.x.com/12/measurement/conversions/' + encodeURIComponent(pixel), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Pixel-Token': token },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(4000),
+    });
+    const txt = await r.text().catch(() => '');
+    if (process.env.X_CAPI_DEBUG === '1' || !r.ok) console.log('[webhook] x capi', kind, r.status, txt.slice(0, 500));
+    const how = body.conversions[0].identifiers[0].twclid ? 'ad click + email' : 'email';
+    return r.ok ? `sent (${kind === 'trial' ? 'Signup' : 'Purchase'} · matched by ${how})` : `http ${r.status}: ${txt.replace(/\s+/g, ' ').slice(0, 160)}`;
+  } catch (e) { console.error('[webhook] x capi', e.message); return 'error: ' + e.message; }
+}
+// Amount of a checkout in USD when Stripe converted it to the visitor's currency (adaptive pricing), as /api/session does
+function sessionValue(s) {
+  const conv = s.currency_conversion && s.currency_conversion.source_currency === 'usd' ? s.currency_conversion : null;
+  if (conv) return { value: (conv.amount_total || 0) / 100, currency: 'USD' };
+  return { value: (s.amount_total || 0) / 100, currency: String(s.currency || 'usd').toUpperCase() };
+}
+
 // ---------- after the sign-up: paid / card declined / cancelled (alerts to you only) ----------
 const LIFECYCLE = { 'invoice.paid': 'paid', 'invoice.payment_failed': 'failed', 'customer.subscription.deleted': 'ended' };
 
@@ -699,8 +764,15 @@ async function lifecycle(event, res) {
   // Only the first payment after a free trial is news; monthly renewals stay silent.
   if (type === 'paid' && !(sub.trial_end && subPeriodStart(sub) <= sub.trial_end + 86400)) return skip('renewal');
 
-  const [{ username, email }, board] = await Promise.all([subContact(sub, inv && inv.customer_email), scoreboard()]);
-  const m = lifecycleEmail({ type, sub, inv, plan, username, email, board });
+  // X Ads: a trial that became a payment is the real sale → Purchase, server-side (the browser never sees it)
+  const xPromise = type === 'paid'
+    ? xConversion('purchase', {
+      conversionId: inv.id, time: (inv.status_transitions && inv.status_transitions.paid_at) || event.created,
+      value: (inv.amount_paid || 0) / 100, currency: inv.currency, meta: sub.metadata, email: inv.customer_email, plan,
+    })
+    : Promise.resolve('');
+  const [{ username, email }, board, xcapi] = await Promise.all([subContact(sub, inv && inv.customer_email), scoreboard(), xPromise]);
+  const m = lifecycleEmail({ type, sub, inv, plan, username, email, board, xcapi });
   try {
     await mailer().sendMail({
       from: `"ILT 💎 IllumiTrade" <${process.env.GMAIL_USER}>`,
@@ -741,11 +813,22 @@ async function handler(req, res) {
   const bfUntil = bfDate ? fmtFull(bfDate) : '';
   const from = `"ILT 💎 IllumiTrade" <${process.env.GMAIL_USER}>`;
 
-  // 1) welcome email to the customer
-  let welcome = 'not sent';
   // Only the 5 IllumiTrade plans (site checkout or their Payment Links) get the welcome email.
   // Anything else (other products, installment links, payment-method updates…) → alert only.
   const known = isIllumi && !!PLAN_LABEL[d.plan];
+
+  // 0) X Ads, server-side (runs while the emails go out): free trial → Signup · prepaid plan → Purchase.
+  // conversion_id = the Stripe session id, the same one the /thankyou pixel sends → X counts it once.
+  const trialStart = !!d.trialEnd || (s.mode === 'subscription' && !(s.amount_total > 0));
+  const xPromise = known
+    ? xConversion(trialStart ? 'trial' : 'purchase', {
+      conversionId: s.id, time: s.created, ...(trialStart ? { value: 0, currency: 'USD' } : sessionValue(s)),
+      meta: s.metadata, email, plan: d.plan,
+    })
+    : Promise.resolve('');
+
+  // 1) welcome email to the customer
+  let welcome = 'not sent';
   if (process.env.WELCOME_EMAIL_OFF === '1') welcome = 'paused (WELCOME_EMAIL_OFF=1)';
   else if (!email) welcome = 'not sent: no customer email';
   else if (!known) welcome = 'not sent: not one of the 5 IllumiTrade plans (alert only)';
@@ -771,9 +854,10 @@ async function handler(req, res) {
   }
 
   // 3) alert to you
+  const xcapi = await xPromise;
   try {
     const board = known ? await scoreboard() : '';
-    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote });
+    const a = alertEmail({ s, email, name, username, warn, d, planLabel, welcome, board, bfUntil, trialNote, xcapi });
     await mailer().sendMail({ from, to: process.env.ALERT_EMAIL || process.env.GMAIL_USER, replyTo: email || undefined, subject: a.subject, text: a.text });
   } catch (e) {
     console.error('[webhook] alert', e.message);
@@ -785,4 +869,4 @@ async function handler(req, res) {
 module.exports = handler;
 module.exports.config = { api: { bodyParser: false } };
 // exported for tests
-module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId, closeOpenTrials, ga4, ga4Params, ga4Lifecycle };
+module.exports._t = { parseRef, mergeAttribution, sessionAttribution, verify, tradingViewUsername, usernameWarning, usernameNote, firstName, welcomeEmail, alertEmail, illumiPlan, trialOutcome, scoreboardText, sourceDetail, lifecycleEmail, invoiceSubId, closeOpenTrials, ga4, ga4Params, ga4Lifecycle, xIdentifiers, xConversionBody, xConversion, sessionValue };
