@@ -172,6 +172,16 @@ var ILT_TRACK_CONFIG = {
       .forEach(function (kv) { var v = enc(kv[1]); if (v) parts.push(kv[0] + '-' + v); });
     refId = parts.join('__').slice(0, 200);
   } catch (e) {}
+  // ── X Ads click id (?twclid=… on every ad click), kept 30 days = X's attribution window ──
+  // /api/checkout stores it in Stripe, and the webhook sends the trial / sale to X server-side (Conversion API),
+  // so X matches it to the ad click even when the browser pixel is blocked.
+  try {
+    var tw = new URLSearchParams(location.search).get('twclid') || '';
+    if (/^[\w-]{5,120}$/.test(tw)) {
+      d.cookie = 'ilt_tw=' + encodeURIComponent(tw) + '; path=/; max-age=' + 30 * 86400 + '; SameSite=Lax' +
+        (location.protocol === 'https:' ? '; Secure' : '');
+    }
+  } catch (e) {}
 
   function x(key, params) {
     var id = C.X_EVENTS[key] || (key === 'purchase' ? C.X_EVENTS.trial : ''); if (!id || !w.twq) return;
