@@ -188,7 +188,8 @@ module.exports = async (req, res) => {
 
   if (!PLANS[plan]) return res.status(400).json({ error: 'Unknown plan' });
   if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'Please enter a valid email.', field: 'email' });
-  if (!USERNAME_RE.test(username)) return res.status(400).json({ error: 'Please enter your TradingView username (letters, numbers, _ . -).', field: 'username' });
+  // The TradingView username is optional: when it is empty, the welcome message asks the customer for it.
+  if (username && !USERNAME_RE.test(username)) return res.status(400).json({ error: 'This TradingView username looks wrong (letters, numbers, _ . - only). You can also leave it empty.', field: 'username' });
 
   const host = String(req.headers['x-forwarded-host'] || req.headers.host || '');
   const origin = ALLOWED_HOSTS.test(host)
@@ -197,9 +198,9 @@ module.exports = async (req, res) => {
 
   try {
     const p = await resolvePlan(plan);
-    const meta = { tradingview_username: username, plan, source: 'site_checkout', ...attribution(req) };
+    const meta = { ...(username ? { tradingview_username: username } : {}), plan, source: 'site_checkout', ...attribution(req) };
     if (bf) { meta.promo = BF.promo; meta.bonus_months = '3'; }
-    const label = 'TradingView: ' + username + (bf ? ' · 15 months (Black Friday)' : '');
+    const label = 'TradingView: ' + (username || '(username not given yet)') + (bf ? ' · 15 months (Black Friday)' : '');
 
     const params = {
       ui_mode: 'elements',

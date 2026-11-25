@@ -8,6 +8,12 @@
 //   3) tags the subscription (metadata.trial_bonus = 1) so it can never be extended twice.
 // Nothing is charged earlier than announced: the customer only ever gets MORE time, and the email
 // states the new date of the first $80 charge.
+//
+// Same daily run: TRIAL-END REMINDER (promised in the checkout: "We email you a reminder 2 days before it ends").
+// Every monthly trial that ends in 12 to 60 hours and is not set to cancel gets ONE plain reminder:
+// the end date, "$80/month from then unless you cancel", the 1-click cancel link. No sales pitch.
+// Tagged metadata.trial_reminder = 1 (before sending) so it is never sent twice.
+// TRIAL_REMINDER_OFF=1 pauses it (then also remove the promise from the checkout text).
 // If Stripe refuses the extension (key without write permission) nothing is emailed.
 // ---------------------------------------------------------------------------------------------
 // Vercel Environment Variables:
@@ -92,6 +98,41 @@ function pick(sub, now, cfg) {
   if (age > (cfg.afterHours + 60) * HOUR) return 'too late for the bonus';
   if (sub.trial_end - now < 12 * HOUR) return 'trial ends within 12h';
   return '';
+}
+
+// Trial-end reminder: monthly trial, still on, ends in 12-60 h, not reminded yet
+function pickReminder(sub, now, cfg) {
+  if (!sub || sub.status !== 'trialing' || !sub.trial_end) return 'not trialing';
+  const item = sub.items && sub.items.data && sub.items.data[0];
+  if (!item || !item.price || item.price.id !== cfg.priceId) return 'not the monthly plan';
+  if (sub.metadata && sub.metadata.trial_reminder) return 'reminder already sent';
+  if (sub.cancel_at_period_end || sub.cancel_at || sub.canceled_at) return 'cancelled / cancellation scheduled';
+  if (sub.pause_collection) return 'paused';
+  const left = sub.trial_end - now;
+  if (left > 60 * HOUR) return 'more than 60h left';
+  if (left < 12 * HOUR) return 'less than 12h left';
+  return '';
+}
+
+function reminderEmail({ first, end }) {
+  const hi = first ? `Hi ${first},` : 'Hi there,';
+  const date = fmtDate(end);
+  const intro = `A quick reminder, as promised when you started: your ILT® free trial ends on ${date} (same time of day you started).`;
+  const keep = 'If ILT® is for you, there is nothing to do: your membership continues at $80/month and your TradingView access stays on.';
+  const stop = `If it is not for you, cancel in 1 click before ${date} and you pay nothing:`;
+  const help = 'Questions, or stuck with the setup? Just reply to this message. I read every one personally.';
+  const text = [hi, '', intro, '', keep, '', stop, LINKS.portal, '', help, '', 'Best regards,', '', 'ILT 💎', 'www.illumitrade.com', LINKS.x].join('\n');
+  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const html = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#222">
+<p>${esc(hi)}</p>
+<p><b>${esc(intro)}</b></p>
+<p>${esc(keep)}</p>
+<p>${esc(stop)}<br><a href="${LINKS.portal}">${LINKS.portal}</a></p>
+<p>${esc(help)}</p>
+<p>Best regards,</p>
+<p>ILT 💎<br><a href="${LINKS.site}">www.illumitrade.com</a><br><a href="${LINKS.x}">${LINKS.x}</a></p>
+</div>`;
+  return { subject: `Reminder: your ILT® free trial ends on ${date}`, text, html };
 }
 
 function firstName(name) {
@@ -204,12 +245,46 @@ async function run({ dry = false, now = Math.floor(Date.now() / 1000) } = {}) {
       result.failed.push({ ...row, error: 'Trial WAS extended in Stripe but the email failed: ' + e.message + ' (tell the customer manually)' });
     }
   }
+
+  // ---- trial-end reminders (2 days before) ----
+  result.reminded = [];
+  if (process.env.TRIAL_REMINDER_OFF !== '1') {
+    const extendedNow = new Set(result.extended.map((x) => x.id));
+    for (const sub of subs) {
+      if (extendedNow.has(sub.id)) continue;   // its trial_end just moved: picked up on a later run
+      const why = pickReminder(sub, now, cfg);
+      if (why) continue;
+      const cust = sub.customer && typeof sub.customer === 'object' ? sub.customer : {};
+      const to = cust.email || '';
+      const username = (sub.metadata && sub.metadata.tradingview_username) || '';
+      const row = { id: sub.id, user: username, email: to || '(no email)', end: fmtDate(sub.trial_end) };
+      if (!to) { result.skipped['reminder: no customer email'] = (result.skipped['reminder: no customer email'] || 0) + 1; continue; }
+      if (dry) { result.reminded.push({ ...row, dry: true }); continue; }
+      // tag first: a customer must never get the reminder twice
+      try {
+        await stripePost('/subscriptions/' + sub.id, { 'metadata[trial_reminder]': '1' });
+      } catch (e) {
+        console.error('[trial-bonus] reminder tag', sub.id, e.message);
+        result.failed.push({ ...row, error: 'Reminder not sent (Stripe tag failed): ' + e.message });
+        continue;
+      }
+      try {
+        const m = reminderEmail({ first: firstName(cust.name), end: sub.trial_end });
+        await mailer().sendMail({ from, to, replyTo: process.env.GMAIL_USER, subject: m.subject, text: m.text, html: m.html });
+        result.reminded.push(row);
+      } catch (e) {
+        console.error('[trial-bonus] reminder', sub.id, e.message);
+        result.failed.push({ ...row, error: 'Trial-end reminder FAILED: ' + e.message + ' (send it manually)' });
+      }
+    }
+  }
   return result;
 }
 
 function summary(r) {
   const lines = [`Trial bonus run: ${r.checked} trial(s) checked · ${r.extended.length} extended · ${r.failed.length} failed${r.dry ? ' (DRY RUN, nothing changed)' : ''}`, ''];
   r.extended.forEach((x) => lines.push(`✓ ${x.user || '?'} · ${x.email} · trial now ends ${x.newEnd}`));
+  (r.reminded || []).forEach((x) => lines.push(`⏰ reminder sent · ${x.user || '?'} · ${x.email} · trial ends ${x.end}`));
   r.failed.forEach((x) => lines.push(`✗ ${x.user || '?'} · ${x.email} · ${x.error}`));
   const sk = Object.entries(r.skipped);
   if (sk.length) lines.push('', 'Skipped: ' + sk.map(([k, v]) => `${v}× ${k}`).join(' · '));
@@ -232,12 +307,13 @@ async function handler(req, res) {
   try {
     const r = await run({ dry });
     // Daily summary to you, only when something happened (or failed)
-    if (!dry && (r.extended.length || r.failed.length)) {
+    const nRem = (r.reminded || []).length;
+    if (!dry && (r.extended.length || r.failed.length || nRem)) {
       try {
         await mailer().sendMail({
           from: `"ILT 💎 IllumiTrade" <${process.env.GMAIL_USER}>`,
           to: process.env.ALERT_EMAIL || process.env.GMAIL_USER,
-          subject: `🎁 Trial bonus: ${r.extended.length} extended${r.failed.length ? ` · ⚠ ${r.failed.length} failed` : ''}`,
+          subject: `🎁 Trials: ${r.extended.length} extended${nRem ? ` · ${nRem} reminder${nRem > 1 ? 's' : ''} sent` : ''}${r.failed.length ? ` · ⚠ ${r.failed.length} failed` : ''}`,
           text: summary(r),
         });
       } catch (e) { console.error('[trial-bonus] summary', e.message); }
@@ -250,4 +326,4 @@ async function handler(req, res) {
 }
 
 module.exports = handler;
-module.exports._t = { pick, bonusEmail, run, summary, fmtDate, firstName };
+module.exports._t = { pick, pickReminder, bonusEmail, reminderEmail, run, summary, fmtDate, firstName };
