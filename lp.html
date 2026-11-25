@@ -1341,7 +1341,7 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
         <li><b>Free TradingView plan is enough</b><span>No paid TradingView subscription needed</span></li>
       </ul>
     </div>
-    <div class="bf-banner" id="bf-banner" hidden>
+    <div class="bf-banner" id="bf-banner">
       <span class="bf-tag">◆ Black Friday</span>
       <span class="bf-txt"><strong>1-year plan: 15 months for the price of 12.</strong> Pay once ($699) and get 3 extra months of access. Offer ends <b id="bf-end">December 1</b>. Same 14-day money-back guarantee.</span>
     </div>
@@ -1891,6 +1891,10 @@ window.addEventListener('scroll', () => {
     early=sessionStorage.getItem('ilt_bf_early')==='1';
   }catch(e){}
   var bfOn=false;
+  // The Black Friday banner is in the static HTML (so it is readable without JavaScript, e.g. by ad reviewers).
+  // Hide it once the offer is over (Dec 2 00:00 Paris) or if the server says the offer is off.
+  function hideBf(){ try{ var b=$('bf-banner'); if(b) b.hidden=true; }catch(e){} }
+  if(Date.now() >= Date.UTC(2026,11,1,23,0,0)) hideBf();
   function applyBf(bf){
     try{
       bfOn=true;
@@ -1919,7 +1923,7 @@ window.addEventListener('scroll', () => {
   }
 
   fetch(API+(early?'?early=1':''),{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
-    .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); if(ready && j.bf && j.bf.on) applyBf(j.bf); })
+    .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); if(ready && j.bf && j.bf.on) applyBf(j.bf); else if(ready && j.bf && !j.bf.on) hideBf(); })
     .catch(function(){ ready=false; });
 
   function loadStripe(){
