@@ -953,6 +953,7 @@ body.co-lock .chat-fab,body.co-lock .chat{opacity:0;pointer-events:none;}
 .co-f small{display:block;margin-top:7px;font-size:12px;color:var(--ink-faint);line-height:1.5;}
 .co-note{margin:2px 0 14px;font-size:12px;line-height:1.5;color:var(--ink-faint);}
 .co-note[hidden]{display:none;}
+.co-opt{font-style:normal;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-left:6px;}
 .co-btn{width:100%;justify-content:center;margin-top:6px;padding:15px 20px;}
 .co-btn[disabled]{opacity:.55;cursor:not-allowed;transform:none!important;}
 .co-who{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);
@@ -1532,16 +1533,16 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
     <form id="co-step1" novalidate>
       <label class="co-f"><span>Email</span>
         <input id="co-email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" required></label>
-      <label class="co-f"><span>TradingView username</span>
-        <input id="co-user" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. trader_123" required>
-        <small>We grant your invite-only access to this username. <b>A free TradingView account works</b>, no paid plan needed. Find your username top-right in TradingView, under your profile.</small></label>
+      <label class="co-f"><span>TradingView username <em class="co-opt">optional</em></span>
+        <input id="co-user" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. trader_123">
+        <small>We grant your invite-only access to this username. <b>A free TradingView account works</b>, no paid plan needed. Find it top-right in TradingView, under your profile. <b>Not sure? Leave it empty</b> and just reply to your welcome email with it.</small></label>
       <p class="co-note" id="co-note" hidden></p>
       <button type="submit" class="btn co-btn" id="co-next">Continue to payment <span class="arr">→</span></button>
       <p class="co-err" id="co-err1" role="alert"></p>
     </form>
 
     <div id="co-step2" hidden>
-      <div class="co-who"><span><b id="co-who-email"></b> · @<b id="co-who-user"></b></span><button type="button" id="co-edit">Edit</button></div>
+      <div class="co-who"><span><b id="co-who-email"></b> · <b id="co-who-user"></b></span><button type="button" id="co-edit">Edit</button></div>
       <div id="co-express"></div>
       <div class="co-or" id="co-or" hidden>or pay with card</div>
       <div id="co-payment"><div class="co-sk"></div><div class="co-sk"></div><div class="co-sk" style="width:60%"></div></div>
@@ -1871,16 +1872,16 @@ function openLatestCall(bar){
 (function(){
   var API='/api/checkout', STRIPE_JS='https://js.stripe.com/dahlia/stripe.js';
   var PLANS={
-    monthly:{name:'1 Month', sub:'7 days free · then $80/mo · cancel in 1 click', cta:'Start my free week', then:'Then $80/mo after your 7-day trial', trust:'$0 today · Cancel in 1 click'},
-    m3:{name:'3 Months', sub:'One-time $210 · save $30 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
-    m6:{name:'6 Months', sub:'One-time $360 · save $120 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
-    y1:{name:'1 Year', sub:'One-time $699 · save $261 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment'},
-    lifetime:{name:'Lifetime', sub:'One-time $3,750 · all future updates included', cta:'Pay & get lifetime access', then:'One-time payment · lifetime access', trust:'One-time payment'}
+    monthly:{name:'1 Month', sub:'7 days free · then $80/mo · cancel in 1 click', cta:'Start my free week', then:'Then $80/mo after your 7-day trial', trust:'$0 today · Reminder 2 days before it ends · Cancel in 1 click'},
+    m3:{name:'3 Months', sub:'One-time $210 · save $30 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment · 14-day money-back guarantee'},
+    m6:{name:'6 Months', sub:'One-time $360 · save $120 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment · 14-day money-back guarantee'},
+    y1:{name:'1 Year', sub:'One-time $699 · save $261 · no auto-renew', cta:'Pay & get access', then:'One-time payment · no auto-renew', trust:'One-time payment · 14-day money-back guarantee'},
+    lifetime:{name:'Lifetime', sub:'One-time $3,750 · all future updates included', cta:'Pay & get lifetime access', then:'One-time payment · lifetime access', trust:'One-time payment · 14-day money-back guarantee'}
   };
   var $=function(id){return document.getElementById(id);};
   var co=$('co'); if(!co || !window.fetch || !window.Promise) return;
   // plain reminder, monthly free trial only (no checkbox, no extra click)
-  var NOTE_MONTHLY='I understand my free week turns into $80/month unless I cancel (1 click) before it ends.';
+  var NOTE_MONTHLY='I understand my free week turns into $80/month unless I cancel (1 click) before it ends. We email you a reminder 2 days before it ends.';
   var ready=false, plan=null, fallbackUrl=null, stripeP=null, checkout=null, actionsP=null, lastFocus=null, busy=false;
 
   // is checkout configured on the server? (until then: normal Stripe links)
@@ -1898,7 +1899,7 @@ function openLatestCall(bar){
   function applyBf(bf){
     try{
       bfOn=true;
-      PLANS.y1={name:'1 Year + 3 months free', sub:'One-time $699 · 15 months of access (Black Friday) · no auto-renew', cta:'Pay & get 15 months', then:'One-time payment · 15 months of access · no auto-renew', trust:'One-time payment'};
+      PLANS.y1={name:'1 Year + 3 months free', sub:'One-time $699 · 15 months of access (Black Friday) · no auto-renew', cta:'Pay & get 15 months', then:'One-time payment · 15 months of access · no auto-renew', trust:'One-time payment · 14-day money-back guarantee'};
       var until=bf&&bf.until?new Date(bf.until):null;
       var endTxt=until?until.toLocaleDateString('en-US',{month:'long',day:'numeric',timeZone:'Europe/Paris'}):'December 1';
       var b=$('bf-banner'); if(b){ var e=$('bf-end'); if(e) e.textContent=endTxt; b.hidden=false; }
@@ -2001,9 +2002,9 @@ function openLatestCall(bar){
     var email=em.value.trim(), user=us.value.trim().replace(/^@/,'');
     em.setAttribute('aria-invalid','false'); us.setAttribute('aria-invalid','false'); err.textContent='';
     if(!EMAIL_RE.test(email)){ em.setAttribute('aria-invalid','true'); err.textContent='Please enter a valid email.'; em.focus(); return; }
-    if(!USER_RE.test(user)){ us.setAttribute('aria-invalid','true'); err.textContent='Please enter your TradingView username (letters, numbers, _ . -).'; us.focus(); return; }
+    if(user && !USER_RE.test(user)){ us.setAttribute('aria-invalid','true'); err.textContent='This TradingView username looks wrong (letters, numbers, _ . - only). You can also leave it empty.'; us.focus(); return; }
     busy=true; var nb=$('co-next'); nb.disabled=true;
-    $('co-who-email').textContent=email; $('co-who-user').textContent=user;
+    $('co-who-email').textContent=email; $('co-who-user').textContent=user?('@'+user):'TradingView username: later';
     $('co-then').textContent=PLANS[plan].then;
     $('co-pay').innerHTML=PLANS[plan].cta+' <span class="arr">→</span>';
     step(2);
