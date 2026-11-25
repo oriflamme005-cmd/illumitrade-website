@@ -1922,9 +1922,11 @@ window.addEventListener('scroll', () => {
     }catch(e){}
   }
 
-  fetch(API+(early?'?early=1':''),{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
+  var checked=false;   // true once the server has answered (or failed)
+  var readyP=fetch(API+(early?'?early=1':''),{cache:'no-store'}).then(function(r){return r.ok?r.json():{ready:false};})
     .then(function(j){ ready=!!(j && j.ready); if(ready) setTimeout(loadStripe, 2500); if(ready && j.bf && j.bf.on) applyBf(j.bf); else if(ready && j.bf && !j.bf.on) hideBf(); })
-    .catch(function(){ ready=false; });
+    .catch(function(){ ready=false; })
+    .then(function(){ checked=true; });
 
   function loadStripe(){
     if(stripeP) return stripeP;
@@ -1942,9 +1944,15 @@ window.addEventListener('scroll', () => {
 
   document.addEventListener('click',function(e){
     var a=e.target.closest && e.target.closest('a[data-plan]');
-    if(!a || !ready || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    if(!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
     var p=a.getAttribute('data-plan'); if(!PLANS[p]) return;
-    e.preventDefault(); open(p, a.href, a);
+    if(ready){ e.preventDefault(); open(p, a.href, a); return; }
+    if(checked) return;   // the server said on-site checkout is off → normal Stripe link
+    // clicked before the server answered (first second, slow phone): wait for it instead of leaving the page
+    e.preventDefault();
+    var href=a.href, src=a, waited=false;
+    var done=function(){ if(waited) return; waited=true; if(ready) open(p, href, src); else window.location.href=href; };
+    readyP.then(done); setTimeout(done, 4000);
   });
 
   function step(n){
