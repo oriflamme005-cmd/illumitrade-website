@@ -390,6 +390,15 @@ nav.scrolled{background:rgba(5,5,6,.88);border-bottom:1px solid var(--line);}
   max-width:760px;margin:-14px auto 36px;padding:16px 24px;background:var(--surface);
   border:1px solid var(--accent);border-radius:var(--r);text-align:center;}
 .bf-banner[hidden]{display:none;}
+.bf-pill{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 18px;padding:7px 12px 7px 8px;
+  border:1px solid var(--accent);border-radius:4px;background:rgba(95,202,189,.07);color:var(--ink-2);font-size:13px;line-height:1.35;
+  text-decoration:none;transition:background .2s,border-color .2s;}
+.bf-pill:hover{background:rgba(95,202,189,.14);}
+.bf-pill[hidden]{display:none;}
+.bf-pill .bf-pill-tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#050506;background:var(--accent);padding:3px 8px;border-radius:2px;}
+.bf-pill b{color:var(--ink,#f3f5f7);font-weight:600;}
+.bf-pill .bf-pill-go{color:var(--accent);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;}
+@media (max-width:420px){.bf-pill{font-size:12px;}.bf-pill .bf-pill-go{display:none;}}
 .bf-banner .bf-tag{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--accent);border:1px solid var(--accent);padding:4px 10px;border-radius:2px;}
 .bf-banner span.bf-txt{color:var(--ink-2);font-size:14px;}
@@ -995,6 +1004,8 @@ body.co-lock .m-cta{transform:translateY(110%)!important;}
 <header class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
+      <!-- Black Friday 2026: same offer as the pricing banner; hidden automatically after Dec 1 (hideBf) -->
+      <a href="#pricing" class="bf-pill" id="bf-pill"><span class="bf-pill-tag">◆ Black Friday</span><span class="bf-pill-txt">1-year plan: <b>15 months for the price of 12</b> · ends Dec 1</span><span class="bf-pill-go">See offer ↓</span></a>
       <div class="hero-badge"><span class="dia">◆</span> The ILT® indicator suite for TradingView</div>
       <h1>
         <span class="dia-wrap" aria-hidden="true">
@@ -1893,7 +1904,7 @@ window.addEventListener('scroll', () => {
   var bfOn=false;
   // The Black Friday banner is in the static HTML (so it is readable without JavaScript, e.g. by ad reviewers).
   // Hide it once the offer is over (Dec 2 00:00 Paris) or if the server says the offer is off.
-  function hideBf(){ try{ var b=$('bf-banner'); if(b) b.hidden=true; }catch(e){} }
+  function hideBf(){ try{ var b=$('bf-banner'); if(b) b.hidden=true; var p=$('bf-pill'); if(p) p.hidden=true; }catch(e){} }
   if(Date.now() >= Date.UTC(2026,11,1,23,0,0)) hideBf();
   function applyBf(bf){
     try{
@@ -2074,5 +2085,31 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
+<script>
+// In-page jumps to the offer / pricing. The page is long and its images load while it scrolls, which pushes the
+// target further down: load the images above it first, then re-aim until it stays put (stops if the visitor scrolls).
+(function(){
+  function aim(el, smooth){
+    var nav=document.getElementById('nav'), r=nav?nav.getBoundingClientRect():null;
+    var top=el.getBoundingClientRect().top+window.pageYOffset-((r&&r.bottom>0)?r.bottom:0)-14;
+    window.scrollTo({top:Math.max(0,top), behavior:smooth?'smooth':'auto'});
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href="#pricing"]');
+    if(!a || a.hasAttribute('data-co-close') || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var bf=document.getElementById('bf-banner');
+    var target=(a.id==='bf-pill' && bf && !bf.hidden) ? bf : document.getElementById('pricing');
+    if(!target) return;
+    e.preventDefault();
+    try{ document.querySelectorAll('img[loading="lazy"]').forEach(function(im){
+      if(im.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING) im.loading='eager'; }); }catch(x){}
+    var stop=false, off=function(){ stop=true; };
+    ['wheel','touchstart','keydown'].forEach(function(t){ window.addEventListener(t, off, {once:true, passive:true}); });
+    aim(target, true);
+    [900, 1800, 3000].forEach(function(ms){ setTimeout(function(){ if(!stop) aim(target, false); }, ms); });
+    try{ history.replaceState(null, '', '#pricing'); }catch(x){}
+  });
+})();
+</script>
 </body>
 </html>
